@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
 import jinja2
 import webapp2
 
@@ -21,7 +22,7 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 class BaseHandler(webapp2.RequestHandler):
-		'''Parent class for all handlers, shortens functions'''
+	'''Parent class for all handlers, shortens functions'''
 	def write(self, content):
 		return self.response.out.write(content)
 
