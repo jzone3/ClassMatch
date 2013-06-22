@@ -14,8 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
 import jinja2
 import webapp2
+from google.appengine.ext import db
 
 from utils import *
 
@@ -23,7 +25,7 @@ template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 
 class BaseHandler(webapp2.RequestHandler):
-		'''Parent class for all handlers, shortens functions'''
+	'''Parent class for all handlers, shortens functions'''
 	def write(self, content):
 		return self.response.out.write(content)
 
@@ -51,6 +53,13 @@ class BaseHandler(webapp2.RequestHandler):
 			return user_cookie.split("|")[0]
 		else:
 			return None
+	def render_str(self,template,**params):
+		t=jinja_env.get_template(template)
+		return t.render(params)
+	
+	def render(self, template,**params):
+		template = jinja_env.get_template(template)
+		self.response.out.write(template.render(params))
 
 	def logged_in(self, email = None):
 		'''Checks if login cookie is valid (authenticates user)'''
@@ -149,9 +158,24 @@ class EmailVerificationHandler(BaseHandler):
 			self.error(404)
 			self.render('404.html', {'blockbg':True})
 
-class MainHandler(webapp2.RequestHandler):
+class Schedule(db.Model):
+	unique_id = db.StringProperty(required = True)
+	course = db.StringProperty(required = True)
+	mods_monday = db.StringProperty(required = False)
+	mods_tuesday = db.StringProperty(required = False) 
+	mods_wed = db.StringProperty(required = False) 
+	mods_thursday = db.StringProperty(required = False) 
+	mods_friday = db.StringProperty(required = False) 
+
+class MainHandler(BaseHandler):
+    def get(self):
+        self.render("index.html")
+class Submit(BaseHandler):
 	def get(self):
-		self.response.write('Hello world!')
+		self.render("schedule.html")
+	def post(self):
+		course = self.request.get("course")
+		expression = seld.request.get("expression")
 
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
@@ -159,6 +183,7 @@ app = webapp2.WSGIApplication([
 	('/logout/?', LogoutHandler),
 	('/signup/?', SignupHandler),
 	('/verify/?', EmailVerificationHandler),
-	('/delete_email/?', DeleteEmailVerification)
+	('/delete_email/?', DeleteEmailVerification),
+	('/schedule',Submit)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
