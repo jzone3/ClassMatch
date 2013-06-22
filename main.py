@@ -37,7 +37,14 @@ class BaseHandler(webapp2.RequestHandler):
 			return user_cookie.split("|")[0]
 		else:
 			return None
-
+	def render_str(self,template,**params):
+		t=jinja_env.get_template(template)
+		return t.render(params)
+	
+	def render(self, template,**params):
+		template = jinja_env.get_template(template)
+		self.response.out.write(template.render(params))
+		
 	def logged_in(self, username = None):
 		'''Checks if login cookie is valid (authenticates user)'''
 		username = self.request.cookies.get(LOGIN_COOKIE_NAME, '')
