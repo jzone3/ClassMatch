@@ -169,6 +169,10 @@ class AccountHandler(BaseHandler):
 	def get(self):
 		self.render('account.html', {'account' : True})
 
+class AboutHandler(BaseHandler):
+	def get(self):
+		self.render('about.html', {'about' : True})
+
 class MainHandler(BaseHandler):
     def get(self):
         self.render("index.html")
@@ -187,6 +191,7 @@ app = webapp2.WSGIApplication([
 	('/signup/?', SignupHandler),
 	('/verify/?', EmailVerificationHandler),
 	('/delete_email/?', DeleteEmailVerification),
-	('/schedule', Submit)
+	('/schedule/?', Submit),
+	('/about/?', AboutHandler)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
