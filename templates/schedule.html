@@ -1,20 +1,7 @@
 <<<<<<< HEAD
 <!DOCTYPE HTML>
 <html>
-	<title>Schedule</title>
-	<body>
-		<h1>Enter your schedule</h1>
-		<form method="post">
-			<label>Enter course name</label>
-				<input name="course">
-			<br>
-			<label>Enter expression</label>
-				<input name ="expression">
-		</form>
-		
-	</body>
-</html>
-=======
+
 {% extends "base.html" %}
 {% block title %}Schedule{% endblock %}
 {% block content %}
@@ -30,7 +17,9 @@
 			<div class="span4"><label>Enter expression</label></div>
 			<div class="span4"><input name="expression"></div>
 		</div>
+		<br/>
+		<input type="submit">
 	</form>
 </div>
 {% endblock %}
->>>>>>> 6b87a4c6da35eefa25040dce25277c6c21fc48ac
+</html>

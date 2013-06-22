@@ -178,11 +178,20 @@ class MainHandler(BaseHandler):
         self.render("index.html")
 
 class Submit(BaseHandler):
+	def render_page(self):
+		self.render('schedule.html',{'schedule' : True})
 	def get(self):
-		self.render('schedule.html', {'schedule' : True})
+		self.render_page()
 	def post(self):
 		course = self.request.get("course")
-		expression = seld.request.get("expression")
+		expression = self.request.get("expression")
+
+		if course and expression:
+			s = Schedule(unique_id="IDK what tis is" , course=course)
+			s.put()
+		else:
+			error="Please enter course name and expression"
+			self.render_page()
 
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
