@@ -17,6 +17,7 @@
 import os
 import jinja2
 import webapp2
+from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -44,7 +45,7 @@ class BaseHandler(webapp2.RequestHandler):
 	def render(self, template,**params):
 		template = jinja_env.get_template(template)
 		self.response.out.write(template.render(params))
-		
+
 	def logged_in(self, username = None):
 		'''Checks if login cookie is valid (authenticates user)'''
 		username = self.request.cookies.get(LOGIN_COOKIE_NAME, '')
@@ -95,16 +96,29 @@ class DeleteAccountHandler(BaseHandler):
 		self.delete_cookie(LOGIN_COOKIE_NAME)
 		self.redirect('/')
 
+class Schedule(db.Model):
+	unique_id = db.StringProperty(required = True)
+	course = db.StringProperty(required = True)
+	mods_monday = db.StringProperty(required = False)
+	mods_tuesday = db.StringProperty(required = False) 
+	mods_wed = db.StringProperty(required = False) 
+	mods_thursday = db.StringProperty(required = False) 
+	mods_friday = db.StringProperty(required = False) 
+
 class MainHandler(BaseHandler):
     def get(self):
         self.render("index.html")
-class Schedule(BaseHandler):
+class Submit(BaseHandler):
 	def get(self):
 		self.render("schedule.html")
+	def post(self):
+		course = self.request.get("course")
+		expression = seld.request.get("expression")
+
 
 app = webapp2.WSGIApplication([
     ('/?', MainHandler),
     ('/logout/?', LogoutHandler),
     ('/delete_account/?', DeleteAccountHandler),
-    ('/schedule',Schedule)
+    ('/schedule',Submit)
 ], debug=True)
