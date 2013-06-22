@@ -1,0 +1,1 @@
+LOGIN_COOKIE_NAME = "makethisrandomlater8"
