@@ -21,6 +21,7 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 
 from utils import *
+from secret import *
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -57,10 +58,6 @@ class BaseHandler(webapp2.RequestHandler):
 	def render_str(self,template,**params):
 		t=jinja_env.get_template(template)
 		return t.render(params)
-	
-	def render(self, template,**params):
-		template = jinja_env.get_template(template)
-		self.response.out.write(template.render(params))
 
 	def logged_in(self, email = None):
 		'''Checks if login cookie is valid (authenticates user)'''
@@ -168,12 +165,17 @@ class Schedule(db.Model):
 	mods_thursday = db.StringProperty(required = False) 
 	mods_friday = db.StringProperty(required = False) 
 
+class AccountHandler(BaseHandler):
+	def get(self):
+		self.render('account.html', {'account' : True})
+
 class MainHandler(BaseHandler):
     def get(self):
         self.render("index.html")
+
 class Submit(BaseHandler):
 	def get(self):
-		self.render("schedule.html")
+		self.render('schedule.html', {'schedule' : True})
 	def post(self):
 		course = self.request.get("course")
 		expression = seld.request.get("expression")
@@ -185,6 +187,6 @@ app = webapp2.WSGIApplication([
 	('/signup/?', SignupHandler),
 	('/verify/?', EmailVerificationHandler),
 	('/delete_email/?', DeleteEmailVerification),
-	('/schedule',Submit)
+	('/schedule', Submit)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)

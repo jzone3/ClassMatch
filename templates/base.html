@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+		<title>{% block title %}{% endblock %}ClassMatch</title>
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="/">ClassMatch</a>
+					<ul class="nav">
+						{% if signed_in %}
+							<li {% if schedule %}class="active"{% endif %}><a href="/schedule">My Schedule</a></li>
+							<li {% if account %}class="active"{% endif %}><a href="/account">My Account</a></li>
+						{% endif %}
+						<li><a href="/about">About</a></li>
+					</ul>
+					<ul class="nav pull-right">
+						{% if signed_in %}
+							<a href="/logout" class="btn btn-info">Logout</a>
+						{% else %}
+							<a href="/signup" class="btn">Signup</a>
+							<a href="/login" class="btn btn-info">Login</a>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<br/><br/><br/><br/>
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
+	</body>
+</html>

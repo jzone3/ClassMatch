@@ -1,14 +1,18 @@
-<!DOCTYPE HTML>
-<html>
-	<title>Schedule</title>
-	<body>
-		<h1>Enter your schedule</h1>
-		<form method="post">
-			<label>Enter course name</label>
-				<input name="course">
-			<label>Enter expression</label>
-				<input name ="expression">
-		</form>
-		
-	</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Schedule{% endblock %}
+{% block content %}
+<div class="hero-unit" style="text-align: center;">
+	<h1>Enter your schedule</h1>
+	<form method="post">
+		<br/><br/>
+		<div class="row">
+			<div class="span4"><label>Enter course name</label></div>
+			<div class="span4"><input name="course"></div>
+		</div>
+		<div class="row">
+			<div class="span4"><label>Enter expression</label></div>
+			<div class="span4"><input name="expression"></div>
+		</div>
+	</form>
+</div>
+{% endblock %}
