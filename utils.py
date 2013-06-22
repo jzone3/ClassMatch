@@ -1,3 +1,12 @@
+from google.appengine.ext import db
+from google.appengine.api import memcache
+
+class Users(db.Model):
+	email = db.StringProperty(required = True)
+	passowrd = db.StringProperty(required = True)
+	date_created = db.DateTimeProperty(auto_now_add = True)
+	email_verified = db.BooleanProperty(required = True)
+
 GET_USER = db.GqlQuery("SELECT * FROM Users WHERE email = :email LIMIT 1")
 
 def remember_me():
@@ -66,13 +75,13 @@ def check_login(email, password):
 
 	return [False, 'Invalid email or password!']
 
-def get_confirmed(username):
-	'''Gets confirmed from db from username'''
+def get_verified(username):
+	'''Gets email_verified from db from username'''
 	q = Users.all()
 	q.filter('username =', username)
 	result = q.get()
 	if result:
-		return result.confirmed
+		return result.email_verified
 	else:
 		return None
 
@@ -109,7 +118,7 @@ def signup(email='', password='', verify='', agree=''):
 		hashed = salted_hash(password, salt)
 		hashed_pass = hashed + '|' + salt
 
-		account = Users(email = email, password = hashed_pass, confirmed = False)
+		account = Users(email = email, password = hashed_pass, email_verified = False)
 		account.put()
 
 		cookie = LOGIN_COOKIE_NAME + '=%s|%s; Expires=%s Path=/' % (str(email), hash_str(email), remember_me())
