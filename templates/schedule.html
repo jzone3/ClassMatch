@@ -1,20 +1,64 @@
 {% extends "base.html" %}
 {% block title %}Schedule{% endblock %}
 {% block content %}
-<div class="hero-unit" style="text-align: center;">
-	<h1>Enter your schedule</h1>
+<div class="hero-unit">
+	<h1 style="text-align: center;">Enter your schedule</h1>
 	<form method="post">
 		<br/><br/>
-		<div class="row">
-			<div class="span4"><label>Enter course name</label></div>
-			<div class="span4"><input name="course"></div>
-		</div>
-		<div class="row">
-			<div class="span4"><label>Enter expression</label></div>
-			<div class="span4"><input name="expression"></div>
+		<div id="classes">
+			<div class="row">
+				<div class="span3" style="text-align: right;">Enter course name</div>
+				<div class="span6"><input type="text" id="course" placeholder="World History"></div>
+			</div>
+			<div class="row">
+				<div class="span2">monday</div>
+				<div class="span2">tuesday</div>
+				<div class="span2">wednesday</div>
+				<div class="span2">thursday</div>
+				<div class="span2">friday</div>
+			</div>
+			<div class="row">
+				<div class="span2"><input type="text" style="width:80px;" id="monday" placeholder="11-13"></div>
+				<div class="span2"><input type="text" style="width:80px;" id="tuesday" placeholder="11-12"></div>
+				<div class="span2"><input type="text" style="width:80px;" id="wednesday" placeholder="11-13"></div>
+				<div class="span2"><input type="text" style="width:80px;" id="thursday" placeholder="11-13"></div>
+				<div class="span2"><input type="text" style="width:80px;" id="friday" placeholder="11-13"></div>
+			</div>
 		</div>
 		<br/>
-		<input type="submit">
+		<div style="text-align: center;"><a class="btn" onclick="addClass();">+ Add another class</a></div>
+		<br/>
+		<div style="text-align: center;">
+			<input class="btn btn-success btn-large" type="submit">
+		</div>
 	</form>
 </div>
+{% endblock %}
+{% block script %}
+var number = 1;
+function addClass() {
+	number += 1;
+	$('#classes').append('\
+		<hr/>\
+		<div class="row"> \
+			<div class="span3" style="text-align: right;">Enter course name</div>\
+			<div class="span6"><input type="text" id="courseq" placeholder="World History"></div>\
+		</div>\
+		<div class="row">\
+				<div class="span2">monday</div>\
+				<div class="span2">tuesday</div>\
+				<div class="span2">wednesday</div>\
+				<div class="span2">thursday</div>\
+				<div class="span2">friday</div>\
+			</div>\
+			<div class="row">\
+				<div class="span2"><input type="text" style="width:80px;" id="monday" placeholder="11-13"></div>\
+				<div class="span2"><input type="text" style="width:80px;" id="tuesday" placeholder="11-12"></div>\
+				<div class="span2"><input type="text" style="width:80px;" id="wednesday" placeholder="11-13"></div>\
+				<div class="span2"><input type="text" style="width:80px;" id="thursday" placeholder="11-13"></div>\
+				<div class="span2"><input type="text" style="width:80px;" id="friday" placeholder="11-13"></div>\
+			</div>\
+	'.replace("q", number));
+	return false;
+}
 {% endblock %}
