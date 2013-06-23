@@ -174,6 +174,27 @@ def reset_user_link(email):
 	for i in links:
 		i.delete()
 
+def deleted(key):
+	'''Wrong email, delete verficiation link'''
+	link = db.get(key)
+	if link is None:
+		return False
+	user = get_user(link.email)
+	if user is None:
+		return False
+	user.put()
+	link.delete()
+	delete_user_account(user.email)
+	return True
+
+def delete_user_account(email):
+	'''Deletes a user account and all related data (minus comments)'''
+	GET_USER.bind(email = email)
+	user = GET_USER
+	for i in user:
+		i.delete()
+	memcache.delete(email + '_submitted')
+
 def verify(key):
 	'''Verfies email from verification link'''
 	link = db.get(key)
@@ -207,7 +228,8 @@ def make_activation_email(email, link, ignore_link):
 	</body>
 	</html>
 	""" % (email, link, link, ignore_link, ignore_link)
-	
+	logging.error([link,ignore_link])
+
 	body = """Hi %s,
 	Thank you for visiting and joining ClassMatch (http://class-match.appspot.com)!
 	To verify your email please click this link (or copy and paste it into your browser): %s

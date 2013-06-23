@@ -20,6 +20,7 @@ import jinja2
 import webapp2
 from google.appengine.ext import db
 from google.appengine.api import memcache
+from google.appengine.api import datastore_errors
 
 from utils import *
 from secret import *
@@ -134,8 +135,7 @@ class SignupHandler(BaseHandler):
 		email = self.rget('email')
 		
 		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'))
-		logging.error([email, self.rget('password'), self.rget('verify'), self.rget('agree')])
-		logging.error(result)
+
 		if result['success']:
 			self.set_cookie(result['cookie'])
 			self.redirect('/')
@@ -230,15 +230,17 @@ class FindClass(BaseHandler):
 					people_in_class[people.course] = people.unique_id
 
 		self.render('findclass.html',{'peoples':people_in_class})
+
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
 	('/logout/?', LogoutHandler),
 	('/signup/?', SignupHandler),
-	('/verify/?', EmailVerificationHandler),
+	('/verify/([^/]+)?', EmailVerificationHandler),
 	('/delete_email/?', DeleteEmailVerification),
 	('/schedule/?', Submit),
 	('/about/?', AboutHandler),
-	('/findclass/?',FindClass)
+	('/findclass/?',FindClass),
+	('/delete_email/([^/]+)?', DeleteEmailVerification)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
