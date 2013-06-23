@@ -49,10 +49,10 @@ def unique_email(email):
 		return True
 	return False
 
-def get_user(email):
+def get_user(email, cached = True):
 	'''Get User object from email'''
 	user = memcache.get('user-'+email)
-	if user:
+	if user and cached:
 		logging.info('CACHE GET_USER: '+email)
 		return user
 	else:
@@ -100,13 +100,7 @@ def check_login(email, password):
 
 def get_verified(email):
 	'''Gets email_verified from db from email'''
-	q = Users.all()
-	q.filter('email =', email)
-	result = q.get()
-	if result:
-		return result.email_verified
-	else:
-		return None
+	return get_user(email, False).email_verified
 
 def signup(email='', password='', verify='', agree=''):
 	"""Signs up user
@@ -183,6 +177,7 @@ def deleted(key):
 	user = GET_USER
 	if user is None:
 		return False
+	memcache.delete(link.email + '_submitted')
 	link.delete()
 	for i in user:
 		i.delete()
@@ -209,6 +204,7 @@ def verify(key):
 		return False
 	user.email_verified = True
 	user.put()
+	memcache.delete(link.email + '_submitted')
 	link.delete()
 	return True
 
