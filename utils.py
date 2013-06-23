@@ -1,9 +1,20 @@
 from google.appengine.ext import db
 from google.appengine.api import memcache
+import re
+import hmac
+import hashlib
+import datetime
+import random
+import string
+import logging
+from secret import *
+
+EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
+PASS_RE = re.compile(r"^.{3,20}$")
 
 class Users(db.Model):
 	email = db.StringProperty(required = True)
-	passowrd = db.StringProperty(required = True)
+	password = db.StringProperty(required = True)
 	date_created = db.DateTimeProperty(auto_now_add = True)
 	email_verified = db.BooleanProperty(required = True)
 
@@ -16,7 +27,7 @@ def remember_me():
 
 def hash_str(string):
 	'''Hashes a string for user cookie'''
-	return hmac.new(secret.SECRET, str(string), hashlib.sha512).hexdigest()
+	return hmac.new(SECRET, str(string), hashlib.sha512).hexdigest()
 
 def salted_hash(password, salt):
 	'''Hashes a string for user password'''
@@ -25,6 +36,13 @@ def salted_hash(password, salt):
 def make_salt():
 	'''Makes random salt for user cookie'''
 	return ''.join(random.choice(string.letters) for x in xrange(5))
+
+def unique_email(email):
+	'''Checks that an email is not taken already'''
+	accounts = (db.GqlQuery("SELECT * FROM Users WHERE email = :email", email = email)).get()
+	if accounts is None:
+		return True
+	return False
 
 def get_user(email):
 	'''Get User object from email'''
@@ -105,8 +123,8 @@ def signup(email='', password='', verify='', agree=''):
 	elif verify != password:
 		to_return['verify'] = "Your passwords didn't match."
 
-	if not EMAIL_RE.match(email) and email != '':
-		to_return['email'] = "That's not a valid email." + email
+	if not EMAIL_RE.match(email + "@bergen.org") and email != '':
+		to_return['email'] = "That's not a valid email."
 	elif not unique_email(email):
 		to_return['email'] = "Email already exits!"
 

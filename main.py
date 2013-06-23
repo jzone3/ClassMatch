@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 import os
+import logging
 import jinja2
 import webapp2
 from google.appengine.ext import db
@@ -124,9 +125,12 @@ class SignupHandler(BaseHandler):
 		self.render('signup.html')
 
 	def post(self):
+		
 		email = self.rget('email')
-
+		
 		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'))
+		logging.error([email, self.rget('password'), self.rget('verify'), self.rget('agree')])
+		logging.error(result)
 		if result['success']:
 			self.set_cookie(result['cookie'])
 		else:
@@ -181,7 +185,9 @@ class Submit(BaseHandler):
 	def render_page(self):
 		self.render('schedule.html',{'schedule' : True})
 	def get(self):
-		self.render_page()
+		if self.logged_in():
+			self.render_page()
+		self.redirect('/signin')
 	def post(self):
 		course = self.request.get("course")
 		mods_monday = self.request.get("monday")
