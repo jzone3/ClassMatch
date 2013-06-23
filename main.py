@@ -218,8 +218,7 @@ class FindClass(BaseHandler):
 		#for people in peoples_classes:
 		#	if user_courses[i] == people.course:
 
-		self.render('findclass.html')
-
+		self.render('findclass.html',{'peoples_classes':user_courses})
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
