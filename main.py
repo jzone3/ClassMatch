@@ -231,6 +231,18 @@ class FindClass(BaseHandler):
 
 		self.render('findclass.html',{'peoples':people_in_class})
 
+class DeleteEmailVerification(BaseHandler):
+	def get(self, key):
+		try:
+			if deleted(key):
+				self.render('email_deleted.html')
+			else:
+				self.error(404)
+				self.render('404.html', {'blockbg':True})
+		except datastore_errors.BadKeyError:
+			self.error(404)
+			self.render('404.html', {'blockbg':True})
+
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
