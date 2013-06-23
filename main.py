@@ -163,7 +163,7 @@ class EmailVerificationHandler(BaseHandler):
 			self.render('404.html', {'blockbg':True})
 
 class Schedule(db.Model):
-	unique_id = db.StringProperty(required = True)
+	unique_id = db.StringProperty(required = False)
 	course = db.StringProperty(required = True)
 	mods_monday = db.StringProperty(required = False)
 	mods_tuesday = db.StringProperty(required = False) 
@@ -199,12 +199,26 @@ class Submit(BaseHandler):
 		mods_thursday = self.request.get("thursday")
 		mods_friday = self.request.get("friday")
 		if course:
-			s = Schedule(unique_id="IDK what this is" , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
+			s = Schedule(unique_id= self.get_email() , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
 				mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
 			s.put()
+			self.redirect('/findclass')
 		else:
 			error="Please enter course name and number of mods"
 			self.render_page()
+class FindClass(BaseHandler):
+	def get(self):
+		'''Gets the users courses'''
+		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course  DESC")
+		user_courses = []
+		for people in peoples_classes:
+			if people.unique_id == self.get_email():
+				user_courses.append(people.course)
+		#i = 0
+		#for people in peoples_classes:
+		#	if user_courses[i] == people.course:
+
+		self.render('findclass.html')
 
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
@@ -214,6 +228,7 @@ app = webapp2.WSGIApplication([
 	('/verify/?', EmailVerificationHandler),
 	('/delete_email/?', DeleteEmailVerification),
 	('/schedule/?', Submit),
-	('/about/?', AboutHandler)
+	('/about/?', AboutHandler),
+	('/findclass/?',FindClass)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
