@@ -93,10 +93,10 @@ def check_login(email, password):
 
 	return [False, 'Invalid email or password!']
 
-def get_verified(username):
-	'''Gets email_verified from db from username'''
+def get_verified(email):
+	'''Gets email_verified from db from email'''
 	q = Users.all()
-	q.filter('username =', username)
+	q.filter('email =', email)
 	result = q.get()
 	if result:
 		return result.email_verified

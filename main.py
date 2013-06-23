@@ -41,6 +41,8 @@ class BaseHandler(webapp2.RequestHandler):
 		params['signed_in'] = self.logged_in()
 		if params['signed_in']:
 			params['email'] = self.get_email()
+			if template == 'schedule.html' and not get_verified(params['email']):
+				template = 'verify.html'
 		else:
 			# set email to blank
 			if 'email' not in params:
@@ -187,7 +189,8 @@ class Submit(BaseHandler):
 	def get(self):
 		if self.logged_in():
 			self.render_page()
-		self.redirect('/signin')
+		else:
+			self.redirect('/signin')
 	def post(self):
 		course = self.request.get("course")
 		mods_monday = self.request.get("monday")
