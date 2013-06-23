@@ -138,6 +138,7 @@ class SignupHandler(BaseHandler):
 		logging.error(result)
 		if result['success']:
 			self.set_cookie(result['cookie'])
+			self.redirect('/')
 		else:
 			self.render('signup.html', {'email':email, 'password_error':result.get('password'), 'email_error':result.get('email'), 'agree_error':result.get('agree')})
 
@@ -193,8 +194,7 @@ class Submit(BaseHandler):
 		if self.logged_in():
 			self.render_page()
 		else:
-			#self.redirect('/signin')
-			self.render_page()
+			self.redirect('/signin')
 	def post(self):
 		course = self.request.get("course")
 		mods_monday = self.request.get("monday")
@@ -210,6 +210,7 @@ class Submit(BaseHandler):
 		else:
 			error="Please enter course name and number of mods"
 			self.render_page()
+
 class FindClass(BaseHandler):
 	def get(self):
 		'''Gets the users courses'''

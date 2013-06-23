@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from google.appengine.api import memcache
+from google.appengine.api import mail
 import re
 import hmac
 import hashlib
@@ -13,13 +14,13 @@ EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 PASS_RE = re.compile(r"^.{3,20}$")
 
 class Email_Verification(db.Model):
-	username      = db.StringProperty(required = True)
-	date_created  = db.DateTimeProperty(auto_now_add = True)
+	email          = db.StringProperty(required = True)
+	date_created   = db.DateTimeProperty(auto_now_add = True)
 
 class Users(db.Model):
-	email = db.StringProperty(required = True)
-	password = db.StringProperty(required = True)
-	date_created = db.DateTimeProperty(auto_now_add = True)
+	email          = db.StringProperty(required = True)
+	password       = db.StringProperty(required = True)
+	date_created   = db.DateTimeProperty(auto_now_add = True)
 	email_verified = db.BooleanProperty(required = True)
 
 GET_USER = db.GqlQuery("SELECT * FROM Users WHERE email = :email LIMIT 1")
@@ -154,7 +155,7 @@ def email_verification(email):
 	'''Sends a verification email for new user'''
 	link, dellink = get_unique_link(email)
 	body, html = make_activation_email(email, link, dellink)
-	mail.send_mail(sender="ClassMatch <info@class-match.appspot.com>",
+	mail.send_mail(sender="ClassMatch <classmatch.verify@gmail.com>",
 						to="%s <%s>" % (email, email + "@bergen.org"),
 						subject="Email Verification",
 						body=body,
@@ -165,7 +166,7 @@ def get_unique_link(email):
 	reset_user_link(email)
 	link_row = Email_Verification(email = email)
 	link_row.put()
-	return 'http://class-match.appsot.com/verify/' + str(link_row.key()), 'http://class-match.appsot.com/delete_email/' + str(link_row.key())
+	return 'http://class-match.appspot.com/verify/' + str(link_row.key()), 'http://class-match.appspot.com/delete_email/' + str(link_row.key())
 
 def reset_user_link(email):
 	'''Deletes email verification links for user'''
@@ -181,7 +182,7 @@ def verify(key):
 	if datetime.datetime.now() >= link.date_created + datetime.timedelta(hours=12):
 		link.delete()
 		return False
-	user = get_user(link.username)
+	user = get_user(link.email)
 	if user is None:
 		return False
 	user.email_verified = True
@@ -189,7 +190,7 @@ def verify(key):
 	link.delete()
 	return True
 
-def make_activation_email(username, link, ignore_link):
+def make_activation_email(email, link, ignore_link):
 	html = """
 	<!DOCTYPE HTML>
 	<html>
@@ -205,12 +206,12 @@ def make_activation_email(username, link, ignore_link):
 		NOTE: Links will expire in 12 hours
 	</body>
 	</html>
-	""" % (username, link, link, ignore_link, ignore_link)
+	""" % (email, link, link, ignore_link, ignore_link)
 	
 	body = """Hi %s,
 	Thank you for visiting and joining ClassMatch (http://class-match.appspot.com)!
 	To verify your email please click this link (or copy and paste it into your browser): %s
 	If you did not make an account on ClassMatch click this link: %s
-	NOTE: Links will expire in 12 hours"""% (username, link, ignore_link)
+	NOTE: Links will expire in 12 hours"""% (email, link, ignore_link)
 
 	return body, html
