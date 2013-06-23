@@ -8,6 +8,10 @@
 			<div class = "people-course">Course: {{people}}</div>
 		{% endfor %}
 		</div>
+		{% for p in peoples %}
+			<div class="p">Course: {{p}}</div>
+			<div class="person">{{peoples[p]}}</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}

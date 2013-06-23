@@ -190,7 +190,8 @@ class Submit(BaseHandler):
 		if self.logged_in():
 			self.render_page()
 		else:
-			self.redirect('/signin')
+			#self.redirect('/signin')
+			self.render_page()
 	def post(self):
 		course = self.request.get("course")
 		mods_monday = self.request.get("monday")
@@ -214,11 +215,13 @@ class FindClass(BaseHandler):
 		for people in peoples_classes:
 			if people.unique_id == self.get_email():
 				user_courses.append(people.course)
-		#i = 0
-		#for people in peoples_classes:
-		#	if user_courses[i] == people.course:
+		i = 0
+		people_in_class = {}
+		for people in peoples_classes:
+			if (user_courses[i] == people.course) and (self.get_email() != people.unique_id):
+				people_in_class[people.course] = people.unique_id
 
-		self.render('findclass.html',{'peoples_classes':user_courses})
+		self.render('findclass.html',{'peoples_classes':user_courses, 'peoples':people_in_class})
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
