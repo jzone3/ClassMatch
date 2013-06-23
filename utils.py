@@ -179,12 +179,13 @@ def deleted(key):
 	link = db.get(key)
 	if link is None:
 		return False
-	user = get_user(link.email)
+	GET_USER.bind(email = link.email)
+	user = GET_USER
 	if user is None:
 		return False
-	user.put()
 	link.delete()
-	delete_user_account(user.email)
+	for i in user:
+		i.delete()
 	return True
 
 def delete_user_account(email):

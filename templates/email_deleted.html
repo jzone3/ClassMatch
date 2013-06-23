@@ -1,9 +1,13 @@
-<!DOCTYPE HTML>
-<html>
-	<title>Class Match</title>
-	<body>
-		<a href="/schedule">
-		<button>Enter schedule</button>
-		</a>
-	</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Email Mistake{% endblock %}
+{% block content %}
+<div class="hero-unit" style="text-align: center;">
+	<h1>Sorry About That!</h1>
+	<hr/>
+	<p>
+		It appears a user has put in your email by mistake. Don't worry, we have fixed the problem and you won't be recieving any more emails!
+		<br/><br/>
+		But since you are here, why not <a href="/signup">make an account</a>!
+	</p>
+</div>
+{% endblock %}

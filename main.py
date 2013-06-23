@@ -246,6 +246,7 @@ class DeleteEmailVerification(BaseHandler):
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
+	('/account/?', AccountHandler),
 	('/logout/?', LogoutHandler),
 	('/signup/?', SignupHandler),
 	('/verify/([^/]+)?', EmailVerificationHandler),
