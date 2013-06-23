@@ -184,13 +184,17 @@ class Submit(BaseHandler):
 		self.render_page()
 	def post(self):
 		course = self.request.get("course")
-		expression = self.request.get("expression")
-
-		if course and expression:
-			s = Schedule(unique_id="IDK what tis is" , course=course)
+		mods_monday = self.request.get("monday")
+		mods_tuesday = self.request.get("tuesday")
+		mods_wed = self.request.get("wednesday")
+		mods_thursday = self.request.get("thursday")
+		mods_friday = self.request.get("friday")
+		if course:
+			s = Schedule(unique_id="IDK what this is" , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
+				mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
 			s.put()
 		else:
-			error="Please enter course name and expression"
+			error="Please enter course name and number of mods"
 			self.render_page()
 
 app = webapp2.WSGIApplication([
