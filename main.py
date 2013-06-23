@@ -218,14 +218,18 @@ class FindClass(BaseHandler):
 		user_courses = []
 		for people in peoples_classes:
 			if people.unique_id == self.get_email():
-				user_courses.append(people.course)
+				user_courses.append(people)
 		i = 0
 		people_in_class = {}
 		for people in peoples_classes:
-			if (user_courses[i] == people.course) and (self.get_email() != people.unique_id):
-				people_in_class[people.course] = people.unique_id
+			user_course = user_courses[i]
+			if (user_course == people.course) and (self.get_email() != people.unique_id):
+				if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
+					user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
+					user_course.mods_friday == people.mods_friday):
+					people_in_class[people.course] = people.unique_id
 
-		self.render('findclass.html',{'peoples_classes':user_courses, 'peoples':people_in_class})
+		self.render('findclass.html',{'peoples':people_in_class})
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
 	('/signin/?', SigninHandler),
