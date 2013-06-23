@@ -84,7 +84,10 @@ class BaseHandler(webapp2.RequestHandler):
 class SigninHandler(BaseHandler):
 	'''Handles signing in'''
 	def get(self):
-		self.render('signin.html')
+		if self.logged_in():
+			self.redirect('/')
+		else:
+			self.render('signin.html')
 
 	def post(self):
 		email = self.rget('email')
@@ -136,7 +139,7 @@ class SignupHandler(BaseHandler):
 		if result['success']:
 			self.set_cookie(result['cookie'])
 		else:
-			self.render('signup.html', {'email':email, 'email_error':result.get('email_error'), 'agree_error':result.get('agree_error')})
+			self.render('signup.html', {'email':email, 'password_error':result.get('password'), 'email_error':result.get('email'), 'agree_error':result.get('agree')})
 
 class DeleteEmailVerification(BaseHandler):
 	def get(self, key):

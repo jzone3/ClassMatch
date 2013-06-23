@@ -12,6 +12,10 @@ from secret import *
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 PASS_RE = re.compile(r"^.{3,20}$")
 
+class Email_Verification(db.Model):
+	username      = db.StringProperty(required = True)
+	date_created  = db.DateTimeProperty(auto_now_add = True)
+
 class Users(db.Model):
 	email = db.StringProperty(required = True)
 	password = db.StringProperty(required = True)
@@ -142,7 +146,7 @@ def signup(email='', password='', verify='', agree=''):
 		cookie = LOGIN_COOKIE_NAME + '=%s|%s; Expires=%s Path=/' % (str(email), hash_str(email), remember_me())
 		to_return['cookie'] = cookie
 		to_return['success'] = True
-		email_verification(email, email)
+		email_verification(email)
 
 	return to_return
 
@@ -184,3 +188,29 @@ def verify(key):
 	user.put()
 	link.delete()
 	return True
+
+def make_activation_email(username, link, ignore_link):
+	html = """
+	<!DOCTYPE HTML>
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	</head>
+	<body>
+		Hi %s,<br/><br/>
+		Thank you for visiting and joining <a href="http://class-match.appspot.com">ClassMatch</a>!<br/><br/><br/>
+		To verify your email please click this link (or copy and paste it into your browser): <a href="%s">%s</a><br/><br/>
+		If you did not make an account on ClassMatch click this link: <a href="%s">%s</a>
+		<br/><br/><br/>
+		NOTE: Links will expire in 12 hours
+	</body>
+	</html>
+	""" % (username, link, link, ignore_link, ignore_link)
+	
+	body = """Hi %s,
+	Thank you for visiting and joining ClassMatch (http://class-match.appspot.com)!
+	To verify your email please click this link (or copy and paste it into your browser): %s
+	If you did not make an account on ClassMatch click this link: %s
+	NOTE: Links will expire in 12 hours"""% (username, link, ignore_link)
+
+	return body, html
