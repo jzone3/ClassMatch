@@ -249,14 +249,15 @@ class MainHandler(BaseHandler):
 class Submit(BaseHandler):
 	def render_page(self,error=None,user_courses=""):
 		if error:
-			self.render('schedule.html',{'schedule' : True, 'error' : error,'user_courses':user_courses})
+			self.render('schedule.html',{'schedule' : True, 'error' : error, 'user_courses' : user_courses})
 		else:
-			self.render('schedule.html',{'schedule' : True,'user_courses':user_courses})
+			self.render('schedule.html',{'schedule' : True, 'user_courses' : user_courses})
 	def get(self):
 		if self.logged_in():
 			peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 			user_courses = get_user_courses(peoples_classes, self.get_email())
-			self.render_page(user_courses)
+			logging.error(user_courses)
+			self.render_page(user_courses=user_courses)
 		else:
 			self.redirect('/signin')
 	def post(self):
