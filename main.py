@@ -248,13 +248,8 @@ class FindClass(BaseHandler):
 	def get(self):
 		'''Gets the users courses'''
 		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-		user_courses = []
-		for people in peoples_classes:
-			if people.unique_id == self.get_email():
-				user_courses.append(people)
-
+		user_courses = get_user_courses(peoples_classes,self.get_email())
 		people_in_class = {}
-		p = {}
 		for people in peoples_classes:
 			for user_course in user_courses:
 				if user_course.course.lower() == people.course.lower() and self.get_email() != people.unique_id:
