@@ -298,6 +298,13 @@ class DeleteEmailVerification(BaseHandler):
 		except datastore_errors.BadKeyError:
 			self.error(404)
 			self.render('404.html', {'blockbg':True})
+class Delete_class(BaseHandler):
+	def get(self):
+		self.redirect('/schedule/?')
+	def post(self):
+		email = self.get_email()
+		user_courses = remove_user_course(get_classes(email),email,self.rget('course'))
+		self.render('schedule.html',{'schedule' : True, 'user_courses' : user_courses})
 
 app = webapp2.WSGIApplication([
 	('/?', MainHandler),
@@ -310,6 +317,7 @@ app = webapp2.WSGIApplication([
 	('/schedule/?', Submit),
 	('/about/?', AboutHandler),
 	('/findclassmates/?',FindClass),
-	('/delete_email/([^/]+)?', DeleteEmailVerification)
+	('/delete_email/([^/]+)?', DeleteEmailVerification),
+	('/delete_class/?',Delete_class)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
