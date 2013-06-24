@@ -91,8 +91,7 @@ class BaseHandler(webapp2.RequestHandler):
 		self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % cookie)
 
 	def find_people_in_class(self):
-		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-		user_courses = get_user_courses(peoples_classes,self.get_email())
+		user_courses = get_classes(self.get_email())
 		people_in_class = {}
 		for people in peoples_classes:
 			for user_course in user_courses:
@@ -259,8 +258,8 @@ class Submit(BaseHandler):
 			self.render('schedule.html',{'schedule' : True, 'user_courses' : user_courses})
 	def get(self):
 		if self.logged_in():
-			peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-			user_courses = get_user_courses(peoples_classes, self.get_email())
+			#peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
+			user_courses = get_classes(self.get_email())
 			for course in user_courses:
 				if course.mods_monday == '':
 					course.mods_monday = 'None'
