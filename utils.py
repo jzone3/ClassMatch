@@ -103,10 +103,6 @@ def check_login(email, password):
 
 	return [False, 'Invalid email or password!']
 
-
-	'''Gets email_verified from db from email'''
-	return get_user(email, False).email_verified
-
 def change_email(previous_email, new_email):
 	"""
 	Changes a user's email
@@ -123,7 +119,7 @@ def change_email(previous_email, new_email):
 	user.email_verified = False
 	memcache.set('user-'+new_email, user)
 	user.put()
-	email_verification(new_email)
+	email_verification(new_email, user.name)
 	return [True]
 
 def change_password(old, new, verify, email):
@@ -163,7 +159,7 @@ def change_password(old, new, verify, email):
 
 def get_verified(email):
 	'''Gets email_verified from db from email'''
-	return get_user(email, False).email_verified
+	return get_user(email, True).email_verified
 
 def signup(email='', password='', verify='', agree='', name=''):
 	"""Signs up user
@@ -259,7 +255,6 @@ def delete_user_account(email):
 	for i in user:
 		i.delete()
 	memcache.delete(email + '_submitted')
-	self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % LOGIN_COOKIE_NAME)
 
 def verify(key):
 	'''Verfies email from verification link'''
@@ -275,6 +270,7 @@ def verify(key):
 	user.email_verified = True
 	user.put()
 	memcache.delete(link.email + '_submitted')
+	memcache.delete('user-'+link.email)
 	link.delete()
 	return True
 
