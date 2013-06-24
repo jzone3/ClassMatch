@@ -292,6 +292,7 @@ class Submit(BaseHandler):
 				s.put()
 			else:
 				break
+			# DELETE THE CACHE
 		self.redirect('/findclassmates')
 
 class FindClass(BaseHandler):
