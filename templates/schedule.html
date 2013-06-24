@@ -52,13 +52,14 @@ function addClass() {
 				<div class="span2">friday</div>\
 			</div>\
 			<div class="row">\
-				<div class="span2"><input type="text" style="width:80px;" name="monday" placeholder="11-13"></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="tuesday" placeholder="11-12"></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="wednesday" placeholder="11-13"></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="thursday" placeholder="11-13"></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="friday" placeholder="11-13"></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="monday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="tuesday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="wednesday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="thursday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="friday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
 			</div>\
 	'.replace("q", number));
+	$("[rel='tooltip']").tooltip();
 	return false;
 }
 $(function () {
