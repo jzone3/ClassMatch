@@ -203,16 +203,16 @@ def signup(email='', password='', verify='', agree='', name=''):
 		cookie = LOGIN_COOKIE_NAME + '=%s|%s; Expires=%s Path=/' % (str(email), hash_str(email), remember_me())
 		to_return['cookie'] = cookie
 		to_return['success'] = True
-		email_verification(email)
+		email_verification(email, name)
 
 	return to_return
 
-def email_verification(email):
+def email_verification(email, name):
 	'''Sends a verification email for new user'''
 	link, dellink = get_unique_link(email)
-	body, html = make_activation_email(email, link, dellink)
+	body, html = make_activation_email(email, link, dellink, name)
 	mail.send_mail(sender="ClassMatch <classmatch.verify@gmail.com>",
-						to="%s <%s>" % (email, email + "@bergen.org"),
+						to="%s <%s>" % (name, email + "@bergen.org"),
 						subject="Email Verification",
 						body=body,
 						html=html)
@@ -269,7 +269,7 @@ def verify(key):
 	memcache.delete(link.email + '_submitted')
 	link.delete()
 	return True
-def make_activation_email(email, link, ignore_link):
+def make_activation_email(email, link, ignore_link, name):
 	html = """
 	<!DOCTYPE HTML>
 	<html>
@@ -285,16 +285,17 @@ def make_activation_email(email, link, ignore_link):
 		NOTE: Links will expire in 12 hours
 	</body>
 	</html>
-	""" % (email, link, link, ignore_link, ignore_link)
+	""" % (name, link, link, ignore_link, ignore_link)
 	logging.error([link,ignore_link])
 
 	body = """Hi %s,
 	Thank you for visiting and joining ClassMatch (http://class-match.appspot.com)!
 	To verify your email please click this link (or copy and paste it into your browser): %s
 	If you did not make an account on ClassMatch click this link: %s
-	NOTE: Links will expire in 12 hours"""% (email, link, ignore_link)
+	NOTE: Links will expire in 12 hours"""% (name, link, ignore_link)
 
 	return body, html
+
 def get_user_courses(peoples_classes, email):
 		user_courses = []
 		for people in peoples_classes:
