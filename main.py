@@ -214,7 +214,7 @@ class Submit(BaseHandler):
 class FindClass(BaseHandler):
 	def get(self):
 		'''Gets the users courses'''
-		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course  DESC")
+		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 		user_courses = []
 		for people in peoples_classes:
 			if people.unique_id == self.get_email():
@@ -223,6 +223,7 @@ class FindClass(BaseHandler):
 		people_in_class = {}
 		for people in peoples_classes:
 			user_course = user_courses[i]
+			i += 1
 			if (user_course == people.course) and (self.get_email() != people.unique_id):
 				if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
 					user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
