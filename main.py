@@ -159,7 +159,8 @@ class SignupHandler(BaseHandler):
 		
 		email = self.rget('email')
 		
-		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'), name = self.rget('name'))
+		# result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'), name = self.rget('name'))
+		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = True, name = self.rget('name'))
 
 		if result['success']:
 			self.set_cookie(result['cookie'])
