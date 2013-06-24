@@ -315,11 +315,14 @@ def get_user_courses(peoples_classes, email):
 			if people.unique_id == email:
 				user_courses.append(people)
 		return user_courses
-def remove_user_course(peoples_classes,email,course_name):
-	user_courses = []
-	for people in peoples_classes:
-		if people.unique_id == email:
-			user_courses.append(people)
-		if people.course == course_name:
-			user_courses.remove(people)
-	return user_courses
+
+def remove_user_course(email,course_name):
+	course = db.GqlQuery("SELECT * FROM Schedule WHERE unique_id = :email and course = :course_name LIMIT 1", email = email, course_name = course_name).get()
+	course.delete()
+	# user_courses = []
+	# for people in peoples_classes:
+	# 	if people.unique_id == email:
+	# 		user_courses.append(people)
+	# 	if people.course == course_name:
+	# 		user_courses.remove(people)
+	# return user_courses
