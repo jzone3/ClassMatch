@@ -10,8 +10,8 @@
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		Your email was successfully changed!
 	</div>
-	<br/>
 	{% endif %}
+	<br/>
 	<form method="post">
 		<input type="hidden" name="formname" value="change_email">
 		<div class="row">
@@ -28,6 +28,15 @@
 		<br/>
 		<input type="submit" class="btn btn-primary" value="Change Email"></a>
 	</form>
+	{% if not verified %}
+		<form method="post"><input type="hidden" name="formname" value="resend"><input type="submit" class="btn btn-primary" value="Resend Activation Email"></form>
+		{% if sent %}
+			<div class="alert alert-success" style="width:400px;margin-left:auto;margin-right:auto;">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				Another verification email has been sent!
+			</div>
+		{% endif %}
+	{% endif %}
 	<hr/>
 	<h3>Change Password:</h3><br/>
 	{% if password_success %}

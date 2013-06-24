@@ -66,8 +66,9 @@ def get_user(email, cached = True):
 
 		return user
 
-def get_name(email, cached=True):
-	return get_user(email, cached).name
+def get_name(email):
+	'''Gets name from db from email'''
+	return get_user(email, False).name
 
 def check_login(email, password):
 	"""Checks if login info is correct

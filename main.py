@@ -40,14 +40,22 @@ class BaseHandler(webapp2.RequestHandler):
 	def render(self, template, params={}):
 		'''Renders template using params and other parameters'''
 		params['signed_in'] = self.logged_in()
+		verif = None
 		if params['signed_in']:
 			params['email'] = self.get_email()
+			verif = get_verified(params['email'])
 			if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
 				template = 'verify.html'
 		else:
 			# set email to blank
 			if 'email' not in params:
 				params['email'] = ''
+
+		if template == 'account.html':
+			if verif is None:
+				params['verified'] = get_verified(params['email'])
+			else:
+				params['verified'] = verif
 
 		if template == 'findclass.html' and not 'index' in params.keys():
 			params['findclass'] = True
@@ -224,6 +232,12 @@ class AccountHandler(BaseHandler):
 				self.redirect('/')
 			else:
 				self.render('account.html', {'account' : True, 'pass_error' : 'Incorrect Password.'})
+		elif formname == 'resend':
+			email = self.get_email()
+			email_verification(email, get_name(email))
+			self.render('account.html', {'account' : True, 'sent' : True})
+		else:
+			self.redirect('/account')
 
 class AboutHandler(BaseHandler):
 	def get(self):
