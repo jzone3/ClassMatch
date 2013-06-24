@@ -8,12 +8,12 @@
 		<form method="post" action="/delete_class" style="text-align:center;"><input type="hidden" name="course" value="{{course.course}}"><input type="submit" class="btn btn-small btn-danger" value="Delete Class"></form>
 		<div class="row">
 			<div class="span3">Mods Monday: {{course.mods_monday}}</div>
-			<div class="span3">Mods Tuesday {{course.mods_tuesday}}</div>
-			<div class="span3">Mods Wednesday {{course.mods_wed}}</div>
+			<div class="span3">Mods Tuesday: {{course.mods_tuesday}}</div>
+			<div class="span3">Mods Wednesday: {{course.mods_wed}}</div>
 		</div>
 		<div class="row">
-			<div class="span3">Mods Thursday {{course.mods_thursday}}</div>
-			<div class="span3">Mods Friday {{course.mods_friday}}</div>
+			<div class="span3">Mods Thursday: {{course.mods_thursday}}</div>
+			<div class="span3">Mods Friday: {{course.mods_friday}}</div>
 			<div class="span3">&nbsp;</div>
 		</div>
 		<hr/>
@@ -58,8 +58,8 @@ function addClass() {
 	$('#classes').append('\
 		<hr/>\
 		<div class="row"> \
-			<div class="span3" style="text-align: right;">Enter course name</div>\
-			<div class="span6"><input type="text" name="courseq" placeholder="World History"></div>\
+			<div class="span4" style="text-align: right;">Enter course name</div>\
+			<div class="span2"><input type="text" name="courseq" placeholder="World History"></div>\
 		</div>\
 		<div class="row">\
 				<div class="span2">monday</div>\

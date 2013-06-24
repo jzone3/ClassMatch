@@ -256,7 +256,9 @@ class Submit(BaseHandler):
 		if self.logged_in():
 			peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 			user_courses = get_user_courses(peoples_classes, self.get_email())
-			logging.error(user_courses)
+			for key in user_courses.keys():
+				if user_courses[key] == '':
+					user_courses[key] = 'None'
 			self.render_page(user_courses=user_courses)
 		else:
 			self.redirect('/signin')
@@ -298,6 +300,7 @@ class DeleteEmailVerification(BaseHandler):
 		except datastore_errors.BadKeyError:
 			self.error(404)
 			self.render('404.html', {'blockbg':True})
+
 class DeleteClass(BaseHandler):
 	def get(self):
 		self.redirect('/schedule/?')
