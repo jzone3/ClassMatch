@@ -222,13 +222,12 @@ class FindClass(BaseHandler):
 		i = 0
 		people_in_class = {}
 		for people in peoples_classes:
-			user_course = user_courses[i]
-			i += 1
-			if (user_course == people.course) and (self.get_email() != people.unique_id):
-				if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
-					user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
-					user_course.mods_friday == people.mods_friday):
-					people_in_class[people.course] = people.unique_id
+			for user_course in user_courses:
+				if (user_course == people.course) and (self.get_email() != people.unique_id):
+					if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
+						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
+						user_course.mods_friday == people.mods_friday):
+						people_in_class[people.course] = people.unique_id
 
 		self.render('findclass.html',{'peoples':people_in_class})
 
