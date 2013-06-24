@@ -2,9 +2,9 @@
 {% block title %}Schedule{% endblock %}
 {% block content %}
 <div class="hero-unit">
-	<h1>Your Courses</h1>
 	{% for course in user_course: %}
 	<div class="hero-unit" style="text-align: center;">
+			<div style="text-align: center;"><h1>Your Courses</h1></div>
 			<div class = "span3" style="text-align: center;">Course: {{course.course}}</div>
 			<br>
 			<hr>
