@@ -226,6 +226,7 @@ class AccountHandler(BaseHandler):
 			email = self.get_email()
 			if check_login(email, self.rget('password'))[0]:
 				delete_user_account(email)
+				self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % LOGIN_COOKIE_NAME)
 				self.redirect('/')
 			else:
 				self.render('account.html', {'account' : True, 'pass_error' : 'Incorrect Password.'})
