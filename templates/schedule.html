@@ -2,19 +2,22 @@
 {% block title %}Schedule{% endblock %}
 {% block content %}
 <div class="hero-unit">
+	{% if user_courses %}<h1 style="text-align: center;">Your Courses</h1><br/>{% endif %}
 	{% for course in user_courses: %}
-	<div class="hero-unit" style="text-align: center;">
-			<div style="text-align: center;"><h1>Your Courses</h1></div>
-			<div class="span3" style="text-align: center;">Course: {{course.course}}</div>
-			<br/><hr/>
+		<h3 style="text-align: center;">{{course.course}}</h3><br/>
+		<div class="row">
 			<div class="span3">Mods Monday: {{course.mods_monday}}</div>
 			<div class="span3">Mods Tuesday {{course.mods_tuesday}}</div>
 			<div class="span3">Mods Wednesday {{course.mods_wed}}</div>
+		</div>
+		<div class="row">
 			<div class="span3">Mods Thursday {{course.mods_thursday}}</div>
 			<div class="span3">Mods Friday {{course.mods_friday}}</div>
-	</div>
+			<div class="span3">&nbsp;</div>
+		</div>
+		<hr/>
 	{% endfor %}
-	<h1 style="text-align: center;">Enter your schedule</h1>
+	<h1 style="text-align: center;">{% if user_courses %}Add classes{% else %}Enter your schedule{% endif %}</h1>
 	<form method="post">
 		<br/><br/>
 		<div id="classes">
