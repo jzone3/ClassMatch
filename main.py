@@ -188,28 +188,38 @@ class MainHandler(BaseHandler):
         self.render("index.html")
 
 class Submit(BaseHandler):
-	def render_page(self):
-		self.render('schedule.html',{'schedule' : True})
+	def render_page(self,error=None):
+		if error:
+			self.render('schedule.html',{'schedule' : True, 'error' : error})
+		else:
+			self.render('schedule.html',{'schedule' : True})
 	def get(self):
 		if self.logged_in():
 			self.render_page()
 		else:
 			self.redirect('/signin')
 	def post(self):
-		course = self.request.get("course")
-		mods_monday = self.request.get("monday")
-		mods_tuesday = self.request.get("tuesday")
-		mods_wed = self.request.get("wednesday")
-		mods_thursday = self.request.get("thursday")
-		mods_friday = self.request.get("friday")
-		if course:
-			s = Schedule(unique_id= self.get_email() , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
-				mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
-			s.put()
-			self.redirect('/findclass')
-		else:
-			error="Please enter course name and number of mods"
-			self.render_page()
+		q = ''
+		email = self.get_email()
+		while not self.rget("course" + str(q)) is None:
+			course = self.request.get("course" + str(q))
+			mods_monday = self.request.get("monday" + str(q))
+			mods_tuesday = self.request.get("tuesday" + str(q))
+			mods_wed = self.request.get("wednesday" + str(q))
+			mods_thursday = self.request.get("thursday" + str(q))
+			mods_friday = self.request.get("friday" + str(q))
+			if q == '':
+				q = 2
+			else:
+				q += 1
+			if course:
+				s = Schedule(unique_id=email , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
+					mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
+				s.put()
+			else:
+				self.render_page("Please enter course name and number of mods")
+				return
+		self.redirect('/findclass')
 
 class FindClass(BaseHandler):
 	def get(self):

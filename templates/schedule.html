@@ -18,11 +18,11 @@
 				<div class="span2">friday</div>
 			</div>
 			<div class="row">
-				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" name="monday"></div>
-				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" name="tuesday"></div>
-				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" name="wednesday"></div>
-				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" name="thursday"></div>
-				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" name="friday"></div>
+				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" name="monday"></div>
+				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" name="tuesday"></div>
+				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" name="wednesday"></div>
+				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" name="thursday"></div>
+				<div class="span2"><input type="text" style="width:80px;" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" name="friday"></div>
 			</div>
 		</div>
 		<br/>
@@ -52,13 +52,13 @@ function addClass() {
 				<div class="span2">friday</div>\
 			</div>\
 			<div class="row">\
-				<div class="span2"><input type="text" style="width:80px;" name="monday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="tuesday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="wednesday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="thursday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
-				<div class="span2"><input type="text" style="width:80px;" name="friday" rel="tooltip" data-placement="bottom"  title="Example: <strong>11-12</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="mondayq" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="tuesdayq" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="wednesdayq" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="thursdayq" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
+				<div class="span2"><input type="text" style="width:80px;" name="fridayq" rel="tooltip" data-placement="bottom"  title="Example: <strong>1-3</strong><br/><i>You can leave it blank</i>" data-html="true" ></div>\
 			</div>\
-	'.replace("q", number));
+	'.replace(new RegExp('[q]', 'g'), number));
 	$("[rel='tooltip']").tooltip();
 	return false;
 }
