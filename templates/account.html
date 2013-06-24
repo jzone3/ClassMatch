@@ -4,61 +4,75 @@
 <div class="hero-unit" style="text-align: center;">
 	<h1>My Account</h1>
 	<hr/>
-	<h3>Change Password:</h3>
-			<form action="/edit_prefs" method="post">
-				<input type="hidden" name="formname" value="change_password">
-				<div class="row">
-					<div class="span2">
-						Current Password:
-					</div>
-					<div class="span3">
-						<input type="password" name="current_password">
-					</div>
-					<div class="span4">
-						{% if current_password_error %}
-							<div class="alert alert-error">{{current_password_error}}</div>
-						{% endif %}
-					</div>
+	<h3>Change Your Email:</h3>
+	{% if email_success %}
+	<div class="alert alert-success" style="width:400px;margin-left:auto;margin-right:auto;">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		Your email was successfully changed!
+	</div>
+	<br/>
+	{% endif %}
+	<form method="post">
+		<input type="hidden" name="formname" value="change_email">
+		<div class="row">
+			<div class="span1">&nbsp;</div>
+			<div class="span3" style="text-align:right;">New Email:</div>
+			<div class="span4" style="text-align:left;">
+				<div class="input-append">
+					<input type="text" name="email" {% if email_error %}placeholder="{{email_error}}"{% endif %}>
+					<span class="add-on">@bergen.org</span>
 				</div>
-				<div class="row">
-					<div class="span2">
-						New Password:
-					</div>
-					<div class="span3">
-						<input type="password" name="new_password">
-					</div>
-					<div class="span4">
-						{% if new_password_error %}
-							<div class="alert alert-error">{{new_password_error}}</div>
-						{% endif %}
-					</div>
-				</div>
-				<div class="row">
-					<div class="span2">
-						Verify New Password:
-					</div>
-					<div class="span2">
-						<input type="password" name="verify_new_password">
-					</div>
-					<div class="span2">&nbsp;</div>
-				</div>
-				<div class="row">
-					<div class="span4">&nbsp;</div>
-					<div class="span2">
-						<input type="submit" class="btn btn-primary" value="Reset Password"></a>
-					</div>
-					<div class="span4">&nbsp;</div>
-				</div>
-				<div class="row">
-					<div class="span2">&nbsp;</div>
-					<div class="span2" style="text-align:right;">Password</div>
-					<div class="span4" style="text-align:left;"><input type="password" name="password"></div>
-					<div class="span2">&nbsp;</div>
-				</div>
-			</form>
-			<hr>
-	<p>
-		Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.
-	</p>
+			</div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<br/>
+		<input type="submit" class="btn btn-primary" value="Change Email"></a>
+	</form>
+	<hr/>
+	<h3>Change Password:</h3><br/>
+	{% if password_success %}
+	<div class="alert alert-success" style="width:400px;margin-left:auto;margin-right:auto;">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		Your password was successfully changed!
+	</div>
+	<br/>
+	{% endif %}
+	<form method="post">
+		<input type="hidden" name="formname" value="change_password">
+		<div class="row">
+			<div class="span1">&nbsp;</div>
+			<div class="span3" style="text-align:right;">Current Password:</div>
+			<div class="span4" style="text-align:left;"><input type="password" name="current_password" {% if password_error %}placeholder="{{password_error}}"{% endif %}></div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<div class="row">
+			<div class="span1">&nbsp;</div>
+			<div class="span3" style="text-align:right;">New Password:</div>
+			<div class="span4" style="text-align:left;"><input type="password" name="new_password" {% if new_password_error %}placeholder="{{new_password_error}}"{% endif %}></div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<div class="row">
+			<div class="span1">&nbsp;</div>
+			<div class="span3" style="text-align:right;">Verify New Password</div>
+			<div class="span4" style="text-align:left;"><input type="password" name="verify_new_password" {% if verify_password_error %}placeholder="{{verify_password_error}}"{% endif %}></div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<br/>
+		<input type="submit" class="btn btn-primary" value="Reset Password"></a>
+	</form>
+	<hr/>
+	<h3><strong>Delete Account</strong></h3>
+	<h5><strong>WARNING: CHANGES ARE PERMANENT</strong></h5><br/>
+	<form method="post">
+		<input type="hidden" name="formname" value="delete_account">
+		<div class="row">
+			<div class="span1">&nbsp;</div>
+			<div class="span3" style="text-align:right;">Current Password:</div>
+			<div class="span4" style="text-align:left;"><input type="password" name="password" {% if pass_error %}placeholder="{{pass_error}}"{% endif %}></div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<br/>
+		<input type="submit" class="btn btn-large btn-danger" onclick="if(confirm('Are you sure you want to delete your account?')){return true;}else{return false;}" value="Delete Account"></a>
+	</form>
 </div>
 {% endblock %}

@@ -98,6 +98,64 @@ def check_login(email, password):
 
 	return [False, 'Invalid email or password!']
 
+
+	'''Gets email_verified from db from email'''
+	return get_user(email, False).email_verified
+
+def change_email(previous_email, new_email):
+	"""
+	Changes a user's email
+	Returns:
+		[Success_bool, error]
+	"""
+	if new_email == '':
+		return [False, 'No email entered']
+	if not EMAIL_RE.match(new_email + "@bergen.org"):
+		return [False, "That's not a valid email."]
+
+	user = get_user(previous_email)
+	user.email = new_email
+	user.email_verified = False
+	memcache.set('user-'+new_email, user)
+	user.put()
+	email_verification(new_email)
+	return [True]
+
+def change_password(old, new, verify, email):
+	'''Change a user's password'''
+	if new == '':
+		return [False, {'new_password_error' : "Enter a password"}]
+	if old == '':
+		return [False, {'password_error' : "Enter your current password"}]
+	elif not PASS_RE.match(new):
+		return [False, {'new_password_error' : "That's not a valid password."}]
+	elif verify == '':
+		return [False, {'verify_password_error' : "Verify your password"}]
+	elif verify != new:
+		return [False, {'verify_password_error' : "Your passwords didn't match."}]
+	if not check_login(email, old)[0]:
+		return [False, {'password_error' : "Incorrect password."}]
+
+	user = get_user(email)
+	(db_password, db_salt) = (user.password).split("|")
+	if salted_hash(old, db_salt) == db_password:		
+		salt = make_salt()
+		hashed = salted_hash(new, salt)
+		hashed_pass = hashed + '|' + salt
+
+		user.password = hashed_pass
+		user.put()
+
+		memcache.set('user-'+email, user)
+		memcache.set('useremail-'+str(user.email), user)
+		logging.info('CACHE set user-'+email)
+		logging.info('CACHE set useremail-'+str(user.email))
+
+		cookie = LOGIN_COOKIE_NAME + '=%s|%s; Expires=%s Path=/' % (str(email), hash_str(email), remember_me())
+		return [True, cookie]
+	else:
+		return [False, {'current_password_error' : 'Incorrect current password'}]
+
 def get_verified(email):
 	'''Gets email_verified from db from email'''
 	return get_user(email, False).email_verified

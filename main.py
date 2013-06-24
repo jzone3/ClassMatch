@@ -179,6 +179,30 @@ class AccountHandler(BaseHandler):
 	def get(self):
 		self.render('account.html', {'account' : True})
 
+	def post(self):
+		formname = self.rget('formname')
+
+		if formname == 'change_email':
+			results = change_email(self.get_email(), self.rget('email'))
+			if results[0]:
+				self.render('account.html', {'account' : True, 'email_success' : True})
+			else:
+				self.render('account.html', {'account' : True, 'email_error' : results[1]})
+		elif formname == 'change_password':
+			results = change_password(self.rget('current_password'), self.rget('new_password'), self.rget('verify_new_password'), self.get_email())
+			if results[0]:
+				self.set_cookie(results[1])
+				self.render('account.html', {'account' : True, 'password_success' : True})
+			else:
+				x = results[1]
+				self.render('account.html', {'account' : True, 'password_error' : x.get('password_error'), 'new_password_error' : x.get('new_password_error'), 'verify_password_error' : x.get('verify_password_error')})
+		elif formname == 'delete_account':
+			email = self.get_email()
+			if check_login(email, self.rget('password'))[0]:
+				delete_user_account(email)
+			else:
+				self.render('account.html', {'account' : True, 'pass_error' : 'Incorrect Password.'})
+
 class AboutHandler(BaseHandler):
 	def get(self):
 		self.render('about.html', {'about' : True})
@@ -238,8 +262,6 @@ class FindClass(BaseHandler):
 						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
 						user_course.mods_friday == people.mods_friday):
 						people_in_class[people.course] = people.unique_id
-
-		logging.error(people_in_class)
 
 		self.render('findclass.html',{'peoples':people_in_class})
 
