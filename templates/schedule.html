@@ -4,7 +4,8 @@
 <div class="hero-unit">
 	{% if user_courses %}<h1 style="text-align: center;">Your Courses</h1><br/>{% endif %}
 	{% for course in user_courses: %}
-		<h3 style="text-align: center;">{{course.course}}</h3><br/>
+		<h3 style="text-align: center;">{{course.course}}</h3>
+		<form method="post" action="/delete_class" style="text-align:center;"><input type="hidden" name="course" value="{{course.course}}"><input type="submit" class="btn btn-small btn-danger" value="Delete Class"></form>
 		<div class="row">
 			<div class="span3">Mods Monday: {{course.mods_monday}}</div>
 			<div class="span3">Mods Tuesday {{course.mods_tuesday}}</div>
@@ -17,6 +18,7 @@
 		</div>
 		<hr/>
 	{% endfor %}
+	{% if user_courses %}<br/><br/>{% endif %}
 	<h1 style="text-align: center;">{% if user_courses %}Add classes{% else %}Enter your schedule{% endif %}</h1>
 	<form method="post">
 		<br/><br/>
