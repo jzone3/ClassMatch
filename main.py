@@ -86,6 +86,23 @@ class BaseHandler(webapp2.RequestHandler):
 	def delete_cookie(self, cookie):
 		self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % cookie)
 
+	def find_people_in_class(self):
+		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
+		user_courses = get_user_courses(peoples_classes,self.get_email())
+		people_in_class = {}
+		for people in peoples_classes:
+			for user_course in user_courses:
+				if user_course.course.lower() == people.course.lower() and self.get_email() != people.unique_id:
+					if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
+						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
+						user_course.mods_friday == people.mods_friday):
+						logging.error(people.unique_id)
+						if people.course in people_in_class.keys():
+							people_in_class[people.course] += ", " + get_name(people.unique_id)
+						else:
+							people_in_class[people.course] = get_name(people.unique_id)
+		return people_in_class
+
 class SigninHandler(BaseHandler):
 	'''Handles signing in'''
 	def get(self):
@@ -214,7 +231,10 @@ class AboutHandler(BaseHandler):
 
 class MainHandler(BaseHandler):
     def get(self):
-        self.render("index.html")
+        if self.logged_in():
+        	self.render('findclass.html', {'peoples' : self.find_people_in_class()})
+        else:
+        	self.render("index.html")
 
 class Submit(BaseHandler):
 	def render_page(self,error=None):
@@ -252,22 +272,7 @@ class Submit(BaseHandler):
 class FindClass(BaseHandler):
 	def get(self):
 		'''Gets the users courses'''
-		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-		user_courses = get_user_courses(peoples_classes,self.get_email())
-		people_in_class = {}
-		for people in peoples_classes:
-			for user_course in user_courses:
-				if user_course.course.lower() == people.course.lower() and self.get_email() != people.unique_id:
-					if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
-						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
-						user_course.mods_friday == people.mods_friday):
-						logging.error(people.unique_id)
-						if people.course in people_in_class.keys():
-							people_in_class[people.course] += ", " + get_name(people.unique_id)
-						else:
-							people_in_class[people.course] = get_name(people.unique_id)
-
-		self.render('findclass.html',{'peoples':people_in_class})
+		self.render('findclass.html',{'peoples':self.find_people_in_class()})
 
 class DeleteEmailVerification(BaseHandler):
 	def get(self, key):
