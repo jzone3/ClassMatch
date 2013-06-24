@@ -259,7 +259,10 @@ class FindClass(BaseHandler):
 						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
 						user_course.mods_friday == people.mods_friday):
 						logging.error(people.unique_id)
-						people_in_class[people.course] = get_name(people.unique_id)
+						if people.course in people_in_class.keys():
+							people_in_class[people.course] += ", " + get_name(people.unique_id)
+						else:
+							people_in_class[people.course] = get_name(people.unique_id)
 
 		self.render('findclass.html',{'peoples':people_in_class})
 

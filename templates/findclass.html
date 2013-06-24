@@ -1,13 +1,17 @@
 {% extends "base.html" %}
+{% block title %}My Classes{% endblock %}
 {% block content %}
 <div class = "row">
 	<div class="hero-unit" style="text-align: center;">
-		People Here
+		<h1>Your Classes:</h1>
+		<hr/>
+		<div style="text-align:left;">
+			{% for p in peoples %}
+				<h3>Course: {{p}}</h3>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{peoples[p]}}
+				<hr/>
+			{% endfor %}
 		</div>
-		{% for p in peoples %}
-			<div class="p">Course: {{p}}</div>
-			<div class="person">{{peoples[p]}}</div>
-		{% endfor %}
 	</div>
 </div>
 {% endblock %}
