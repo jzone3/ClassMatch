@@ -42,8 +42,8 @@ class BaseHandler(webapp2.RequestHandler):
 		params['signed_in'] = self.logged_in()
 		if params['signed_in']:
 			params['email'] = self.get_email()
-			if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
-				template = 'verify.html'
+			#if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
+			#	template = 'verify.html'
 		else:
 			# set email to blank
 			if 'email' not in params:
@@ -96,7 +96,7 @@ class BaseHandler(webapp2.RequestHandler):
 		people_in_class = {}
 		for people in peoples_classes:
 			for user_course in user_courses:
-				if user_course.course.lower() == people.course.lower() and self.get_email() != people.unique_id:
+				if user_course.course.strip().lower() == people.course.strip().lower() and self.get_email() != people.unique_id:
 					if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
 						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
 						user_course.mods_friday == people.mods_friday):
@@ -244,7 +244,10 @@ class AboutHandler(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if self.logged_in():
-        	self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
+        	try:
+        		self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
+        	except:
+        		self.render('error.html')
         else:
         	self.render("index.html")
 
