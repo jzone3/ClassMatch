@@ -269,7 +269,6 @@ def verify(key):
 	memcache.delete(link.email + '_submitted')
 	link.delete()
 	return True
-
 def make_activation_email(email, link, ignore_link):
 	html = """
 	<!DOCTYPE HTML>
@@ -296,3 +295,9 @@ def make_activation_email(email, link, ignore_link):
 	NOTE: Links will expire in 12 hours"""% (email, link, ignore_link)
 
 	return body, html
+def get_user_courses(peoples_classes, email):
+		user_courses = []
+		for people in peoples_classes:
+			if people.unique_id == email:
+				user_courses.append(people)
+		return user_courses
