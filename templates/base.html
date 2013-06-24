@@ -15,6 +15,7 @@
 					<ul class="nav">
 						{% if signed_in %}
 							<li {% if schedule %}class="active"{% endif %}><a href="/schedule">My Schedule</a></li>
+							<li {% if findclass %}class="active"{% endif %}><a href="/findclassmates">Find Classmates</a></li>
 							<li {% if account %}class="active"{% endif %}><a href="/account">My Account</a></li>
 						{% endif %}
 						<li {% if about %}class="active"{% endif %}><a href="/about">About</a></li>

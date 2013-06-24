@@ -49,6 +49,9 @@ class BaseHandler(webapp2.RequestHandler):
 			if 'email' not in params:
 				params['email'] = ''
 
+		if template == 'findclass.html':
+			params['findclass'] = True
+
 		template = jinja_env.get_template(template)
 		self.response.out.write(template.render(params))
 
@@ -244,7 +247,7 @@ class Submit(BaseHandler):
 				s.put()
 			else:
 				break
-		self.redirect('/findclass')
+		self.redirect('/findclassmates')
 
 class FindClass(BaseHandler):
 	def get(self):
@@ -288,7 +291,7 @@ app = webapp2.WSGIApplication([
 	('/delete_email/?', DeleteEmailVerification),
 	('/schedule/?', Submit),
 	('/about/?', AboutHandler),
-	('/findclass/?',FindClass),
+	('/findclassmates/?',FindClass),
 	('/delete_email/([^/]+)?', DeleteEmailVerification)
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
