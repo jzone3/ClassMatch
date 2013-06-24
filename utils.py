@@ -66,6 +66,9 @@ def get_user(email, cached = True):
 
 		return user
 
+def get_name(email, cached=True):
+	return get_user(email, cached).name
+
 def check_login(email, password):
 	"""Checks if login info is correct
 
@@ -269,6 +272,7 @@ def verify(key):
 	memcache.delete(link.email + '_submitted')
 	link.delete()
 	return True
+
 def make_activation_email(email, link, ignore_link, name):
 	html = """
 	<!DOCTYPE HTML>
