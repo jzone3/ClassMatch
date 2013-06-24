@@ -40,10 +40,8 @@ class BaseHandler(webapp2.RequestHandler):
 	def render(self, template, params={}):
 		'''Renders template using params and other parameters'''
 		params['signed_in'] = self.logged_in()
-		verif = None
 		if params['signed_in']:
 			params['email'] = self.get_email()
-			verif = get_verified(params['email'])
 			if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
 				template = 'verify.html'
 		else:
@@ -52,10 +50,8 @@ class BaseHandler(webapp2.RequestHandler):
 				params['email'] = ''
 
 		if template == 'account.html':
-			if verif is None:
-				params['verified'] = get_verified(params['email'])
-			else:
-				params['verified'] = verif
+			logging.error(params['email'])
+			params['verified'] = get_verified(params['email'])
 
 		if template == 'findclass.html' and not 'index' in params.keys():
 			params['findclass'] = True
