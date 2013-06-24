@@ -201,7 +201,7 @@ class Submit(BaseHandler):
 	def post(self):
 		q = ''
 		email = self.get_email()
-		while not self.rget("course" + str(q)) is None:
+		while True:
 			course = self.request.get("course" + str(q))
 			mods_monday = self.request.get("monday" + str(q))
 			mods_tuesday = self.request.get("tuesday" + str(q))
@@ -217,8 +217,7 @@ class Submit(BaseHandler):
 					mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
 				s.put()
 			else:
-				self.render_page("Please enter course name and number of mods")
-				return
+				break
 		self.redirect('/findclass')
 
 class FindClass(BaseHandler):
@@ -238,6 +237,8 @@ class FindClass(BaseHandler):
 						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
 						user_course.mods_friday == people.mods_friday):
 						people_in_class[people.course] = people.unique_id
+
+		logging.error(people_in_class)
 
 		self.render('findclass.html',{'peoples':people_in_class})
 

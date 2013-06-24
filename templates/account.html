@@ -4,9 +4,61 @@
 <div class="hero-unit" style="text-align: center;">
 	<h1>My Account</h1>
 	<hr/>
+	<h3>Change Password:</h3>
+			<form action="/edit_prefs" method="post">
+				<input type="hidden" name="formname" value="change_password">
+				<div class="row">
+					<div class="span2">
+						Current Password:
+					</div>
+					<div class="span3">
+						<input type="password" name="current_password">
+					</div>
+					<div class="span4">
+						{% if current_password_error %}
+							<div class="alert alert-error">{{current_password_error}}</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="span2">
+						New Password:
+					</div>
+					<div class="span3">
+						<input type="password" name="new_password">
+					</div>
+					<div class="span4">
+						{% if new_password_error %}
+							<div class="alert alert-error">{{new_password_error}}</div>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row">
+					<div class="span2">
+						Verify New Password:
+					</div>
+					<div class="span2">
+						<input type="password" name="verify_new_password">
+					</div>
+					<div class="span2">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="span4">&nbsp;</div>
+					<div class="span2">
+						<input type="submit" class="btn btn-primary" value="Reset Password"></a>
+					</div>
+					<div class="span4">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="span2">&nbsp;</div>
+					<div class="span2" style="text-align:right;">Password</div>
+					<div class="span4" style="text-align:left;"><input type="password" name="password"></div>
+					<div class="span2">&nbsp;</div>
+				</div>
+			</form>
+			<hr>
 	<p>
 		Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec ullamcorper nulla non metus auctor fringilla.
 	</p>
-	<button method="delete_user_account()">Delete Account</button>
 </div>
 {% endblock %}
