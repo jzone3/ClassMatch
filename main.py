@@ -134,13 +134,13 @@ class SignupHandler(BaseHandler):
 		
 		email = self.rget('email')
 		
-		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'))
+		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'), name = self.rget('name'))
 
 		if result['success']:
 			self.set_cookie(result['cookie'])
 			self.redirect('/')
 		else:
-			self.render('signup.html', {'email':email, 'password_error':result.get('password'), 'email_error':result.get('email'), 'agree_error':result.get('agree')})
+			self.render('signup.html', {'email':email, 'password_error':result.get('password'), 'email_error':result.get('email'), 'agree_error':result.get('agree'), 'name_error':result.get('name')})
 
 class DeleteEmailVerification(BaseHandler):
 	def get(self, key):
@@ -200,6 +200,7 @@ class AccountHandler(BaseHandler):
 			email = self.get_email()
 			if check_login(email, self.rget('password'))[0]:
 				delete_user_account(email)
+				self.redirect('/')
 			else:
 				self.render('account.html', {'account' : True, 'pass_error' : 'Incorrect Password.'})
 

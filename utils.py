@@ -19,6 +19,7 @@ class Email_Verification(db.Model):
 
 class Users(db.Model):
 	email          = db.StringProperty(required = True)
+	name           = db.StringProperty(required = True)
 	password       = db.StringProperty(required = True)
 	date_created   = db.DateTimeProperty(auto_now_add = True)
 	email_verified = db.BooleanProperty(required = True)
@@ -160,7 +161,7 @@ def get_verified(email):
 	'''Gets email_verified from db from email'''
 	return get_user(email, False).email_verified
 
-def signup(email='', password='', verify='', agree=''):
+def signup(email='', password='', verify='', agree='', name=''):
 	"""Signs up user
 
 	Returns:
@@ -180,6 +181,9 @@ def signup(email='', password='', verify='', agree=''):
 	elif verify != password:
 		to_return['verify'] = "Your passwords didn't match."
 
+	if name == '':
+		to_return['name'] = "Please enter your name."
+
 	if not EMAIL_RE.match(email + "@bergen.org") and email != '':
 		to_return['email'] = "That's not a valid email."
 	elif not unique_email(email):
@@ -193,7 +197,7 @@ def signup(email='', password='', verify='', agree=''):
 		hashed = salted_hash(password, salt)
 		hashed_pass = hashed + '|' + salt
 
-		account = Users(email = email, password = hashed_pass, email_verified = False)
+		account = Users(email = email, password = hashed_pass, email_verified = False, name = name)
 		account.put()
 
 		cookie = LOGIN_COOKIE_NAME + '=%s|%s; Expires=%s Path=/' % (str(email), hash_str(email), remember_me())
