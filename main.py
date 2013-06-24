@@ -256,9 +256,17 @@ class Submit(BaseHandler):
 		if self.logged_in():
 			peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 			user_courses = get_user_courses(peoples_classes, self.get_email())
-			for key in user_courses.keys():
-				if user_courses[key] == '':
-					user_courses[key] = 'None'
+			for course in user_courses:
+				if course.mods_monday == '':
+					course.mods_monday = 'None'
+				if course.mods_tuesday == '':
+					course.mods_tuesday = 'None'
+				if course.mods_wed == '':
+					course.mods_wed = 'None'
+				if course.mods_thursday == '':
+					course.mods_thursday = 'None'
+				if course.mods_friday == '':
+					course.mods_friday = 'None'
 			self.render_page(user_courses=user_courses)
 		else:
 			self.redirect('/signin')
