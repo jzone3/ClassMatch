@@ -49,7 +49,7 @@ class BaseHandler(webapp2.RequestHandler):
 			if 'email' not in params:
 				params['email'] = ''
 
-		if template == 'findclass.html':
+		if template == 'findclass.html' and not 'index' in params.keys():
 			params['findclass'] = True
 
 		template = jinja_env.get_template(template)
@@ -232,7 +232,7 @@ class AboutHandler(BaseHandler):
 class MainHandler(BaseHandler):
     def get(self):
         if self.logged_in():
-        	self.render('findclass.html', {'peoples' : self.find_people_in_class()})
+        	self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
         else:
         	self.render("index.html")
 
