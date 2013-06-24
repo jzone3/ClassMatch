@@ -252,9 +252,13 @@ def delete_user_account(email):
 	'''Deletes a user account and all related data (minus comments)'''
 	GET_USER.bind(email = email)
 	user = GET_USER
+	classes = get_classes(email)
+	for i in classes:
+		i.delete()
 	for i in user:
 		i.delete()
 	memcache.delete(email + '_submitted')
+	self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % LOGIN_COOKIE_NAME)
 
 def verify(key):
 	'''Verfies email from verification link'''
@@ -299,6 +303,10 @@ def make_activation_email(email, link, ignore_link, name):
 	NOTE: Links will expire in 12 hours"""% (name, link, ignore_link)
 
 	return body, html
+
+def get_classes(email):
+	peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
+	return get_user_courses(peoples_classes,email)
 
 def get_user_courses(peoples_classes, email):
 		user_courses = []
