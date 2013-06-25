@@ -226,7 +226,7 @@ def email_verification(email, name):
 						subject="Email Verification",
 						body=body,
 						html=html)
-	except apiproxy_errors.OverQuotaError:
+	except OverQuotaError:
 		return 
 
 def get_unique_link(email):
