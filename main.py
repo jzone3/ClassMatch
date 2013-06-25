@@ -293,12 +293,12 @@ class Submit(BaseHandler):
 		q = ''
 		email = self.get_email()
 		while True:
-			course = self.request.get("course" + str(q))
-			mods_monday = self.request.get("monday" + str(q))
-			mods_tuesday = self.request.get("tuesday" + str(q))
-			mods_wed = self.request.get("wednesday" + str(q))
-			mods_thursday = self.request.get("thursday" + str(q))
-			mods_friday = self.request.get("friday" + str(q))
+			course = self.request.get("course" + str(q)).strip()
+			mods_monday = self.request.get("monday" + str(q)).strip()
+			mods_tuesday = self.request.get("tuesday" + str(q)).strip()
+			mods_wed = self.request.get("wednesday" + str(q)).strip()
+			mods_thursday = self.request.get("thursday" + str(q)).strip()
+			mods_friday = self.request.get("friday" + str(q)).strip()
 			if q == '':
 				q = 2
 			else:
