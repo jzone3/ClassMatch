@@ -39,25 +39,29 @@ class BaseHandler(webapp2.RequestHandler):
 
 	def render(self, template, params={}):
 		'''Renders template using params and other parameters'''
-		params['signed_in'] = self.logged_in()
-		if params['signed_in']:
-			params['email'] = self.get_email()
-			#if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
-			#	template = 'verify.html'
-		else:
-			# set email to blank
-			if 'email' not in params:
-				params['email'] = ''
+		try:
+			params['signed_in'] = self.logged_in()
+			if params['signed_in']:
+				params['email'] = self.get_email()
+				#if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
+				#	template = 'verify.html'
+			else:
+				# set email to blank
+				if 'email' not in params:
+					params['email'] = ''
 
-		if template == 'account.html':
-			logging.error(params['email'])
-			params['verified'] = get_verified(params['email'])
+			if template == 'account.html':
+				logging.error(params['email'])
+				params['verified'] = get_verified(params['email'])
 
-		if template == 'findclass.html' and not 'index' in params.keys():
-			params['findclass'] = True
+			if template == 'findclass.html' and not 'index' in params.keys():
+				params['findclass'] = True
+		except OverQuotaError:
+			template = 'error.html'
 
 		template = jinja_env.get_template(template)
 		self.response.out.write(template.render(params))
+
 
 	def get_email(self):
 		'''Gets the email if the user cookie is valid'''
@@ -91,6 +95,7 @@ class BaseHandler(webapp2.RequestHandler):
 		self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % cookie)
 
 	def find_people_in_class(self):
+		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 		user_courses = get_classes(self.get_email())
 		people_in_class = {}
 		for people in peoples_classes:

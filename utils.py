@@ -1,6 +1,7 @@
 from google.appengine.ext import db
 from google.appengine.api import memcache
 from google.appengine.api import mail
+from google.appengine.api import datastore_errors
 import re
 import hmac
 import hashlib
@@ -211,11 +212,14 @@ def email_verification(email, name):
 	'''Sends a verification email for new user'''
 	link, dellink = get_unique_link(email)
 	body, html = make_activation_email(email, link, dellink, name)
-	mail.send_mail(sender="ClassMatch <classmatch.verify@gmail.com>",
+	try:
+		mail.send_mail(sender="ClassMatch <classmatch.verify@gmail.com>",
 						to="%s <%s>" % (name, email + "@bergen.org"),
 						subject="Email Verification",
 						body=body,
 						html=html)
+	except OverQuotaError:
+		return 
 
 def get_unique_link(email):
 	'''Creates a verification link for new user'''
