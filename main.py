@@ -22,6 +22,13 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 from google.appengine.api import datastore_errors
 
+try:
+  # When deployed
+  from google.appengine.runtime import OverQuotaError
+except ImportError:
+  # In the development server
+  from google.appengine.runtime.apiproxy_errors import OverQuotaError
+
 from utils import *
 from secret import *
 
@@ -246,14 +253,14 @@ class AboutHandler(BaseHandler):
 		self.render('about.html', {'about' : True})
 
 class MainHandler(BaseHandler):
-    def get(self):
-        if self.logged_in():
-        	try:
-        		self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
-        	except:
-        		self.render('error.html')
-        else:
-        	self.render("index.html")
+	def get(self):
+		if self.logged_in():
+			try:
+				self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
+			except:
+				self.render('error.html')
+		else:
+			self.render("index.html")
 
 class Submit(BaseHandler):
 	def render_page(self,error=None,user_courses=""):

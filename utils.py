@@ -11,6 +11,14 @@ import string
 import logging
 from secret import *
 
+try:
+  # When deployed
+  from google.appengine.runtime import OverQuotaError
+except ImportError:
+  # In the development server
+  from google.appengine.runtime.apiproxy_errors import OverQuotaError
+
+
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 PASS_RE = re.compile(r"^.{3,20}$")
 
