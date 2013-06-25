@@ -56,7 +56,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 			if template == 'findclass.html' and not 'index' in params.keys():
 				params['findclass'] = True
-		except OverQuotaError:
+		except apiproxy_errors.OverQuotaError:
 			template = 'error.html'
 
 		template = jinja_env.get_template(template)
