@@ -63,6 +63,9 @@ class BaseHandler(webapp2.RequestHandler):
 
 			if template == 'findclass.html' and not 'index' in params.keys():
 				params['findclass'] = True
+
+			if template == 'schedule.html':
+				params['all_courses'] = get_courses_list()
 		except OverQuotaError:
 			template = 'error.html'
 

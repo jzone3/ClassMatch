@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Schedule{% endblock %}
 {% block content %}
+<script type="text/javascript">	    
+	jQuery(document).ready(function() {
+		$('.coursename').typeahead({source: {{ all_courses | safe }}.sort()});
+	});
+</script>
+
 <div class="hero-unit">
 	{% if user_courses %}<h1 style="text-align: center;">Your Courses</h1><br/>{% endif %}
 	{% for course in user_courses: %}
@@ -25,7 +31,7 @@
 		<div id="classes">
 			<div class="row">
 				<div class="span4" style="text-align: right;">Enter course name</div>
-				<div class="span2"><input type="text" name="course" placeholder="World History" style="width:150px;" rel="tooltip" data-placement="bottom" data-html="true"  title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>
+				<div class="span2"><input type="text" name="course" class="coursename" placeholder="World History" style="width:150px;" rel="tooltip" data-placement="top" data-html="true" autocomplete="off" data-provider="typeahead" title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>
 			</div>
 			<div class="row">
 				<div class="span2">monday</div>
@@ -59,7 +65,7 @@ function addClass() {
 		<hr/>\
 		<div class="row"> \
 			<div class="span4" style="text-align: right;">Enter course name</div>\
-			<div class="span2"><input type="text" name="courseq" placeholder="World History" rel="tooltip" data-placement="bottom" data-html="true"  title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>\
+			<div class="span2"><input type="text" name="courseq" placeholder="World History" rel="tooltip" data-placement="top" data-html="true"  title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>\
 		</div>\
 		<div class="row">\
 				<div class="span2">monday</div>\
@@ -80,6 +86,6 @@ function addClass() {
 	return false;
 }
 $(function () {
-        $("[rel='tooltip']").tooltip();
-    });
+		$("[rel='tooltip']").tooltip();
+	});
 {% endblock %}

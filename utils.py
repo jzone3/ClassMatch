@@ -334,3 +334,29 @@ def remove_user_course(email,course_name):
 	# 	if people.course == course_name:
 	# 		user_courses.remove(people)
 	# return user_courses
+
+def list_to_str(lst):
+	'''Converts a list into a string to put into HTML'''
+	to_return = '['
+	for i in lst:
+		if i == lst[len(lst) - 1]:
+			to_return += '"' + i + '"]'
+		else:
+			to_return += '"' + i + '",'
+	return to_return
+
+def get_courses_list():
+	return list_to_str(get_all_courses())
+
+def get_all_courses():
+	'''Get all courses'''
+	lst = memcache.get('all_courses')
+	if not lst:
+		all_users = db.GqlQuery("SELECT * FROM Schedule")
+		courses = []
+		for i in all_users:
+			if not i.course in courses:
+				courses.append(i.course)
+		memcache.set('all_courses', courses)
+		return courses
+	return lst
