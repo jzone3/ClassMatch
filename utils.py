@@ -313,9 +313,22 @@ def make_activation_email(email, link, ignore_link, name):
 
 	return body, html
 
-def get_classes(email):
-	peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-	return get_user_courses(peoples_classes,email)
+def get_classes(email, cached=True):
+	courses = memcache.get('courses-' + email)
+	if courses and cached:
+		logging.info('CACHE GET_CLASSES: ' + email)
+		return courses
+	else:
+		logging.info('DB GET_CLASSES: ' + email)
+		courses = db.GqlQuery("SELECT * FROM Schedule WHERE unique_id = :unique_id ORDER BY course DESC", unique_id = email)
+
+		memcache.set('courses-' + email, courses)
+		logging.info('CACHE set courses-' + email)
+
+		return courses
+
+	# peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
+	# return get_user_courses(peoples_classes,email)
 
 def get_user_courses(peoples_classes, email):
 		user_courses = []

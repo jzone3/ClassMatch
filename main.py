@@ -107,6 +107,7 @@ class BaseHandler(webapp2.RequestHandler):
 	def find_people_in_class(self):
 		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
 		user_courses = get_classes(self.get_email())
+		logging.error(user_courses)
 		people_in_class = {}
 		for people in peoples_classes:
 			for user_course in user_courses:
@@ -258,10 +259,10 @@ class AboutHandler(BaseHandler):
 class MainHandler(BaseHandler):
 	def get(self):
 		if self.logged_in():
-			try:
-				self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
-			except:
-				self.render('error.html')
+			#try:
+			self.render('findclass.html', {'peoples' : self.find_people_in_class(), 'index' : True})
+			#except:
+			#	self.render('error.html')
 		else:
 			self.render("index.html")
 
