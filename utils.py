@@ -355,7 +355,12 @@ def get_all_courses():
 		all_users = db.GqlQuery("SELECT * FROM Schedule")
 		courses = []
 		for i in all_users:
-			if not i.course in courses:
+			notIn = True
+			for c in courses:
+				if i.course.lower().strip() == c.lower().strip():
+					notIn = False
+					break
+			if notIn:
 				courses.append(i.course)
 		memcache.set('all_courses', courses)
 		return courses
