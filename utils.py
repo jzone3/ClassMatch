@@ -388,8 +388,8 @@ def get_all_courses():
 			# 	if i.course.lower().strip() == c.lower().strip():
 			# 		notIn = False
 			# 		break
-			if notIn:
-				courses.append(i.course)
+			# if notIn:
+			# 	courses.append(i.course)
 		memcache.set('all_courses', courses)
 		return courses
 	return lst

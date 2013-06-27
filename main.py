@@ -50,8 +50,8 @@ class BaseHandler(webapp2.RequestHandler):
 			params['signed_in'] = self.logged_in()
 			if params['signed_in']:
 				params['email'] = self.get_email()
-				#if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
-				#	template = 'verify.html'
+				if (template == 'schedule.html' or template == 'findclass.html') and not get_verified(params['email']):
+					template = 'verify.html'
 			else:
 				# set email to blank
 				if 'email' not in params:
