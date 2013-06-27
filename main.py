@@ -381,6 +381,6 @@ app = webapp2.WSGIApplication([
 	('/about/?', AboutHandler),
 	('/findclassmates/?',FindClass),
 	('/delete_email/([^/]+)?', DeleteEmailVerification),
-	('/delete_class/?',DeleteClass)
+	('/delete_class/?',DeleteClass),
 	# ('/delete_account/?', DeleteAccountHandler)
 ], debug=True)
