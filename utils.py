@@ -382,14 +382,14 @@ def get_all_courses():
 		all_users = db.GqlQuery("SELECT * FROM Courses")
 		courses = []
 		for i in all_users:
-			courses.append(i.course)
-			# notIn = True
-			# for c in courses:
-			# 	if i.course.lower().strip() == c.lower().strip():
-			# 		notIn = False
-			# 		break
-			# if notIn:
-			# 	courses.append(i.course)
+			# i.course = i.course.encode('utf-8')
+			notIn = True
+			for c in courses:
+				if i.course.lower().strip() == c.lower().strip():
+					notIn = False
+					break
+			if notIn:
+				courses.append(i.course)
 		memcache.set('all_courses', courses)
 		return courses
 	return lst
