@@ -58,7 +58,6 @@ class BaseHandler(webapp2.RequestHandler):
 					params['email'] = ''
 
 			if template == 'account.html':
-				logging.error(params['email'])
 				params['verified'] = get_verified(params['email'])
 
 			if template == 'findclass.html' and not 'index' in params.keys():
@@ -104,23 +103,47 @@ class BaseHandler(webapp2.RequestHandler):
 	def delete_cookie(self, cookie):
 		self.response.headers.add_header('Set-Cookie', '%s=; Path=/' % cookie)
 
+	def remove_duplicates(self,lst):
+		unique = []
+		for i in lst:
+			if not i in unique:
+				unique.append(i)
+		unique.sort()
+		return unique
+
 	def find_people_in_class(self):
-		peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
-		user_courses = get_classes(self.get_email())
-		logging.error(user_courses)
+		email = self.get_email()
+		user_courses = get_classes(email)
 		people_in_class = {}
-		for people in peoples_classes:
-			for user_course in user_courses:
-				if user_course.course.strip().lower() == people.course.strip().lower() and self.get_email() != people.unique_id:
-					if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
-						user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
-						user_course.mods_friday == people.mods_friday):
-						logging.error(people.unique_id)
-						if people.course in people_in_class.keys():
-							people_in_class[people.course] += ", " + get_name(people.unique_id)
-						else:
-							people_in_class[people.course] = get_name(people.unique_id)
+		name = get_name(email)
+		for i in user_courses:
+			from_courses = Courses.get(i.course_id)
+			x = from_courses.students_enrolled
+			if name in x:
+				x.remove(name)
+			x = self.remove_duplicates(x)
+			if len(x) == 0:
+				continue
+			stri = ''
+			for student in x:
+				stri += student + ", "
+			people_in_class[i.course] = stri[:len(stri) - 2]
 		return people_in_class
+		# peoples_classes = db.GqlQuery("SELECT * FROM Schedule ORDER BY course DESC")
+		# user_courses = get_classes(self.get_email())
+		# people_in_class = {}
+		# for people in peoples_classes:
+		# 	for user_course in user_courses:
+		# 		if user_course.course.strip().lower() == people.course.strip().lower() and self.get_email() != people.unique_id:
+		# 			if (user_course.mods_monday == people.mods_monday and user_course.mods_tuesday == people.mods_tuesday and 
+		# 				user_course.mods_wed == people.mods_wed and user_course.mods_thursday == people.mods_thursday and
+		# 				user_course.mods_friday == people.mods_friday):
+		# 				logging.error(people.unique_id)
+		# 				if people.course in people_in_class.keys():
+		# 					people_in_class[people.course] += ", " + get_name(people.unique_id)
+		# 				else:
+		# 					people_in_class[people.course] = get_name(people.unique_id)
+		# return people_in_class
 
 class SigninHandler(BaseHandler):
 	'''Handles signing in'''
@@ -212,13 +235,17 @@ class Schedule(db.Model):
 	course = db.StringProperty(required = True)
 	mods_monday = db.StringProperty(required = False)
 	mods_tuesday = db.StringProperty(required = False) 
-	mods_wed = db.StringProperty(required = False) 
-	mods_thursday = db.StringProperty(required = False) 
-	mods_friday = db.StringProperty(required = False) 
+	mods_wed = db.StringProperty(required = False)
+	mods_thursday = db.StringProperty(required = False)
+	mods_friday = db.StringProperty(required = False)
+	course_id = db.StringProperty(required = False)
 
 class AccountHandler(BaseHandler):
 	def get(self):
-		self.render('account.html', {'account' : True})
+		if self.logged_in():
+			self.render('account.html', {'account' : True})
+		else:
+			self.redirect('/signin')
 
 	def post(self):
 		formname = self.rget('formname')
@@ -305,9 +332,13 @@ class Submit(BaseHandler):
 			else:
 				q += 1
 			if course:
+				course_id = get_course_id(course, mods_monday, mods_tuesday, mods_wed, mods_thursday, mods_friday, email)
 				s = Schedule(unique_id=email , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
-					mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday )
+					mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday,course_id=course_id)
 				s.put()
+				course_to_add = Courses.get(course_id)
+				course_to_add.students_enrolled.append(get_name(email))
+				course_to_add.put()
 			else:
 				break
 			# DELETE THE CACHE

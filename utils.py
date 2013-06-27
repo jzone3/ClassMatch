@@ -33,6 +33,15 @@ class Users(db.Model):
 	date_created   = db.DateTimeProperty(auto_now_add = True)
 	email_verified = db.BooleanProperty(required = True)
 
+class Courses(db.Model):
+	course = db.StringProperty(required = True)
+	mods_monday = db.StringProperty(required = False)
+	mods_tuesday = db.StringProperty(required = False) 
+	mods_wed = db.StringProperty(required = False)
+	mods_thursday = db.StringProperty(required = False)
+	mods_friday = db.StringProperty(required = False)
+	students_enrolled = db.StringListProperty(required = True)
+
 GET_USER = db.GqlQuery("SELECT * FROM Users WHERE email = :email LIMIT 1")
 
 def remember_me():
@@ -62,7 +71,7 @@ def unique_email(email):
 def get_user(email, cached = True):
 	'''Get User object from email'''
 	user = memcache.get('user-'+email)
-	if user and cached:
+	if user and cached and not user is None:
 		logging.info('CACHE GET_USER: '+email)
 		return user
 	else:
@@ -260,12 +269,14 @@ def deleted(key):
 def delete_user_account(email):
 	'''Deletes a user account and all related data (minus comments)'''
 	GET_USER.bind(email = email)
-	user = GET_USER
+	user = GET_USER.get()
 	classes = get_classes(email)
 	for i in classes:
+		x = Courses.get(i.course_id)
+		x.students_enrolled.remove(user.name)
+		x.put()
 		i.delete()
-	for i in user:
-		i.delete()
+	user.delete()
 	memcache.delete(email + '_submitted')
 
 def verify(key):
@@ -339,6 +350,9 @@ def get_user_courses(peoples_classes, email):
 
 def remove_user_course(email,course_name):
 	course = db.GqlQuery("SELECT * FROM Schedule WHERE unique_id = :email and course = :course_name LIMIT 1", email = email, course_name = course_name).get()
+	course_from_Courses = Courses.get(course.course_id)
+	course_from_Courses.students_enrolled.remove(get_name(email))
+	course_from_Courses.put()
 	course.delete()
 	# user_courses = []
 	# for people in peoples_classes:
@@ -365,16 +379,48 @@ def get_all_courses():
 	'''Get all courses'''
 	lst = memcache.get('all_courses')
 	if not lst:
-		all_users = db.GqlQuery("SELECT * FROM Schedule")
+		all_users = db.GqlQuery("SELECT * FROM Courses")
 		courses = []
 		for i in all_users:
-			notIn = True
-			for c in courses:
-				if i.course.lower().strip() == c.lower().strip():
-					notIn = False
-					break
+			courses.append(i.course)
+			# notIn = True
+			# for c in courses:
+			# 	if i.course.lower().strip() == c.lower().strip():
+			# 		notIn = False
+			# 		break
 			if notIn:
 				courses.append(i.course)
 		memcache.set('all_courses', courses)
 		return courses
 	return lst
+
+def get_course_id(course, mods_monday, mods_tuesday, mods_wed, mods_thursday, mods_friday, email):
+	retrieved_course = db.GqlQuery("SELECT * FROM Courses\
+						WHERE course = :course\
+						AND mods_monday = :mods_monday\
+						AND mods_tuesday = :mods_tuesday\
+						AND mods_wed = :mods_wed\
+						AND mods_thursday = :mods_thursday\
+						AND mods_friday = :mods_friday\
+						LIMIT 1",
+						course = course,
+						mods_monday = mods_monday,
+						mods_tuesday = mods_tuesday,
+						mods_wed = mods_wed,
+						mods_thursday = mods_thursday,
+						mods_friday = mods_friday).get()
+	to_return = ''
+	if retrieved_course is None:
+		logging.error(course)
+		c = Courses(course = course,
+					mods_monday = mods_monday,
+					mods_tuesday = mods_tuesday,
+					mods_wed = mods_wed,
+					mods_thursday = mods_thursday,
+					mods_friday = mods_friday,
+					students_enrolled = [email])
+		c.put()
+		to_return = str(c.key())
+	else:
+		to_return = str(retrieved_course.key())
+	return to_return
