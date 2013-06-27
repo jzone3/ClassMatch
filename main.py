@@ -155,6 +155,10 @@ class SigninHandler(BaseHandler):
 
 	def post(self):
 		email = self.rget('email')
+		
+		email = email.lower()
+		if "@bergen.org" in email:
+			email = email.replace("@bergen.org","")
 
 		blocked_time = memcache.get('loginblock-'+email)
 		if blocked_time and (datetime.datetime.now() - blocked_time < datetime.timedelta(minutes=1)):
@@ -196,7 +200,9 @@ class SignupHandler(BaseHandler):
 	def post(self):
 		
 		email = self.rget('email')
-		
+		email = email.lower()
+		if "@bergen.org" in email:
+			email = email.replace("@bergen.org","")
 		# result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'), name = self.rget('name'))
 		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = 'on', name = self.rget('name'))
 		logging.error(result)
