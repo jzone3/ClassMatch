@@ -2,13 +2,15 @@
 {% block title %}Schedule{% endblock %}
 {% block content %}
 <script type="text/javascript">	    
+	{% if all_courses %}
 	jQuery(document).ready(function() {
 		$('.coursename').typeahead({source: {{ all_courses | safe }}.sort()});
 	});
+	{% endif %}
 </script>
 
 <div class="hero-unit">
-	{% if user_courses %}<h1 style="text-align: center;">Your Courses</h1><br/>{% endif %}
+	{% if user_courses %}<h1 style="text-align: center;">Your Classes</h1><br/>{% endif %}
 	{% for course in user_courses: %}
 		<h3 style="text-align: center;">{{course.course}}</h3>
 		<form method="post" action="/delete_class" style="text-align:center;"><input type="hidden" name="course" value="{{course.course}}"><input type="submit" class="btn btn-small btn-danger" value="Delete Class"></form>
@@ -23,8 +25,10 @@
 			<div class="span3">&nbsp;</div>
 		</div>
 		<hr/>
+	{% else %}
+		<h3 style="text-align: center;">No classes found. Add a class below.</h3>
 	{% endfor %}
-	{% if user_courses %}<br/><br/>{% endif %}
+	<br/><br/>
 	<h1 style="text-align: center;">{% if user_courses %}Add classes{% else %}Enter your schedule{% endif %}</h1>
 	<form method="post">
 		<br/><br/>
@@ -83,7 +87,9 @@ function addClass() {
 			</div>\
 	'.replace(new RegExp('[q]', 'g'), number));
 	$("[rel='tooltip']").tooltip();
-	$('.coursename').typeahead({source: {{ all_courses | safe }}.sort()});
+	{% if all_courses %}
+		$('.coursename').typeahead({source: {{ all_courses | safe }}.sort()});
+	{% endif %}
 	return false;
 }
 $(function () {

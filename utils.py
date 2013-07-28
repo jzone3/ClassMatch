@@ -373,7 +373,10 @@ def list_to_str(lst):
 	return to_return
 
 def get_courses_list():
-	return list_to_str(get_all_courses())
+	lst = list_to_str(get_all_courses())
+	if lst == '[':
+		lst = None
+	return lst
 
 def get_all_courses():
 	'''Get all courses'''

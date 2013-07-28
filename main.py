@@ -207,7 +207,7 @@ class SignupHandler(BaseHandler):
 		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = 'on', name = self.rget('name'))
 		if result['success']:
 			self.set_cookie(result['cookie'])
-			self.redirect('/')
+			self.redirect('/about')
 		else:
 			self.render('signup.html', {'email':email, 'password_error':result.get('password'), 'email_error':result.get('email'), 'agree_error':result.get('agree'), 'name_error':result.get('name')})
 
