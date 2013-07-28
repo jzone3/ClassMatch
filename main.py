@@ -205,7 +205,6 @@ class SignupHandler(BaseHandler):
 			email = email.replace("@bergen.org","")
 		# result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = self.rget('agree'), name = self.rget('name'))
 		result = signup(email = email, password = self.rget('password'), verify = self.rget('verify'), agree = 'on', name = self.rget('name'))
-		logging.error(result)
 		if result['success']:
 			self.set_cookie(result['cookie'])
 			self.redirect('/')
