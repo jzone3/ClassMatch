@@ -13,6 +13,7 @@
 	{% if user_courses %}<h1 style="text-align: center;">Your Classes</h1><br/>{% endif %}
 	{% for course in user_courses: %}
 		<h3 style="text-align: center;">{{course.course}}</h3>
+		<h4 style="text-align: center;">{{course.teacher}}</h4>
 		<form method="post" action="/delete_class" style="text-align:center;"><input type="hidden" name="course" value="{{course.course}}"><input type="submit" class="btn btn-small btn-danger" value="Delete Class"></form>
 		<div class="row">
 			<div class="span3">Mods Monday: {{course.mods_monday}}</div>
@@ -36,6 +37,10 @@
 			<div class="row">
 				<div class="span4" style="text-align: right;">Enter course name</div>
 				<div class="span2"><input type="text" name="course" class="coursename" placeholder="World History" style="width:150px;" rel="tooltip" data-placement="top" data-html="true" autocomplete="off" data-provider="typeahead" title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>
+			</div>
+			<div class="row"> 
+				<div class="span4" style="text-align: right;">Enter teacher name</div>
+				<div class="span2"><input type="text" class="coursename" name="teacher" placeholder="Dr.Borowski" style="width:150px;" autocomplete="off" rel="tooltip" data-placement="bottom" data-html="true"  title="Enter the teacher of the course"></div>
 			</div>
 			<div class="row">
 				<div class="span2">monday</div>
@@ -70,6 +75,10 @@ function addClass() {
 		<div class="row"> \
 			<div class="span4" style="text-align: right;">Enter course name</div>\
 			<div class="span2"><input type="text" class="coursename" name="courseq" placeholder="World History" autocomplete="off" rel="tooltip" data-placement="top" data-html="true"  title="Enter course name <strong><i>exactly</i></strong> as on your schedule"></div>\
+		</div>\
+		<div class="row"> \
+			<div class="span4" style="text-align: right;">Enter teacher name</div>\
+			<div class="span2"><input type="text" class="coursename" name="teacherq" placeholder="Mr.Madden" autocomplete="off" rel="tooltip" data-placement="top" data-html="true"  title="Enter the teacher of the course"></div>\
 		</div>\
 		<div class="row">\
 				<div class="span2">monday</div>\

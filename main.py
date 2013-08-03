@@ -238,6 +238,7 @@ class EmailVerificationHandler(BaseHandler):
 class Schedule(db.Model):
 	unique_id = db.StringProperty(required = False)
 	course = db.StringProperty(required = True)
+	teacher = db.StringProperty(required=False)
 	mods_monday = db.StringProperty(required = False)
 	mods_tuesday = db.StringProperty(required = False) 
 	mods_wed = db.StringProperty(required = False)
@@ -327,6 +328,7 @@ class Submit(BaseHandler):
 		email = self.get_email()
 		while True:
 			course = self.request.get("course" + str(q)).strip()
+			teacher = self.request.get("teacher"+ str(q)).strip()
 			mods_monday = self.request.get("monday" + str(q)).strip()
 			mods_tuesday = self.request.get("tuesday" + str(q)).strip()
 			mods_wed = self.request.get("wednesday" + str(q)).strip()
@@ -338,7 +340,7 @@ class Submit(BaseHandler):
 				q += 1
 			if course:
 				course_id = get_course_id(course, mods_monday, mods_tuesday, mods_wed, mods_thursday, mods_friday, email)
-				s = Schedule(unique_id=email , course=course,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
+				s = Schedule(unique_id=email , course=course,teacher=teacher,mods_monday=mods_monday,mods_tuesday=mods_tuesday,
 					mods_wed=mods_wed,mods_thursday = mods_thursday,mods_friday=mods_friday,course_id=course_id)
 				s.put()
 				course_to_add = Courses.get(course_id)
