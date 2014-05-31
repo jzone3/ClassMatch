@@ -7,7 +7,7 @@
 		{% block extra %}{% endblock %}
 	</head>
 	<body>
-	{% if page=='index' %}<div class="landing-page">{% endif %}
+	{% if page=='index' %}<div class="landing-page">{% else %}<div class="full-page">{% endif %}
   <div class="{% if page=='index' %}navbar-trans {% endif %}navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">

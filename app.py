@@ -41,14 +41,23 @@ def sign_up():
 		username = request.form.get('username')
 		password = request.form.get('password')
 		password_confirm = request.form.get('password_confirm')
-		if not(first_name) or not(last_name) or not(username) or not(password) or not(password_confirm):
-			return render_template('signup.html', error="Cannot leave any field blank!")
-		if not(valid_username(username)):
-			return render_template('signup.html', error="Enter a valid username")
-		if not(valid_password(password)):
-			return render_template('signup.html', error="Enter a valid password")
+		variables = {"first_name" : first_name, "last_name" : last_name, "username" : username}
+		if not username:
+			return render_template('signup.html', variables=variables, username_error="No username found.")
+		if not first_name:
+			return render_template('signup.html', variables=variables, first_name_error="No first name found.")
+		if not last_name:
+			return render_template('signup.html', variables=variables, last_name_error="No last name found.")
+		if not password:
+			return render_template('signup.html', variables=variables, password_error="No password found.")
+		if not password_confirm:
+			return render_template('signup.html', variables=variables, password_confirm_error="No re-typed password found.")
+		if not valid_username(username):
+			return render_template('signup.html', variables=variables, username_error="Enter a valid username")
+		if not valid_password(password):
+			return render_template('signup.html', variables=variables, password_error="Enter a valid password")
 		if password != password_confirm:
-			return render_template('signup.html', error="Passwords must match")
+			return render_template('signup.html', variables=variables, password_error="Passwords must match", password_confirm_error="Passwords must match")
 		password = make_pw_hash(username,password)
 		user_id = users.insert({"username": username,"password": password,"first_name":first_name.lower(),"last_name":last_name.lower(),'classes':[]})
 		return redirect('/user/' + str(user_id))

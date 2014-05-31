@@ -23,12 +23,21 @@ h1 {
 	font-size: 24px;
 	color: #e74c3c;
 }
+
 .center{
 	text-align: center;
 }
 
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
+}
+
 .navbar-trans {
-	background-color: rgba(44, 62, 80, 0.36);
+	background-color: rgba(44, 62, 80, 0.2);
 	font-weight: bold;
 	color: #bdc3c7;
 }
@@ -38,6 +47,12 @@ h1 {
 	width: 100%;
 	background: url('/static/img/sitting.jpg') no-repeat center center fixed;
 	background-size: cover;
+}
+
+.full-page {
+	height: 100%;
+	width: 100%;
+	background-color: #ecf0f1;
 }
 
 .main-jumbo {
@@ -76,4 +91,15 @@ h1 {
 	text-align: center;
 	padding-top: 10%;
 	font-size: 70px;
+}
+
+.signup-form, .signup-label {
+	font-size: 16px;
+	line-height: 16px;
+}
+
+.signup-label label {
+	line-height: 43px;
+	font-size: 18px;
+	font-weight: normal;
 }
