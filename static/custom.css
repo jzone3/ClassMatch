@@ -36,6 +36,10 @@ h1 {
 	text-align: left;
 }
 
+.navbar-link:hover, .navbar-link:focus, .navbar-link:active {
+	color: #ecf0f1 !important;
+}
+
 .navbar-trans {
 	background-color: rgba(44, 62, 80, 0.2);
 	font-weight: bold;
@@ -72,14 +76,14 @@ h1 {
 .join-btn {
 	font-size: 300%;
 	background-color: transparent;
-	border-color: #ecf0f1;
+	border-color: white; /*#ecf0f1;*/
 	border-radius: 6px;
 }
 
 .join-btn:hover, .join-btn:active {
-	border-color: #ecf0f1;
+	border-color: white; /*#ecf0f1;*/
 	/*background-color: rgba(44, 62, 80, 0.5);*/
-	background-color: #ecf0f1;
+	background-color: white; /*#ecf0f1;*/
 	color: rgb(36, 39, 38);
 }
 .title{
