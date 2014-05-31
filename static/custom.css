@@ -14,6 +14,11 @@ html, body {
 	font-family: ProximaNova, Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
+h1 {
+	text-align: center;
+	font-size: 70px;
+}
+
 .error{
 	font-size: 24px;
 	color: #e74c3c;
@@ -44,7 +49,7 @@ html, body {
 
 .join-btn-container {
 	position: relative;
-	top: 30px;
+	top: 20px;
 	width: 100%;
 	text-align: center;
 }
