@@ -1,0 +1,31 @@
+USER
+{
+	"bergen_username" : "jarzon",
+	"password" : "asd7fa97s8f7as89d6ggfd79|JScsIe",
+	"email_verified" : false,
+	"first_name" : "jared", // lower, we upper manually
+	"last_name" : "zoneraich", // optional
+	"classes" : [
+		"&_id1",
+		"&_id2", // not a string, a MongoId 
+		"&_id3" // reference to a class
+	]
+}
+
+CLASS
+{
+	"class_name" : "AP Calculus AB", // case of whatever they inputted originally
+	"class_name_lower" : "ap calculus ab", // just incase we need
+	"time" : {
+		"monday" : [10,12],
+		"tuesday" : [10,12],
+		"thursday" : [10,12],
+		"friday" : [10,12]
+	},
+	"students_enrolled" : [
+		"&_id1",
+		"&_id2", // not a string, a MongoId 
+		"&_id3", // reference to a user
+		"&_id4"
+	]
+}
