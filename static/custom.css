@@ -1,6 +1,4 @@
-<<<<<<< HEAD
-.title{
-=======
+
 @font-face {
 	font-family: "ProximaNova";
 	src: url('./ProximaNova-Light.otf') format("opentype");
@@ -17,17 +15,15 @@ html, body {
 }
 
 h1{
->>>>>>> f6d25b389c7864024c840b13ab3d6c4270f478c4
 	text-align: center;
 	height: 100%;
 	padding-top: 10%;
 	margin-bottom: 0px;
 }
-<<<<<<< HEAD
 .error{
 	font-size: 24px;
 	color: #e74c3c;
-=======
+}
 .center{
 	text-align: center;
 }
@@ -69,5 +65,12 @@ h1{
 .join-btn:hover, .join-btn:active {
 	border-color: #ecf0f1;
 	background-color: rgba(44, 62, 80, 0.5);
->>>>>>> f6d25b389c7864024c840b13ab3d6c4270f478c4
+}
+.title{
+	text-align: center;
+	margin-bottom: 0px;
+	height: 100%;
+}
+.header{
+	font-size: 70px;
 }
