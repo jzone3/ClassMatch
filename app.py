@@ -14,7 +14,7 @@ classes = db.classes
 
 @app.route('/')
 def hello():
-	return render_template("index.html")
+	return render_template("index.html", page="index")
 @app.route('/signin', methods=['GET','POST'])
 def sign_in():
 	if request.method == 'POST':

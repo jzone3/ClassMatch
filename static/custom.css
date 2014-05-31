@@ -1,10 +1,73 @@
+<<<<<<< HEAD
 .title{
+=======
+@font-face {
+	font-family: "ProximaNova";
+	src: url('./ProximaNova-Light.otf') format("opentype");
+}
+
+@font-face {
+	font-family: "ProximaNova";
+	src: url('./ProximaNova-Bold.otf') format("opentype");
+	font-weight: bold;
+}
+
+html, body {
+	font-family: ProximaNova, Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+h1{
+>>>>>>> f6d25b389c7864024c840b13ab3d6c4270f478c4
 	text-align: center;
 	height: 100%;
 	padding-top: 10%;
 	margin-bottom: 0px;
 }
+<<<<<<< HEAD
 .error{
 	font-size: 24px;
 	color: #e74c3c;
+=======
+.center{
+	text-align: center;
+}
+
+.navbar-trans {
+	background-color: rgba(44, 62, 80, 0.36);
+	font-weight: bold;
+	color: #bdc3c7;
+}
+
+.landing-page {
+	height: 100%;
+	width: 100%;
+	background: url('/static/img/sitting.jpg') no-repeat center center fixed;
+	background-size: cover;
+}
+
+.main-jumbo {
+	background: none;
+	font-weight: bold;
+	color: #ecf0f1;
+	text-align: center;
+}
+
+.join-btn-container {
+	position: relative;
+	top: 30px;
+	width: 100%;
+	text-align: center;
+}
+
+.join-btn {
+	font-size: 300%;
+	background-color: transparent;
+	border-color: #ecf0f1;
+	border-radius: 6px;
+}
+
+.join-btn:hover, .join-btn:active {
+	border-color: #ecf0f1;
+	background-color: rgba(44, 62, 80, 0.5);
+>>>>>>> f6d25b389c7864024c840b13ab3d6c4270f478c4
 }
