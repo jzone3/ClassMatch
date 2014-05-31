@@ -24,8 +24,12 @@
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/signin">Sign In</a></li>
+          	{% if signed_in %}
+          	<li><a href="/logout">Logout {{name}}</a></li>
+          	{% else %}
+          	<li><a href="/signin">Sign In</a></li>
             <li><a href="/signup">Sign Up</a></li>
+          	{% endif %}
           </ul>
         </div>
       </div>
