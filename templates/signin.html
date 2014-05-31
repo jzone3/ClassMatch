@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Signin{% endblock %}
+{% block content %}
+<div class="hero-unit" style="text-align: center;">
+	<h1>Sign In</h1>
+	<hr/>
+	<form method="post">
+		<div class="row">
+			<div class="span2">&nbsp;</div>
+			<div class="span2" style="text-align:right;">Email</div>
+			<div class="span4" style="text-align:left;">
+				<div class="input-append">
+					<input type="text" name="email" placeholder="jarzon">
+					<span class="add-on">@bergen.org</span>
+				</div>
+			</div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<div class="row">
+			<div class="span2">&nbsp;</div>
+			<div class="span2" style="text-align:right;">Password</div>
+			<div class="span4" style="text-align:left;"><input type="password" name="password"></div>
+			<div class="span2">&nbsp;</div>
+		</div>
+		<br/>
+		<input type="submit" class="btn btn-success btn-large">
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+<div class="jumbotron title">
+	<h2 class="header">Sign Up</h2>
+	<br><br>
+	<div class="error">{{error}}</div> {% if error %}<br>{% endif %}
+	<form method="POST" action="/signup">
+		<div class="row">
+			<div class="col-lg-3"></div>
+			<div class="col-lg-3">
+				<input type="text" class="form-control" name="first_name" placeholder="First Name">
+			</div>
+			<div class="col-lg-3">
+				<input type="text" class="form-control" name="last_name" placeholder="Last Name">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<input type="text" class="form-control" name="username" placeholder="bergen username">
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<input type="password" class="form-control" name="password" placeholder="password">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4">
+				<input type="password" class="form-control" name="password_confirm" placeholder="re-type password">
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<button class="btn btn-lg btn-primary" type="submit">Sign Up!</button>
+		</div>
+	</form>
+</div>
+{% endblock %}

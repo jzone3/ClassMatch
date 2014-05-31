@@ -1,3 +1,4 @@
+
 @font-face {
 	font-family: "ProximaNova";
 	src: url('./ProximaNova-Light.otf') format("opentype");
@@ -13,9 +14,9 @@ html, body {
 	font-family: ProximaNova, Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
-h1{
-	text-align: center;
-	font-size: 70px;
+.error{
+	font-size: 24px;
+	color: #e74c3c;
 }
 .center{
 	text-align: center;
@@ -58,4 +59,15 @@ h1{
 .join-btn:hover, .join-btn:active {
 	border-color: #ecf0f1;
 	background-color: rgba(44, 62, 80, 0.5);
+}
+.title{
+	text-align: center;
+	margin-bottom: 0px;
+	height: 100%;
+}
+.header{
+	text-align: center;
+	height: 100%;
+	padding-top: 10%;
+	font-size: 70px;
 }
