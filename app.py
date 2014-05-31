@@ -61,7 +61,7 @@ def sign_up():
 		password = make_pw_hash(username,password)
 		user_id = users.insert({"username": username,"password": password,"first_name":first_name.lower(),"last_name":last_name.lower(),'classes':[]})
 		return redirect('/user/' + str(user_id))
-	return render_template("signup.html")
+	return render_template("signup.html", variables=None)
 @app.route('/user/<id>')
 def get_user_info(id):
 	user = users.find({'_id':ObjectId(id)})[0]
