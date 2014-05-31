@@ -51,12 +51,17 @@ def sign_up():
 			return render_template('signup.html', error="Passwords must match")
 		password = make_pw_hash(username,password)
 		user_id = users.insert({"username": username,"password": password,"first_name":first_name.lower(),"last_name":last_name.lower(),'classes':[]})
-		return redirect('/user/' +user_id)
+		return redirect('/user/' + str(user_id))
 	return render_template("signup.html")
 @app.route('/user/<id>')
 def get_user_info(id):
 	user = users.find({'_id':ObjectId(id)})[0]
 	return render_template('user_info.html', user=user)
+@app.route('/logout')
+def logout():
+	session.pop('username', None)
+	session.pop('name', None)
+	return redirect('/')
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
