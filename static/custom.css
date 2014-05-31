@@ -63,7 +63,9 @@ h1 {
 
 .join-btn:hover, .join-btn:active {
 	border-color: #ecf0f1;
-	background-color: rgba(44, 62, 80, 0.5);
+	/*background-color: rgba(44, 62, 80, 0.5);*/
+	background-color: #ecf0f1;
+	color: rgb(36, 39, 38);
 }
 .title{
 	text-align: center;
