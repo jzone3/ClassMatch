@@ -7,7 +7,8 @@
 		{% block extra %}{% endblock %}
 	</head>
 	<body>
-	<div class="navbar navbar-default navbar-fixed-top">
+	{% if page=='index' %}<div class="landing-page">{% endif %}
+  <div class="{% if page=='index' %}navbar-trans {% endif %}navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <a href="../" class="navbar-brand">ClassMatch</a>
@@ -32,5 +33,6 @@
     <br><br><br><br><br>
 		{% block content %}
 		{% endblock %}
+    {% if page=='index' %}</div>{% endif %}
 	</body>
 </html>
