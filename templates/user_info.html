@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{user['first_name']}} {{user['last_name']}}{% endblock %}
+{% block content %}
+<div class="jumbotron title">
+	<div class="container">
+		<h3>{{user['first_name']}} {{user['last_name']}}</h3>
+		<h3>{{user['username']}}</h3>
+		<h3>Classes enrolled in: </h3>
+		<ul>
+			{% for c in user['classes'] %}
+			<li>c</li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock %}
