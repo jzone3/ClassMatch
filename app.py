@@ -13,9 +13,23 @@ db = client.get_default_database()
 users = db.users
 classes = db.classes
 
+def session_login(username, first_name):
+	session['username'] = username
+	session['name'] = first_name
+
+def session_logout():
+	session.pop('username', None)
+	session.pop('name', None)
+
+def logged_in():
+	if session.get('username') is None:
+		session_logout()
+		return False
+	return True
+
 @app.route('/')
 def hello():
-	if session.get('username'):
+	if logged_in():
 		return render_template('index.html', page='index',signed_in = True, name= session['name'].title())
 	return render_template("index.html", page="index")
 @app.route('/signin', methods=['GET','POST'])
@@ -32,11 +46,7 @@ def sign_in():
 			return render_template('signin.html', username_error="No account found!", username=username)
 		if not(valid_pw(username,password,user.get('password'))):
 			return render_template('signin.html', error="Invalid username and password.", username=username)
-		session['username'] = username
-		if user.get("last_name") is None:
-			session['name'] = user.get('first_name')
-		else:
-			session['name'] = user.get('first_name') + ' ' + user.get('last_name')
+		session_login(username, user.get('first_name'))
 		return redirect('/')
 	return render_template("signin.html", username="")
 @app.route('/signup', methods=['GET','POST'])
@@ -89,17 +99,18 @@ def sign_up():
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"last_name":last_name,"classes":[],"email_verified":False})
 		else:
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
-		return redirect('/user/' + str(user_id))
+		session_login(username, first_name)
+		return redirect('/')
 	return render_template("signup.html", variables=None)
-@app.route('/user/<id>')
-def get_user_info(id):
-	user = users.find({'_id':ObjectId(id)})[0]
-	return render_template('user_info.html', user=user)
+# @app.route('/user/<id>')
+# def get_user_info(id):
+# 	user = users.find({'_id':ObjectId(id)})[0]
+# 	return render_template('user_info.html', user=user)
 @app.route('/logout')
 def logout():
-	session.pop('username', None)
-	session.pop('name', None)
+	session_logout()
 	return redirect('/')
+
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
