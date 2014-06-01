@@ -34,6 +34,8 @@ def get_courses():
 	username = session['username']
 	user = get_user(username)
 	courses = {}
+	if not(user['classes']):
+		return {}
 	for c in user['classes']:
 		one_class = classes.find_one({'_id':ObjectId(c)})
 		courses[one_class['class_name']] = one_class['students_enrolled_names']
@@ -42,7 +44,10 @@ def get_courses():
 @app.route('/')
 def index():
 	if logged_in():
-		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=get_courses())
+		courses = get_courses()
+		if courses == {}:
+			return redirect('/schedule')
+		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
 
 @app.route('/schedule')
@@ -137,7 +142,10 @@ def get_user_info(id):
 @app.route('/classes')
 def my_classes():
 	if logged_in():
-		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=get_courses())
+		courses = get_courses()
+		if courses == {}:
+			return redirect('/schedule')
+		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=courses)
 	return redirect('/signin')
 @app.route('/logout')
 def logout():
