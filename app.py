@@ -30,7 +30,7 @@ def logged_in():
 @app.route('/')
 def hello():
 	if logged_in():
-		return render_template('index.html', page='index',signed_in = True, name= session['name'].title())
+		return render_template('classes.html', signed_in=True, name= session['name'].title())
 	return render_template("index.html", page="index")
 @app.route('/signin', methods=['GET','POST'])
 def sign_in():
@@ -47,6 +47,8 @@ def sign_in():
 		if not(valid_pw(username,password,user.get('password'))):
 			return render_template('signin.html', error="Invalid username and password.", username=username)
 		session_login(username, user.get('first_name'))
+		return redirect('/')
+	if logged_in():
 		return redirect('/')
 	return render_template("signin.html", username="")
 @app.route('/signup', methods=['GET','POST'])
@@ -100,6 +102,8 @@ def sign_up():
 		else:
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
 		session_login(username, first_name)
+		return redirect('/')
+	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
 # @app.route('/user/<id>')
