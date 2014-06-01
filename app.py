@@ -98,8 +98,6 @@ def sign_up():
 			return render_template('signup.html', variables=variables, username_error="No username found.")
 		if not first_name:
 			return render_template('signup.html', variables=variables, first_name_error="No first name found.")
-		# if not last_name:
-		# 	return render_template('signup.html', variables=variables, last_name_error="No last name found.")
 		if not password:
 			return render_template('signup.html', variables=variables, password_error="No password found.")
 		if not password_confirm:
