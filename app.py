@@ -201,6 +201,35 @@ def my_classes():
 def logout():
 	session_logout()
 	return redirect('/')
+@app.route('/account', methods=['GET','POST'])
+def account():
+	if request.method == 'POST':
+		old_password = request.form.get('old_password')
+		new_password = request.form.get('new_password')
+		confirm_password = request.form.get('confirm_password')
+		if not(old_password) or not(new_password) or not(confirm_password):
+			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Cannot leave any field blank!")
+		if new_password != confirm_password:
+			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Passwords must match")
+		username = session['username']
+		user = get_user(username)
+		if not(valid_pw(username,old_password,user.get('password'))):
+			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Incorrect password")
+		user['password'] = make_pw_hash(username,new_password)
+		users.update({'_id':user.get('id')},user)
+		return redirect('/')
+	if not(logged_in()):
+		return redirect('/signin')
+	return render_template('account.html',signed_in=True, name=session['name'].title())
+@app.route('/account/delete', methods=['POST'])
+def account_delete():
+	if request.method == 'POST':
+		password = request.form.get('password')
+		username = session['username']
+		user = get_user(username)
+		if valid_pw(username,password,user.get('password')):
+			session_logout()
+			return redirect('/')
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))

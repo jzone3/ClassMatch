@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Account{% endblock %}
+{% block content %}
+<div class="container center">
+	<h1>My Account</h1>
+	<form method="POST" action="/account">
+	{% if error %}
+	<div class="error">
+		<h3>{{error}}</h3>
+	</div>
+	{% endif %}
+	<h3>Change Password</h3>
+	<div class="row">
+		<div class="col-lg-5 pass right"><label class="control-label" for="old_password">Old Password</label></div>
+		<div class="col-lg-3">
+			<input type="password" class="form-control" name="old_password">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-lg-5 pass right"><label class="control-label" for="new_password">New Password</label></div>
+		<div class="col-lg-3">
+			<input type="password" class="form-control" name="new_password">
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-lg-5 pass right"><label class="control-label" for="new_password">Re-Type Password</label></div>
+		<div class="col-lg-3">
+			<input type="password" class="form-control" name="confirm_password">
+		</div>
+	</div>
+	<br>
+	<button type="submit" class="btn btn-lg btn-primary">Change</button>
+	</form>
+	<br>
+	<h3>Delete Account (Can't Undo)</h3>
+	<br>
+	<form method="POST" action="/account/delete">
+	<div class="row">
+		<div class="col-lg-5 pass right"><label class="control-label" for="password">Password</label></div>
+		<div class="col-lg-3">
+			<input type="password" name="password" class="form-control">
+		</div>
+	</div>
+	<br>
+	<button type="submit" class="btn btn-lg btn-danger">Delete Account</button>
+	</form>
+</div>
+{% endblock %}
