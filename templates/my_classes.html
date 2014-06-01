@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}My Classes{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="jumbotron">
+		{% for c in classes %}
+		<div class="class">
+			<h1>{{c}}</h1>
+			<hr>
+			<h3>Students Enrolled in Class:</h3>
+			{% for student in classes[c] %}
+			<p>{{student.title()}}</p>
+			{% endfor %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

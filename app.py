@@ -30,10 +30,19 @@ def logged_in():
 def get_user(username):
 	return users.find_one({'username' : username})
 
+def get_courses():
+	username = session['username']
+	user = get_user(username)
+	courses = {}
+	for c in user['classes']:
+		one_class = classes.find_one({'_id':ObjectId(c)})
+		courses[one_class['class_name']] = one_class['students_enrolled_names']
+	return courses
+
 @app.route('/')
 def index():
 	if logged_in():
-		return render_template('classes.html', signed_in=True, name=session['name'].title())
+		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=get_courses())
 	return render_template("index.html", page="index")
 
 @app.route('/schedule')
@@ -121,10 +130,15 @@ def sign_up():
 	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
-# @app.route('/user/<id>')
-# def get_user_info(id):
-# 	user = users.find({'_id':ObjectId(id)})[0]
-# 	return render_template('user_info.html', user=user)
+@app.route('/user/<id>')
+def get_user_info(id):
+	user = users.find({'_id':ObjectId(id)})[0]
+	return render_template('user_info.html', user=user)
+@app.route('/classes')
+def my_classes():
+	if logged_in():
+		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=get_courses())
+	return redirect('/signin')
 @app.route('/logout')
 def logout():
 	session_logout()
