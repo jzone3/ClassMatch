@@ -27,5 +27,7 @@ CLASS
 		"&_id2", // not a string, a MongoId 
 		"&_id3", // reference to a user
 		"&_id4"
-	]
+	],
+	"teacher" : "Borowski", // last_name only, optional
+	"teacher_lower" : "borowski"
 }
