@@ -22,6 +22,7 @@
           <ul class="nav navbar-nav">
           {% if signed_in %}
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/classes">Find Classmates</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/add">Add Class</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/schedule">My Schedule</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/account">My Account</a></li>
           {% endif %}

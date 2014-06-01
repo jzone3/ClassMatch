@@ -46,11 +46,11 @@ def index():
 	if logged_in():
 		courses = get_courses()
 		if courses == {}:
-			return redirect('/schedule')
+			return redirect('/add')
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
 
-@app.route('/schedule', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_class():
 	if request.method == 'POST':
 		if not logged_in():
@@ -75,9 +75,9 @@ def add_class():
 					start = int(start)
 					end = int(end)
 				except ValueError:
-					return render_template('schedule.html', signed_in=True, name=session['name'].title(), error="Mods must be integers")
+					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be integers")
 				if start > 27  or start < 1 or end > 27 or end < 1:
-					return render_template('schedule.html', signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
+					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
 				time[day] = [start, end]
 			courses.append({
 				"class_name" : class_name,
@@ -103,13 +103,13 @@ def add_class():
 			if not r in user['classes']:
 				user['classes'].append(r)
 		x = users.update({"_id" : user.get("_id")}, user)
-		return redirect('/schedule')
+		return redirect('/add')
 	if logged_in():
 		user = get_user(session['username'])
 		user_classes = []
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
-		return render_template('schedule.html', signed_in=True, name=session['name'].title())
+		return render_template('add.html', signed_in=True, name=session['name'].title())
 	return redirect('/signin')
 
 @app.route('/signin', methods=['GET','POST'])
@@ -183,7 +183,7 @@ def sign_up():
 		else:
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
 		session_login(username, first_name)
-		return redirect('/schedule')
+		return redirect('/add')
 	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
@@ -196,7 +196,7 @@ def my_classes():
 	if logged_in():
 		courses = get_courses()
 		if courses == {}:
-			return redirect('/schedule')
+			return redirect('/add')
 		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=courses)
 	return redirect('/signin')
 @app.route('/logout')
