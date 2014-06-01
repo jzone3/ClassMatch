@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>{% block title %}{% endblock %}</title>
+		<title>{% block title %}{% endblock %}{% if page != 'index' %} - {% endif %}ClassMatch</title>
 		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="/static/custom.css">
@@ -21,9 +21,8 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
           {% if signed_in %}
-          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/classes">Find Classmates</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/classes">My Schedule</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/add">Add Class</a></li>
-          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/schedule">My Schedule</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/account">My Account</a></li>
           {% endif %}
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/about">About</a></li>
@@ -52,12 +51,13 @@
       {% endblock %}
     </script>
 
-    {% if page=='index' %}
+    {% if page=='index' or page=='about' %}
     <script>
     var myTimeout;
     $('#classmatch2').mouseenter(function() {
         myTimeout = setTimeout(function() {
-            $(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+            {% if page=='index' %}$(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+            {% else %}$("body").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");{% endif %}
             $("#page-content").remove();
         }, 5000);
     }).mouseleave(function() {

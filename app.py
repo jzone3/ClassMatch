@@ -34,11 +34,12 @@ def get_courses():
 	username = session['username']
 	user = get_user(username)
 	courses = {}
-	if not(user['classes']):
+	if not user['classes']:
 		return {}
 	for c in user['classes']:
 		one_class = classes.find_one({'_id': c})
-		courses[one_class['class_name']] = one_class['students_enrolled_names']
+		# courses[one_class['class_name']] = one_class['students_enrolled_names']
+		courses[c] = one_class
 	return courses
 
 @app.route('/')
@@ -49,6 +50,31 @@ def index():
 			return redirect('/add')
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
+
+@app.route('/about')
+def about():
+	if logged_in():
+		return render_template('about.html', signed_in=True, name=session['name'].title(), page='about')
+	return render_template('about.html', page='about')
+
+@app.route('/delete_class/<class_id>')
+def delete_class(class_id):
+	if logged_in():
+		class_id = ObjectId(class_id)
+		user = get_user(session.get('username'))
+		course = classes.find_one({"_id" : class_id})
+		if course is None:
+			return redirect('/classes')
+		index = course['students_enrolled_ids'].index(user.get("_id")) #will throw ValueError if problem, we should make error page
+		course['students_enrolled_ids'].pop(index)
+		if len(course['students_enrolled_ids']) == 0:
+			classes.remove({"_id":class_id})
+		course['students_enrolled_names'].pop(index)
+		classes.update({"_id" : class_id}, course)
+		user['classes'].pop(user['classes'].index(class_id))
+		users.update({"_id" : user.get("_id")}, user)
+		return redirect('/classes')
+	return redirect('/login')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_class():
