@@ -8,11 +8,11 @@
 			<h1>{{c}}</h1>
 			<hr>
 			<h2>Students Enrolled in Class:</h2>
-			{% for x in range(0,classes[c]|length) %}
-			{% if x != (classes[c]|length)-1 %}
-			<p style="display: inline;">{{classes[c][x].title()}}, </p>
+			{% for x in range(0,classes[c]['students_enrolled_names']|length) %}
+			{% if x != (classes[c]['students_enrolled_names']|length)-1 %}
+			<p style="display: inline;"><a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a>, </p>
 			{% else %}
-			<p style="display: inline;">{{classes[c][x].title()}} </p>
+			<p style="display: inline;"><a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a></p>
 			{% endif %}
 			{% endfor %}
 		</div>

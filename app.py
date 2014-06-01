@@ -34,11 +34,12 @@ def get_courses():
 	username = session['username']
 	user = get_user(username)
 	courses = {}
-	if not(user['classes']):
+	if not user['classes']:
 		return {}
 	for c in user['classes']:
 		one_class = classes.find_one({'_id': c})
-		courses[one_class['class_name']] = one_class['students_enrolled_names']
+		# courses[one_class['class_name']] = one_class['students_enrolled_names']
+		courses[one_class['class_name']] = one_class
 	return courses
 
 @app.route('/')
