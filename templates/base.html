@@ -45,6 +45,11 @@
 		{% endblock %}
     </span>
     {% if page=='index' %}</div>{% endif %}
+    
+    <script>
+      {% block script %}
+      {% endblock %}
+    </script>
 
     {% if page=='index' %}
     <script>
@@ -58,7 +63,6 @@
         clearTimeout(myTimeout);
     });
     </script>
-  {% endif %}
+    {% endif %}
 	</body>
-  }
 </html>

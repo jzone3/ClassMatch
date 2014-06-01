@@ -12,6 +12,7 @@
 
 html, body {
 	font-family: ProximaNova, Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+	background-color: #ecf0f1;
 }
 
 h1 {
@@ -66,11 +67,11 @@ h1 {
 	background-size: cover;
 }
 
-.full-page {
+/*.full-page {
 	height: 100%;
 	width: 100%;
 	background-color: #ecf0f1;
-}
+}*/
 
 .main-jumbo {
 	background: none;
@@ -128,4 +129,14 @@ h1 {
 .day-of-the-week {
 	padding-top: 10px;
 	padding-bottom: 10px;
+}
+
+.day-left {
+	width:40%;
+	float: left;
+}
+
+.day-right {
+	width:40%;
+	float: right;
 }
