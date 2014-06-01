@@ -37,7 +37,7 @@ def get_courses():
 	if not(user['classes']):
 		return {}
 	for c in user['classes']:
-		one_class = classes.find_one({'_id':ObjectId(c)})
+		one_class = classes.find_one({'_id': c})
 		courses[one_class['class_name']] = one_class['students_enrolled_names']
 	return courses
 
@@ -54,7 +54,7 @@ def index():
 def add_class():
 	if request.method == 'POST':
 		if not logged_in():
-			return redirect('/login')
+			return redirect('/signin')
 		days_of_the_week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 		i = 1
 		courses = []
@@ -101,9 +101,9 @@ def add_class():
 				results['students_enrolled_ids'].append(user.get("_id"))
 			r = classes.update({"_id" : results.get("_id")}, results)
 			if not r in user['classes']:
-				user['classes'].append(r)
+				user['classes'].append(results.get("_id"))
 		x = users.update({"_id" : user.get("_id")}, user)
-		return redirect('/add')
+		return redirect('/')
 	if logged_in():
 		user = get_user(session['username'])
 		user_classes = []
