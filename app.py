@@ -51,6 +51,12 @@ def index():
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
 
+@app.route('/about')
+def about():
+	if logged_in():
+		return render_template('about.html', signed_in=True, name=session['name'].title(), page='about')
+	return render_template('about.html', page='about')
+
 @app.route('/delete_class/<class_id>')
 def delete_class(class_id):
 	if logged_in():
