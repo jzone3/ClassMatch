@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}My Classes{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="jumbotron">
+		{% for c in classes %}
+		<div class="class">
+			<h1>{{c}}</h1>
+			<hr>
+			<h2>Students Enrolled in Class:</h2>
+			{% for x in range(0,classes[c]|length) %}
+			{% if x != (classes[c]|length)-1 %}
+			<p style="display: inline;">{{classes[c][x].title()}}, </p>
+			{% else %}
+			<p style="display: inline;">{{classes[c][x].title()}} </p>
+			{% endif %}
+			{% endfor %}
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}
