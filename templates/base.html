@@ -11,7 +11,7 @@
   <div class="{% if page=='index' %}navbar-trans {% endif %}navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="{% if page=='index'%}navbar-link {% endif %}navbar-brand" href="../">ClassMatch 2</a>
+          <a class="{% if page=='index'%}navbar-link {% endif %}navbar-brand" href="../" id="classmatch2">ClassMatch 2</a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -38,5 +38,21 @@
 		{% block content %}
 		{% endblock %}
     {% if page=='index' %}</div>{% endif %}
+
+    {% if page=='index' %}
+    <script>
+    var myTimeout;
+    $('#classmatch2').mouseenter(function() {
+        console.log("in");
+        myTimeout = setTimeout(function() {
+            console.log("yup");
+            $(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+        }, 5000);
+    }).mouseleave(function() {
+        clearTimeout(myTimeout);
+    });
+    </script>
+  {% endif %}
 	</body>
+  }
 </html>
