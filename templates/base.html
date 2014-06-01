@@ -35,18 +35,19 @@
       </div>
     </div>
     <br/><br/><br/><br/><br/>
-		{% block content %}
+		<span id="page-content">
+    {% block content %}
 		{% endblock %}
+    </span>
     {% if page=='index' %}</div>{% endif %}
 
     {% if page=='index' %}
     <script>
     var myTimeout;
     $('#classmatch2').mouseenter(function() {
-        console.log("in");
         myTimeout = setTimeout(function() {
-            console.log("yup");
             $(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+            $("#page-content").remove();
         }, 5000);
     }).mouseleave(function() {
         clearTimeout(myTimeout);
