@@ -21,15 +21,16 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
           {% if signed_in %}
-          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/">Classes</a></li>
-          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/add">Add a Class</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/">Find Classmates</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/schedule">My Schedule</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/account">My Account</a></li>
           {% endif %}
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/about">About</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
           	{% if signed_in %}
-            <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/logout">Logout {{name}}</a></li>
+            <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/logout">Logout</a></li>
           	{% else %}
           	<li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/signin">Sign In</a></li>
             <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/signup">Sign Up</a></li>

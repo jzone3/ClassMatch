@@ -120,3 +120,12 @@ h1 {
 	font-size: 18px;
 	font-weight: normal;
 }
+
+.day-of-the-week-right {
+	border-right: 1px solid #2c3e50;
+}
+
+.day-of-the-week {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

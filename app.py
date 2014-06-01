@@ -27,11 +27,25 @@ def logged_in():
 		return False
 	return True
 
+def get_user(username):
+	return users.find_one({'username' : username})
+
 @app.route('/')
-def hello():
+def index():
 	if logged_in():
-		return render_template('classes.html', signed_in=True, name= session['name'].title())
+		return render_template('classes.html', signed_in=True, name=session['name'].title())
 	return render_template("index.html", page="index")
+
+@app.route('/schedule')
+def add_class():
+	if logged_in():
+		user = get_user(session['username'])
+		user_classes = []
+		for course in user.get('classes'):
+			classes.append(classes.find_one({"_id" : course.id}))
+		return render_template('schedule.html', signed_in=True, name=session['name'].title(), classes=user_classes)
+	return redirect('/signin')
+
 @app.route('/signin', methods=['GET','POST'])
 def sign_in():
 	if request.method == 'POST':
@@ -51,6 +65,7 @@ def sign_in():
 	if logged_in():
 		return redirect('/')
 	return render_template("signin.html", username="")
+
 @app.route('/signup', methods=['GET','POST'])
 def sign_up():
 	if request.method == 'POST':
@@ -102,7 +117,7 @@ def sign_up():
 		else:
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
 		session_login(username, first_name)
-		return redirect('/')
+		return redirect('/schedule')
 	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
