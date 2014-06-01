@@ -2,56 +2,55 @@
 {% block title %}Signup{% endblock %}
 {% block content %}
 <!-- <div class="jumbotron"> -->
-	<div class="container">
-		<h1>Sign Up</h1>
-		<hr>
-		<div class="error">{{error}}</div> {% if error %}<br>{% endif %}
-		<form class="center signup-form" method="POST" action="/signup">
-			<div class="row">
-				<div class="form-group {% if username_error %}has-error{% endif %}">
-					<div class="col-lg-4 right signup-label"><label class="control-label" for="username">Email</label></div>
-					<div class="col-lg-2">
-						<input type="text" class="form-control" id="username" name="username" {% if variables.username %}value="{{variables.username}}"{% endif %} autofocus="autofocus" placeholder="jarzon">
-					</div>
-					<div class="col-lg-2 left signup-label"><label class="control-label" for="username">@bergen.org</label></div>
-					<div class="col-lg-4"></div>
+<div class="container">
+	<h1>Sign Up</h1>
+	<hr>
+	<form class="center signup-form" method="POST" action="/signup">
+		<div class="row">
+			<div class="form-group {% if username_error %}has-error{% endif %}">
+				<div class="col-lg-4 right signup-label"><label class="control-label" for="username">Email</label></div>
+				<div class="col-lg-2">
+					<input type="text" class="form-control" id="username" name="username" {% if variables.username and not username_error %}value="{{variables.username}}"{% endif %} autofocus="autofocus" placeholder="{% if username_error %}{{username_error}}{% else %}jarzon{% endif %}">
+				</div>
+				<div class="col-lg-2 left signup-label"><label class="control-label" for="username">@bergen.org</label></div>
+				<div class="col-lg-4"></div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="form-group {% if first_name_error or last_name_error %}has-error{% endif %}">
+				<div class="col-lg-1">&nbsp;</div>
+				<div class="col-lg-3 right signup-label"><label class="control-label" for="first-name">Name</label></div>
+				<div class="col-lg-2">
+				<input type="text" class="form-control" id="first-name" name="first_name" {% if variables.first_name %}value="{{variables.first_name}}"{% endif %} placeholder="{% if first_name_error %}{{first_name_error}}{% else %}Jared{% endif %}">
+				</div>
+				<div class="col-lg-2">
+					<input type="text" class="form-control" name="last_name" {% if variables.last_name %}value="{{variables.last_name}}"{% endif %} placeholder="{% if last_name_error %}{{last_name_error}}{% elif not first_name_error %}Zoneraich{% endif %}">
+				</div>
+				<div class="col-lg-4">&nbsp;</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="form-group {% if password_error %}has-error{% endif %}">
+				<div class="col-lg-4 right signup-label"><label class="control-label" for="password">Password</label></div>
+				<div class="col-lg-4">
+					<input type="password" class="form-control" id="password" name="password" placeholder="{{password_error}}">
 				</div>
 			</div>
-			<br>
-			<div class="row">
-				<div class="form-group {% if first_name_error or last_name_error %}has-error{% endif %}">
-					<div class="col-lg-1">&nbsp;</div>
-					<div class="col-lg-3 right signup-label"><label class="control-label" for="first-name">Name</label></div>
-					<div class="col-lg-2">
-					<input type="text" class="form-control" id="first-name" name="first_name" {% if variables.first_name %}value="{{variables.first_name}}"{% endif %} placeholder="{% if first_name_error %}{{first_name_error}}{% else %}Jared{% endif %}">
-					</div>
-					<div class="col-lg-2">
-						<input type="text" class="form-control" name="last_name" {% if variables.last_name %}value="{{variables.last_name}}"{% endif %} placeholder="{% if last_name_error %}{{last_name_error}}{% else %}Zoneraich{% endif %}">
-					</div>
-					<div class="col-lg-4">&nbsp;</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="form-group {% if password_confirm_error %}has-error{% endif %}">
+				<div class="col-lg-4 right signup-label"><label class="control-label" for="password-confirm">Re-Type Password</label></div>
+				<div class="col-lg-4">
+					<input type="password" class="form-control" id="password-confirm" name="password_confirm" placeholder="{{password_confirm_error}}">
 				</div>
 			</div>
-			<br>
-			<div class="row">
-				<div class="form-group {% if password_error %}has-error{% endif %}">
-					<div class="col-lg-4 right signup-label"><label class="control-label" for="password">Password</label></div>
-					<div class="col-lg-4">
-						<input type="password" class="form-control" id="password" name="password" placeholder="{{password_error}}">
-					</div>
-				</div>
-			</div>
-			<br>
-			<div class="row">
-				<div class="form-group {% if password_confirm_error %}has-error{% endif %}">
-					<div class="col-lg-4 right signup-label"><label class="control-label" for="password-confirm">Re-Type Password</label></div>
-					<div class="col-lg-4">
-						<input type="password" class="form-control" id="password-confirm" name="password_confirm" placeholder="{{password_confirm_error}}">
-					</div>
-				</div>
-			</div>
-			<br>
-			<button class="btn btn-lg btn-primary" type="submit">Sign Up!</button>
-		</form>
-	</div>
+		</div>
+		<br>
+		<button class="btn btn-lg btn-primary" type="submit">Sign Up!</button>
+	</form>
+</div>
 <!-- </div> -->
 {% endblock %}

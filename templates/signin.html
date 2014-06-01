@@ -1,29 +1,37 @@
 {% extends "base.html" %}
 {% block title %}Signin{% endblock %}
 {% block content %}
-<div class="hero-unit" style="text-align: center;">
-	<h1 class="header">Sign Up</h1>
-	<br>
-	<div class="error">{{error}}</div> {% if error %}<br>{% endif %}
-	<form method="POST" action="/signin">
+<div class="container">
+	<h1>Sign In</h1>
+	<hr>
+	{% if error %}
+	<div class="error">
+		<h3>{{error}}</h3>
+	</div>
+	<br/>
+	{% endif %}
+	<form class="center signup-form" method="POST" action="/signin">
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				<input type="text" class="form-control" name="username" placeholder="username">
+			<div class="form-group {% if username_error %}has-error{% endif %}">
+				<div class="col-lg-4 right signup-label"><label class="control-label" for="username">Email</label></div>
+				<div class="col-lg-2">
+					<input type="text" class="form-control" id="username" name="username" {% if username and not username_error %}value="{{username}}"{% endif %} autofocus="autofocus" placeholder="{% if username_error %}{{username_error}}{% else %}jarzon{% endif %}">
+				</div>
+				<div class="col-lg-2 left signup-label"><label class="control-label" for="username">@bergen.org</label></div>
+				<div class="col-lg-4"></div>
 			</div>
-			<div class="col-lg-4"></div>
 		</div>
 		<br>
 		<div class="row">
-			<div class="col-lg-4"></div>
-			<div class="col-lg-4">
-				<input type="password" class="form-control" name="password" placeholder="password">
+			<div class="form-group {% if password_error %}has-error{% endif %}">
+				<div class="col-lg-4 right signup-label"><label class="control-label" for="password">Password</label></div>
+				<div class="col-lg-4">
+					<input type="password" class="form-control" id="password" name="password" placeholder="{{password_error}}">
+				</div>
 			</div>
 		</div>
 		<br>
-		<div class="row">
-			<button class="btn btn-lg btn-primary" type="submit">Sign In!</button>
-		</div>
+		<button class="btn btn-lg btn-primary" type="submit">Sign In!</button>
 	</form>
 </div>
 {% endblock %}

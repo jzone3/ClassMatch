@@ -3,8 +3,8 @@ USER
 	"bergen_username" : "jarzon",
 	"password" : "asd7fa97s8f7as89d6ggfd79|JScsIe",
 	"email_verified" : false,
-	"first_name" : "jared", // lower, we upper manually
-	"last_name" : "zoneraich", // optional
+	"first_name" : "Jared",
+	"last_name" : "Zoneraich", // optional
 	"classes" : [
 		"&_id1",
 		"&_id2", // not a string, a MongoId 

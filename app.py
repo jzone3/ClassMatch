@@ -23,22 +23,33 @@ def sign_in():
 	if request.method == 'POST':
 		username = request.form.get('username')
 		password = request.form.get('password')
-		if not(username) or not(password):
-			return render_template('signin.html', error="Cannot leave any field blank!")
-		user = users.find({'username':username}).limit(1)[0]
+		if not(username):
+			return render_template('signin.html', username_error="No username found.")
+		if not(password):
+			return render_template('signin.html', password_error="No password found.", username=username)
+		user = users.find_one({'username':username})
+		if user is None:
+			return render_template('signin.html', username_error="No account found!", username=username)
 		if not(valid_pw(username,password,user.get('password'))):
-			return render_template('signin.html', error="Username or password incorrect")
+			return render_template('signin.html', error="Invalid username and password.", username=username)
 		session['username'] = username
-		user = users.find({'username':username}).limit(1)[0]#dont think i should do this not really needed call to db
-		session['name'] = user['first_name'] + ' ' + user['last_name']
+		if user.get("last_name") is None:
+			session['name'] = user.get('first_name')
+		else:
+			session['name'] = user.get('first_name') + ' ' + user.get('last_name')
 		return redirect('/')
-	return render_template("signin.html")
+	return render_template("signin.html", username="")
 @app.route('/signup', methods=['GET','POST'])
 def sign_up():
 	if request.method == 'POST':
 		first_name = request.form.get('first_name')
 		last_name = request.form.get('last_name')
-		username = request.form.get('username')
+		if not last_name and first_name.count(" ") >= 1:
+			exploded = first_name.split(" ")
+			first_name = exploded[0]
+			exploded.pop(0)
+			last_name = " ".join(exploded)
+		username = request.form.get('username').lower()
 		password = request.form.get('password')
 		password_confirm = request.form.get('password_confirm')
 		variables = {"first_name" : first_name, "last_name" : last_name, "username" : username}
@@ -46,8 +57,8 @@ def sign_up():
 			return render_template('signup.html', variables=variables, username_error="No username found.")
 		if not first_name:
 			return render_template('signup.html', variables=variables, first_name_error="No first name found.")
-		if not last_name:
-			return render_template('signup.html', variables=variables, last_name_error="No last name found.")
+		# if not last_name:
+		# 	return render_template('signup.html', variables=variables, last_name_error="No last name found.")
 		if not password:
 			return render_template('signup.html', variables=variables, password_error="No password found.")
 		if not password_confirm:
@@ -58,8 +69,26 @@ def sign_up():
 			return render_template('signup.html', variables=variables, password_error="Enter a valid password")
 		if password != password_confirm:
 			return render_template('signup.html', variables=variables, password_error="Passwords must match", password_confirm_error="Passwords must match")
+		result = users.find_one({"username":username})
+		if not result is None:
+			if valid_pw(username, password, result.get('password')):
+				session['username'] = username
+				if result.get("last_name") is None:
+					session['name'] = result.get('first_name')
+				else:
+					session['name'] = result.get('first_name') + ' ' + result.get('last_name')
+				return redirect('/')
+			else:
+				return render_template('signup.html', variables=variables, username_error="Username taken.")
+		if first_name == first_name.lower() or first_name == first_name.upper():
+			first_name = first_name.capitalize()
+		if last_name and last_name == last_name.lower() or last_name == last_name.upper():
+			last_name = last_name.capitalize()
 		password = make_pw_hash(username,password)
-		user_id = users.insert({"username": username,"password": password,"first_name":first_name.lower(),"last_name":last_name.lower(),'classes':[]})
+		if last_name:
+			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"last_name":last_name,"classes":[],"email_verified":False})
+		else:
+			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
 		return redirect('/user/' + str(user_id))
 	return render_template("signup.html", variables=None)
 @app.route('/user/<id>')
