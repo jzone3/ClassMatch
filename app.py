@@ -46,18 +46,70 @@ def index():
 	if logged_in():
 		courses = get_courses()
 		if courses == {}:
-			return redirect('/schedule')
+			return redirect('/add')
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
 
-@app.route('/schedule')
+@app.route('/add', methods=['GET', 'POST'])
 def add_class():
+	if request.method == 'POST':
+		if not logged_in():
+			return redirect('/login')
+		days_of_the_week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+		i = 1
+		courses = []
+		user = get_user(session['username'])
+		if user.get("last_name") is None:
+			name = user.get("first_name")
+		else:
+			name = user.get("first_name") + " " + user.get("last_name")
+		while not request.form.get('class_name' + str(i)) is None:
+			class_name = request.form.get('class_name' + str(i))
+			time = {}
+			for day in days_of_the_week:
+				start = request.form.get(day + "_mods_start" + str(i))
+				if start == "":
+					continue
+				end = request.form.get(day + "_mods_end" + str(i))
+				try:
+					start = int(start)
+					end = int(end)
+				except ValueError:
+					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be integers")
+				if start > 27  or start < 1 or end > 27 or end < 1:
+					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
+				time[day] = [start, end]
+			courses.append({
+				"class_name" : class_name,
+				"class_name_lower" : class_name.lower(),
+				"time" : time,
+				"students_enrolled_names" : [name], #add teacher when we get those
+				"students_enrolled_ids" : [user.get("_id")]
+				})
+			i += 1
+		for c in courses:
+			results = None
+			try:
+				results = classes.find({"class_name_lower" : c['class_name_lower'], "time" : time})[0]
+			except IndexError:
+				r = classes.insert(c)
+				if not r in user['classes']:
+					user['classes'].append(r)
+				continue
+			if not name in results['students_enrolled_names']:
+				results['students_enrolled_names'].append(name)
+				results['students_enrolled_ids'].append(user.get("_id"))
+			r = classes.update({"_id" : results.get("_id")}, results)
+			if not r in user['classes']:
+				user['classes'].append(r)
+		x = users.update({"_id" : user.get("_id")}, user)
+		return redirect('/add')
 	if logged_in():
 		user = get_user(session['username'])
 		user_classes = []
 		for course in user.get('classes'):
-			classes.append(classes.find_one({"_id" : course.id}))
-		return render_template('schedule.html', signed_in=True, name=session['name'].title(), classes=user_classes)
+			user_classes.append(classes.find_one({"_id" : course}))
+		return render_template('add.html', signed_in=True, name=session['name'].title())
 	return redirect('/signin')
 
 @app.route('/signin', methods=['GET','POST'])
@@ -129,7 +181,7 @@ def sign_up():
 		else:
 			user_id = users.insert({"username": username,"password": password,"first_name":first_name,"classes":[],"email_verified":False})
 		session_login(username, first_name)
-		return redirect('/schedule')
+		return redirect('/add')
 	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
@@ -142,7 +194,7 @@ def my_classes():
 	if logged_in():
 		courses = get_courses()
 		if courses == {}:
-			return redirect('/schedule')
+			return redirect('/add')
 		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=courses)
 	return redirect('/signin')
 @app.route('/logout')

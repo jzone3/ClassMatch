@@ -22,6 +22,7 @@
           <ul class="nav navbar-nav">
           {% if signed_in %}
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/classes">Find Classmates</a></li>
+          <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/add">Add Class</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/schedule">My Schedule</a></li>
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/account">My Account</a></li>
           {% endif %}
@@ -45,6 +46,11 @@
 		{% endblock %}
     </span>
     {% if page=='index' %}</div>{% endif %}
+    
+    <script>
+      {% block script %}
+      {% endblock %}
+    </script>
 
     {% if page=='index' %}
     <script>
@@ -58,7 +64,6 @@
         clearTimeout(myTimeout);
     });
     </script>
-  {% endif %}
+    {% endif %}
 	</body>
-  }
 </html>

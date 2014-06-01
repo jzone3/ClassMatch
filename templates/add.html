@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Schedule{% endblock %}
+{% block content %}
+<div class="container">
+	<h1>My Schedule</h1>
+	<hr>
+	<!-- NEED DROPDOWN FOR CLASSNAME -->
+		<h2 class="center">Add classes</h2>
+		<hr>
+		{% if error %}
+		<div class="error">
+			<h3>{{error}}</h3>
+		</div>
+		<br/>
+		{% endif %}
+		<form class="center signup-form" method="POST" action="/schedule">
+			<div id="add-classes">
+				<div class="row">
+					<div class="form-group">
+						<div class="col-lg-4 right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
+						<div class="col-lg-4">
+							<input type="text" class="form-control" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
+						</div>
+						<div class="col-lg-4"></div>
+					</div>
+				</div>
+				<br><br>
+				<!-- Add way to add teacher when we get teachers -->
+				<div class="row">
+					<div class="col-lg-1">&nbsp;</div>
+					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
+						<span class="day">Monday</span>
+						<br/><br/>
+						<input type="text" class="day-left form-control" name="monday_mods_start1">&mdash;
+						<input type="text" class="day-right form-control" name="monday_mods_end1">
+					</div>
+					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
+						<span class="day">Tuesday</span>
+						<br/><br/>
+						<input type="text" class="day-left form-control" name="tuesday_mods_start1">&mdash;
+						<input type="text" class="day-right form-control" name="tuesday_mods_end1">
+					</div>
+					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
+						<span class="day">Wednesday</span>
+						<br/><br/>
+						<input type="text" class="day-left form-control" name="wednesday_mods_start1">&mdash;
+						<input type="text" class="day-right form-control" name="wednesday_mods_end1">
+					</div>
+					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
+						<span class="day">Thursday</span>
+						<br/><br/>
+						<input type="text" class="day-left form-control" name="thursday_mods_start1">&mdash;
+						<input type="text" class="day-right form-control" name="thursday_mods_end1">
+					</div>
+					<div class="col-lg-2 day-of-the-week">
+						<span class="day">Friday</span>
+						<br/><br/>
+						<input type="text" class="day-left form-control" name="friday_mods_start1">&mdash;
+						<input type="text" class="day-right form-control" name="friday_mods_end1">
+					</div>
+					<div class="col-lg-1">&nbsp;</div>
+				</div>
+				<br/><br/>
+			</div>
+			<a class="btn btn-success" onclick="addClass();">+ Add another class</a>
+			<br><br>
+			<button class="btn btn-lg btn-primary" type="submit">Save</button>
+		</form>
+	<hr>
+</div>
+{% endblock %}
+
+{% block script %}
+var number = 1;
+function addClass() {
+	number += 1;
+	$('#add-classes').append('\
+				<div class="row"> \
+				<div class="form-group"> \
+					<div class="col-lg-4 right signup-label"><label class="control-label" for="class_nameq">Class name</label></div> \
+					<div class="col-lg-4"> \
+						<input type="text" class="form-control" id="class_name" name="class_nameq" placeholder="Data Structures"> \
+					</div> \
+					<div class="col-lg-4"></div> \
+				</div> \
+			</div> \
+			<br><br> \
+			<!-- Add way to add teacher when we get teachers --> \
+			<div class="row"> \
+				<div class="col-lg-1">&nbsp;</div> \
+				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
+					<span class="day">Monday</span> \
+					<br/><br/> \
+					<input type="text" class="day-left form-control" name="monday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="monday_mods_endq"> \
+				</div> \
+				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
+					<span class="day">Tuesday</span> \
+					<br/><br/> \
+					<input type="text" class="day-left form-control" name="tuesday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="tuesday_mods_endq"> \
+				</div> \
+				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
+					<span class="day">Wednesday</span> \
+					<br/><br/> \
+					<input type="text" class="day-left form-control" name="wednesday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="wednesday_mods_endq"> \
+				</div> \
+				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
+					<span class="day">Thursday</span> \
+					<br/><br/> \
+					<input type="text" class="day-left form-control" name="thursday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="thursday_mods_endq"> \
+				</div> \
+				<div class="col-lg-2 day-of-the-week"> \
+					<span class="day">Friday</span> \
+					<br/><br/> \
+					<input type="text" class="day-left form-control" name="friday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="friday_mods_endq"> \
+				</div> \
+				<div class="col-lg-1">&nbsp;</div> \
+			</div> \
+			<br/><br/>'.replace(new RegExp('[q]', 'g'), number));
+			return false;
+}
+{% endblock %}
