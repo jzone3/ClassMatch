@@ -2,21 +2,65 @@
 {% block title %}My Classes{% endblock %}
 {% block content %}
 <div class="container">
-	<div class="jumbotron">
-		{% for c in classes %}
-		<div class="class">
-			<h1>{{c}}</h1>
-			<hr>
-			<h2>Students Enrolled in Class:</h2>
-			{% for x in range(0,classes[c]['students_enrolled_names']|length) %}
-			{% if x != (classes[c]['students_enrolled_names']|length)-1 %}
-			<p style="display: inline;"><a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a>, </p>
-			{% else %}
-			<p style="display: inline;"><a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a></p>
-			{% endif %}
-			{% endfor %}
+	<h1>Classes</h1>
+	<br>
+	{% for c in classes %}
+	<div class="class jumbotron">
+		<h2>Course: {{classes[c]['class_name']}}</h2>
+		<hr>
+		<div class="row center">
+			<div class="col-md-1">&nbsp;</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Monday</span>
+				<br/><br/>
+				{% if classes[c]['time']['monday'] %}
+				{{classes[c]['time']['monday'][0]}} - {{classes[c]['time']['monday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Tuesday</span>
+				<br/><br/>
+				{% if classes[c]['time']['tuesday'] %}
+				{{classes[c]['time']['tuesday'][0]}} - {{classes[c]['time']['tuesday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Wednesday</span>
+				<br/><br/>
+				{% if classes[c]['time']['wednesday'] %}
+				{{classes[c]['time']['wednesday'][0]}} - {{classes[c]['time']['wednesday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Thursday</span>
+				<br/><br/>
+				{% if classes[c]['time']['thursday'] %}
+				{{classes[c]['time']['thursday'][0]}} - {{classes[c]['time']['thursday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week">
+				<span class="day">Friday</span>
+				<br/><br/>
+				{% if classes[c]['time']['friday'] %}
+				{{classes[c]['time']['friday'][0]}} - {{classes[c]['time']['friday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-1">&nbsp;</div>
 		</div>
+		<br><br>
+		<div class="students">
+		<strong>Classmates: </strong>
+		{% for x in range(0,classes[c]['students_enrolled_names']|length) %}
+		{% if x != (classes[c]['students_enrolled_names']|length)-1 %}
+		<a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a>,
+		{% else %}
+		<a href="/user/{{classes[c]['students_enrolled_ids'][x]}}">{{classes[c]['students_enrolled_names'][x].title()}}</a>
+		{% endif %}
 		{% endfor %}
+		</div>
+		<br>
+		<div class="center"><a href="/delete_class/{{c}}" class="class-delete-btn btn btn-sm btn-danger">Delete Class</a></div>
 	</div>
+	{% endfor %}
 </div>
 {% endblock %}

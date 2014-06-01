@@ -140,3 +140,30 @@ h1 {
 	width:40%;
 	float: right;
 }
+
+.class {
+	background-color: #34495e;
+	color: #ecf0f1;
+	padding-top: 10px;
+	padding-bottom: 30px;
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.class a {
+	color: #ecf0f1;
+}
+
+.class a:hover, .class a:active {
+	color: #95a5a6;
+}
+
+.students {
+	/*margin-left: 50px;*/
+	font-size: 20px;
+}
+
+.class-delete-btn:hover, .class-delete-btn:active {
+	color: white !important;
+}
