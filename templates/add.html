@@ -19,7 +19,9 @@
 					<div class="form-group">
 						<div class="col-lg-4 right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
 						<div class="col-lg-4">
-							<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="form-control" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
+							<div id="prefetch">
+								<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="typeahead form-control" autocomplete="off" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
+							</div>
 						</div>
 						<div class="col-lg-4"></div>
 					</div>
@@ -70,6 +72,36 @@
 {% endblock %}
 
 {% block script %}
+var courses = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit: 10,
+  prefetch: {
+    // url points to a json file that contains an array of course names, see
+    // https://github.com/twitter/typeahead.js/blob/gh-pages/data/courses.json
+    url: '/classes.json',
+    // the json file contains an array of strings, but the Bloodhound
+    // suggestion engine expects JavaScript objects so this converts all of
+    // those strings
+    filter: function(list) {
+      return $.map(list, function(course) { return { name: course }; });
+    }
+  }
+});
+ 
+// kicks off the loading/processing of `local` and `prefetch`
+courses.initialize();
+ 
+// passing in `null` for the `options` arguments will result in the default
+// options being used
+$('#prefetch .typeahead').typeahead(null, {
+  name: 'courses',
+  displayKey: 'name',
+  // `ttAdapter` wraps the suggestion engine in an adapter that
+  // is compatible with the typeahead jQuery plugin
+  source: courses.ttAdapter()
+});
+
 $("#class_name").tooltip();
 $("#monday_mods_start1").tooltip();
 $("#monday_mods_end1").tooltip();
@@ -91,8 +123,10 @@ function addClass() {
 				<div class="form-group"> \
 					<div class="col-lg-4 right signup-label"><label class="control-label" for="class_nameq">Class name</label></div> \
 					<div class="col-lg-4"> \
-						<input type="text" class="form-control" id="class_name" name="class_nameq" placeholder="Data Structures"> \
-					</div> \
+						<div id="prefetch"> \
+							<input type="text" class="typeahead form-control" autocomplete="off" id="class_nameq" name="class_nameq" placeholder="Data Structures"> \
+						</div> \
+					</div>
 					<div class="col-lg-4"></div> \
 				</div> \
 			</div> \
@@ -103,14 +137,14 @@ function addClass() {
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Monday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="monday_mods_startq" placeholder="1">&mdash; \
-					<input type="text" class="day-right form-control" name="monday_mods_endq" placeholder="3"> \
+					<input type="text" class="day-left form-control" name="monday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="monday_mods_endq"> \
 				</div> \
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Tuesday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="tuesday_mods_startq" placeholder="1">&mdash; \
-					<input type="text" class="day-right form-control" name="tuesday_mods_endq" placeholder="3"> \
+					<input type="text" class="day-left form-control" name="tuesday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="tuesday_mods_endq"> \
 				</div> \
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Wednesday</span> \
@@ -127,8 +161,8 @@ function addClass() {
 				<div class="col-lg-2 day-of-the-week"> \
 					<span class="day">Friday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="friday_mods_startq" placeholder="1">&mdash; \
-					<input type="text" class="day-right form-control" name="friday_mods_endq" placeholder="3"> \
+					<input type="text" class="day-left form-control" name="friday_mods_startq">&mdash; \
+					<input type="text" class="day-right form-control" name="friday_mods_endq"> \
 				</div> \
 				<div class="col-lg-1">&nbsp;</div> \
 			</div> \

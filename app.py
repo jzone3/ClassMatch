@@ -114,9 +114,9 @@ def add_class():
 					start = int(start)
 					end = int(end)
 				except ValueError:
-					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be integers")
+					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be integers")
 				if start > 27  or start < 1 or end > 27 or end < 1:
-					return render_template('add.html', signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
+					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
 				time[day] = [start, end]
 			courses.append({
 				"class_name" : class_name,
@@ -129,7 +129,8 @@ def add_class():
 		for c in courses:
 			results = None
 			try:
-				results = classes.find({"class_name_lower" : c['class_name_lower'], "time" : time})[0]
+				results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
+				print results
 			except IndexError:
 				r = classes.insert(c)
 				if not r in user['classes']:
@@ -151,7 +152,7 @@ def add_class():
 		user_classes = []
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
-		return render_template('add.html', signed_in=True, name=session['name'].title())
+		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"))
 	return redirect('/signin')
 
 @app.route('/signin', methods=['GET','POST'])
