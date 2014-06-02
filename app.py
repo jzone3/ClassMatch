@@ -162,8 +162,8 @@ def add_class():
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
 		if not cache.get('classes'):
-					cache.set('classes',old_courses)
-				course_list = str(cache.get('classes'))
+			cache.set('classes',old_courses)
+		course_list = str(cache.get('classes'))
 		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"), course_list=course_list)
 	return redirect('/signin')
 
