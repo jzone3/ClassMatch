@@ -213,8 +213,15 @@ def sign_up():
 	return render_template("signup.html", variables=None)
 @app.route('/user/<id>')
 def get_user_info(id):
+	if not(logged_in()):
+		return redirect('/signin')
 	user = users.find({'_id':ObjectId(id)})[0]
-	return render_template('user_info.html', user=user)
+	name = user['first_name'] + ' '+  user['last_name']
+	email = user['username'] +'@bergen.org'
+	courses=[]
+	for c in user['classes']:
+		courses.append(classes.find_one({'_id':c})['class_name'])
+	return render_template('user_info.html', signed_in=True, name=session['name'].title(),classes=courses, user_name=name.title(), email=email)
 @app.route('/classes')
 def my_classes():
 	if logged_in():
