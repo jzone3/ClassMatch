@@ -23,9 +23,10 @@ old_courses = ["Data Structures", "AP Psychology", "Adv Analysis II", "Adv Analy
 "Discrete II", "AP Chemistry", "Adv Chemistry", "Intermediate Chemistry", "Java Programming", "Constitutional Law",
 "Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II",
 "Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2",
- "Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts"]
- if not(cache):
- 	cache.set('classes',old_courses)
+"Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts"]
+
+if not(cache):
+	cache.set('classes',old_courses)
 
 def session_login(username, first_name):
 	session['username'] = username
