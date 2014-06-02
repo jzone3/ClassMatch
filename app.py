@@ -131,8 +131,7 @@ def add_class():
 		for c in courses:
 			results = None
 			try:
-				results = classes.find({"class_name_lower" : c['class_name_lower'], "time" : time})[0]
-				print time
+				results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
 				print results
 			except IndexError:
 				r = classes.insert(c)
