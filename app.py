@@ -72,6 +72,8 @@ def delete_class(class_id):
 	if logged_in():
 		class_id = ObjectId(class_id)
 		user = get_user(session.get('username'))
+		if user is None:
+			return redirect('/login')
 		course = classes.find_one({"_id" : class_id})
 		if course is None:
 			return redirect('/classes')
@@ -95,6 +97,8 @@ def add_class():
 		i = 1
 		courses = []
 		user = get_user(session['username'])
+		if user is None:
+			return redirect('/login')
 		if user.get("last_name") is None:
 			name = user.get("first_name")
 		else:
@@ -146,6 +150,8 @@ def add_class():
 		return redirect('/')
 	if logged_in():
 		user = get_user(session['username'])
+		if user is None:
+			return redirect('/login')
 		user_classes = []
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
@@ -267,6 +273,8 @@ def account():
 			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Passwords must match")
 		username = session['username']
 		user = get_user(username)
+		if user is None:
+			return redirect('/login')
 		if not(valid_pw(username,old_password,user.get('password'))):
 			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Incorrect password")
 		user['password'] = make_pw_hash(username,new_password)
@@ -281,6 +289,8 @@ def account_delete():
 		password = request.form.get('password')
 		username = session['username']
 		user = get_user(username)
+		if user is None:
+			return redirect('/login')
 		if valid_pw(username,password,user.get('password')):
 			for c in user['classes']:
 				course = classes.find_one({"_id" : c})
