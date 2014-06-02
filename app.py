@@ -4,6 +4,7 @@ import os
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
+import re
 # from secret import *
 
 app = Flask(__name__)
@@ -16,6 +17,8 @@ db = client.get_default_database()
 users = db.users
 classes = db.classes
 old_courses = ["Data Structures", "AP Psychology ", "Adv Analysis II", "Adv Analysis I", "Math Analysis II", "Math Analysis I", "Gateway Seminar", "AP Calculus AB", "AP Calculus BC", "Calculus I", "PE", "Adv Biology", "Biology Honors", "IB Espanol IV SL", "IB Espanol IV HL", "IB Espanol V SL", "IB Espanol V HL", "Espanol III", "Espanol II", "Espanol I/II", "World Lit I", "World Lit II", "IB World Lit I HL", "IB World Lit II HL", "IB Literature_Language I HL", "IB Literature_Language II HL", "American Lit I", "American Lit II", "Francais II", "Francais III", "IB Francais IV SL", "IB Francais IV HL", "World History", "US History I", "US History II", "IB Hist of Amer I HL", "IB Hist of Amer II HL", "Theatre History II", "AP Art History", "AP Comp Sci A", "Hotel Mgmt_Cul Theory", "Theory of Knowledge", "Elec Music Synthesis", "Music and Society", "AP Music Theory in Digital Age", "Culinary", "Prin of Eng_Mat Sci", "AP Language and English Composition", "Intro to Engineering Design II", "Intro to Engineering Design I", "Interm Electrical Eng", "Discrete II", "Discrete II", "AP Chemistry", "Adv Chemistry", "Intermediate Chemistry", "Java Programming", "Constitutional Law", "Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II", "Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2", "Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts", "IB Physics", "Intro to Physics", "Intermediate Physics", "Advanced Physics", "AP Physics C", "Cell Physiology", "AP Statistics", "Linear Algebra and Differential Equations"]
+
+COURSE_REGEX = "^[\w\-\. ]+$"
 
 if not(cache.get('classes')):
 	cache['classes'] = old_courses
@@ -103,17 +106,19 @@ def add_class():
 			name = user.get("first_name")
 		else:
 			name = user.get("first_name") + " " + user.get("last_name")
+		if not cache.get('classes'):
+			cache['classes'] = old_courses
+		course_list = str(cache.get('classes')).replace("u'", "'")
 		while not request.form.get('class_name' + str(i)) is None:
 			class_name = request.form.get('class_name' + str(i)).strip()
+			if re.match(COURSE_REGEX, class_name) is None:
+				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Invalid class name", course_list=course_list)
 			time = {}
 			for day in days_of_the_week:
 				start = request.form.get(day + "_mods_start" + str(i))
 				if start == "":
 					continue
 				end = request.form.get(day + "_mods_end" + str(i))
-				if not cache.get('classes'):
-					cache['classes'] = old_courses
-				course_list = str(cache.get('classes')).replace("u'", "'")
 				try:
 					start = int(start)
 					end = int(end)
