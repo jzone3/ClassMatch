@@ -3,48 +3,54 @@
 {% block content %}
 <div class="container center">
 	<h1>My Account</h1>
-	<form method="POST" action="/account">
+	<hr class="hr-big">
 	{% if error %}
 	<div class="error">
 		<h3>{{error}}</h3>
 	</div>
+	<br>
 	{% endif %}
-	<h3>Change Password</h3>
-	<div class="row">
-		<div class="col-lg-5 pass right"><label class="control-label" for="old_password">Old Password</label></div>
-		<div class="col-lg-3">
-			<input type="password" class="form-control" name="old_password">
+	<form method="POST" action="/account">
+		<br>
+		<h2>Change Password</h2>
+		<br>
+		<div class="row">
+			<div class="col-md-5 pass right"><label class="control-label" for="old_password">Old Password</label></div>
+			<div class="col-md-3">
+				<input type="password" class="form-control" name="old_password">
+			</div>
 		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-lg-5 pass right"><label class="control-label" for="new_password">New Password</label></div>
-		<div class="col-lg-3">
-			<input type="password" class="form-control" name="new_password">
+		<br>
+		<div class="row">
+			<div class="col-md-5 pass right"><label class="control-label" for="new_password">New Password</label></div>
+			<div class="col-md-3">
+				<input type="password" class="form-control" name="new_password">
+			</div>
 		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-lg-5 pass right"><label class="control-label" for="new_password">Re-Type Password</label></div>
-		<div class="col-lg-3">
-			<input type="password" class="form-control" name="confirm_password">
+		<br>
+		<div class="row">
+			<div class="col-md-5 pass right"><label class="control-label" for="new_password">Re-Type Password</label></div>
+			<div class="col-md-3">
+				<input type="password" class="form-control" name="confirm_password">
+			</div>
 		</div>
-	</div>
-	<br>
-	<button type="submit" class="btn btn-lg btn-primary">Change</button>
-	</form>
-	<br>
-	<h3>Delete Account (Can't Undo)</h3>
-	<br>
-	<form method="POST" action="/account/delete">
-	<div class="row">
-		<div class="col-lg-5 pass right"><label class="control-label" for="password">Password</label></div>
-		<div class="col-lg-3">
-			<input type="password" name="password" class="form-control">
+		<br>
+		<button type="submit" class="btn btn-lg btn-primary">Change</button>
+		<br>
+		<hr>
+		</form>
+		<h2>Delete Account</h2>
+		<h4 style="color: red; font-weight: bold;">WARNING: CHANGES ARE PERMANENT</h4>
+		<br>
+		<form method="POST" action="/account/delete">
+		<div class="row">
+			<div class="col-md-5 pass right"><label class="control-label" for="password">Password</label></div>
+			<div class="col-md-3">
+				<input type="password" name="password" class="form-control">
+			</div>
 		</div>
-	</div>
-	<br>
-	<button type="submit" class="btn btn-lg btn-danger">Delete Account</button>
+		<br>
+		<button type="submit" class="btn btn-lg btn-danger">Delete Account</button>
 	</form>
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@
 		{% block extra %}{% endblock %}
 	</head>
 	<body>
-	{% if page=='index' %}<div class="landing-page">{% else %}<div class="full-page">{% endif %}
+  {% if page=='index' %}<div class="landing-page">{% else %}<div class="full-page">{% endif %}
   <div class="{% if page=='index' %}navbar-trans {% endif %}navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -45,7 +45,8 @@
     {% block content %}
 		{% endblock %}
     </span>
-    {% if page=='index' %}</div>{% endif %}
+    {% if page!='index' %}<div class="push"></div>{% endif %}
+    </div>
     
     <script>
       {% block script %}
@@ -67,6 +68,12 @@
         clearTimeout(myTimeout);
     });
     </script>
+    {% endif %}
+
+    {% if page!='index' %}
+    <div class="sticky-footer">
+      <p>Created by <a href="http://imjaredz.com">Jared Zoneraich</a> and <a href="http://parasmodi.com">Paras Modi</a>.</p>
+    </div>
     {% endif %}
 	</body>
 </html>

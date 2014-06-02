@@ -13,6 +13,7 @@
 html, body {
 	font-family: ProximaNova, Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 	background-color: #ecf0f1;
+	height: 100%;
 }
 
 h1 {
@@ -168,4 +169,42 @@ h1 {
 
 .class-delete-btn:hover, .class-delete-btn:active {
 	color: white !important;
+}
+
+hr {
+	display: block; height: 1px;
+    border: 0; border-top: 1px solid white;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 0;
+}
+
+.hr-big {
+	width: 75%;
+}
+
+.full-page {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -3em;
+	padding: 0;
+}
+
+.sticky-footer, .push {
+	height: 1.5em;
+	font-size: 15px;
+	text-align: center;
+    color: rgb(44, 62, 80);
+}
+
+.sticky-footer{
+    margin-top: 12px;
+}
+
+.sticky-footer a  {
+    color: rgb(44, 62, 80);
 }
