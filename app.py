@@ -304,7 +304,7 @@ def account_delete():
 			for c in user['classes']:
 				course = classes.find_one({"_id" : c})
 				for ids in course['students_enrolled_ids']:
-					if ids == user['id']:
+					if ids == user['_id']:
 						course['students_enrolled_ids'].remove(ids)
 				for names in course['students_enrolled_ids']:
 					full_name = user['first_name'] + ' ' + user['last_name']
