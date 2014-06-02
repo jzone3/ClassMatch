@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
 import jinja2
 import os
 from werkzeug.contrib.cache import SimpleCache
@@ -25,8 +25,7 @@ old_courses = ["Data Structures", "AP Psychology", "Adv Analysis II", "Adv Analy
 "Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II",
 "Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2",
 "Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts"]
-
-if not(cache):
+if not(cache.get('classes')):
 	cache.set('classes',old_courses)
 
 def session_login(username, first_name):
@@ -291,7 +290,9 @@ def account_delete():
 			users.remove({'_id':user.get('id')})
 			session_logout()
 			return redirect('/')
-
+@app.route('/classes.json')
+def class_json():
+	return jsonify(classes=cache.get('classes'))
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
