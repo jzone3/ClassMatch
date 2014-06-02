@@ -111,13 +111,16 @@ def add_class():
 				if start == "":
 					continue
 				end = request.form.get(day + "_mods_end" + str(i))
+				if not cache.get('classes'):
+					cache.set('classes',old_courses)
+				course_list = str(cache.get('classes'))
 				try:
 					start = int(start)
 					end = int(end)
 				except ValueError:
-					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be integers")
+					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be integers", course_list=course_list)
 				if start > 27  or start < 1 or end > 27 or end < 1:
-					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27")
+					return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="Mods must be a number from 1 to 27", course_list=course_list)
 				time[day] = [start, end]
 			courses.append({
 				"class_name" : class_name,
@@ -130,7 +133,10 @@ def add_class():
 		for c in courses:
 			results = None
 			if time == {}:
-				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found")
+				if not cache.get('classes'):
+					cache.set('classes',old_courses)
+				course_list = str(cache.get('classes'))
+				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
 			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
 			if results is None:
 				r = classes.insert(c)
@@ -155,7 +161,10 @@ def add_class():
 		user_classes = []
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
-		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"))
+		if not cache.get('classes'):
+					cache.set('classes',old_courses)
+				course_list = str(cache.get('classes'))
+		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"), course_list=course_list)
 	return redirect('/signin')
 
 @app.route('/signin', methods=['GET','POST'])
