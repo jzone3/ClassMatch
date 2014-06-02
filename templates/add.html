@@ -72,6 +72,10 @@
 {% endblock %}
 
 {% block script %}
+$(document).ready(function() {
+	engine.clearRemoteCache();
+});
+
 var substringMatcher = function(strs) {
   return function findMatches(q, cb) {
     var matches, substringRegex;
