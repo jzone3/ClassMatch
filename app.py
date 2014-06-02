@@ -112,7 +112,7 @@ def add_class():
 					continue
 				end = request.form.get(day + "_mods_end" + str(i))
 				if not cache.get('classes'):
-					cache.set['classes'] = old_courses
+					cache['classes'] = old_courses
 				course_list = str(cache.get('classes'))
 				try:
 					start = int(start)
@@ -134,7 +134,7 @@ def add_class():
 			results = None
 			if time == {}:
 				if not cache.get('classes'):
-					cache.set['classes'] = old_courses
+					cache['classes'] = old_courses
 				course_list = str(cache.get('classes'))
 				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
 			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
@@ -162,7 +162,7 @@ def add_class():
 		for course in user.get('classes'):
 			user_classes.append(classes.find_one({"_id" : course}))
 		if not cache.get('classes'):
-			cache.set['classes'] = old_courses
+			cache['classes'] = old_courses
 		course_list = str(cache.get('classes'))
 		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"), course_list=course_list)
 	return redirect('/signin')
@@ -318,7 +318,7 @@ def account_delete():
 def class_json():
 	# return jsonify(classes=cache.get('classes'))
 	if not cache.get('classes'):
-		cache.set['classes'] = old_courses
+		cache['classes'] = old_courses
 	return str(cache.get('classes'))
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))

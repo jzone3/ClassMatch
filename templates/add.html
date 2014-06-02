@@ -130,7 +130,7 @@ function addClass() {
 				<div class="form-group"> \
 					<div class="col-lg-4 right signup-label"><label class="control-label" for="class_nameq">Class name</label></div> \
 					<div class="col-lg-4"> \
-						<div id="prefetch"> \
+						<div> \
 							<input type="text" class="typeahead form-control" autocomplete="off" id="class_nameq" name="class_nameq" placeholder="Data Structures"> \
 						</div> \
 					</div> \
@@ -174,7 +174,7 @@ function addClass() {
 				<div class="col-lg-1">&nbsp;</div> \
 			</div> \
 			<br/><br/>'.replace(new RegExp('[q]', 'g'), number));
-			$('#classname' + number).typeahead({
+			$('#classname' + number)onload({.typeahead({
 			  hint: true,
 			  highlight: true,
 			  minLength: 1
@@ -183,7 +183,7 @@ function addClass() {
 			  name: 'states',
 			  displayKey: 'value',
 			  source: substringMatcher(states)
-			});
+			})});
 			return false;
 }
 {% endblock %}
