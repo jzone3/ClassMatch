@@ -19,7 +19,7 @@
 					<div class="form-group">
 						<div class="col-lg-4 right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
 						<div class="col-lg-4">
-							<div id="prefetch">
+							<div id="course-typeahead">
 								<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="typeahead form-control" autocomplete="off" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
 							</div>
 						</div>
@@ -72,34 +72,50 @@
 {% endblock %}
 
 {% block script %}
-var courses = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-  queryTokenizer: Bloodhound.tokenizers.whitespace,
-  limit: 10,
-  prefetch: {
-    // url points to a json file that contains an array of course names, see
-    // https://github.com/twitter/typeahead.js/blob/gh-pages/data/courses.json
-    url: '/classes.json',
-    // the json file contains an array of strings, but the Bloodhound
-    // suggestion engine expects JavaScript objects so this converts all of
-    // those strings
-    filter: function(list) {
-      return $.map(list, function(course) { return { name: course }; });
-    }
-  }
-});
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
  
-// kicks off the loading/processing of `local` and `prefetch`
-courses.initialize();
+    // an array that will be populated with substring matches
+    matches = [];
  
-// passing in `null` for the `options` arguments will result in the default
-// options being used
-$('#prefetch .typeahead').typeahead(null, {
-  name: 'courses',
-  displayKey: 'name',
-  // `ttAdapter` wraps the suggestion engine in an adapter that
-  // is compatible with the typeahead jQuery plugin
-  source: courses.ttAdapter()
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+ 
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        // the typeahead jQuery plugin expects suggestions to a
+        // JavaScript object, refer to typeahead docs for more info
+        matches.push({ value: str });
+      }
+    });
+ 
+    cb(matches);
+  };
+};
+ 
+var states = ['Data Structures', 'AP Psychology', 'Adv Analysis II', 'Adv Analysis I', 'Math Analysis II', 'Math Analysis I', 'Gateway Seminar',
+'AP Calculus AB', 'AP Analyt Calc (BC+)', 'AP Calculus BC', 'Calculus I', 'PE', 'Adv Biology', 'Biology Honors', 'IB Espanol IV SL', 'IB Espanol IV HL', 'IB Espanol V SL', 'IB Espanol V HL', 'Espanol III', 'Espanol II', 'Espanol I/II', 'World Lit I', 'World Lit II', 'IB World Lit I HL', 'IB World Lit II HL', 'IB Literature_Language I HL', 'IB Literature_Language II HL', 'American Lit I', 'American Lit II', 'Francais II', 'Francais III', 'IB Francais IV SL', 'IB Francais IV HL',
+'World History', 'US History I', 'US History II', 'IB Hist of Amer I HL', 'IB Hist of Amer II HL', 'Theatre History II', 'AP Art History',
+'AP Comp Sci A', 'Hotel Mgmt_Cul Theory', 'Theory of Knowledge', 'Elec Music Synthesis', 'Music and Society',
+'AP Music Theory in Digital Age', 'Culinary', 'Prin of Eng_Mat Sci', 'AP Language and English Composition',
+'Intro to Engineering Design II', 'Intro to Engineering Design I', 'Interm Electrical Eng', 'Discrete I',
+'Discrete II', 'AP Chemistry', 'Adv Chemistry', 'Intermediate Chemistry', 'Java Programming', 'Constitutional Law',
+'Mandarin I', 'Mandarin II', 'Mandarin III', 'Mandarin 3', 'IED 2', 'IB Economics HL', 'AP Micro Economics', 'Acting II',
+'Police and Corrections', 'Manufac Process CIM', 'Robotics', 'Advanced Math Topics', 'Adv Business Topics 1', 'Adv Business Topics 2',
+'Dance I', 'Dance II', 'Design and Production Tech', 'Biotech Lab', 'Drivers Education', 'Publishing', 'Entrep_Adv Cul Arts'];
+ 
+$('#course-typeahead .typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},
+{
+  name: 'states',
+  displayKey: 'value',
+  source: substringMatcher(states)
 });
 
 $("#class_name").tooltip();

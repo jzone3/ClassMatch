@@ -20,7 +20,7 @@ old_courses = ["Data Structures", "AP Psychology", "Adv Analysis II", "Adv Analy
 "World History", "US History I", "US History II", "IB Hist of Amer I HL", "IB Hist of Amer II HL", "Theatre History II", "AP Art History",
 "AP Comp Sci A", "Hotel Mgmt_Cul Theory", "Theory of Knowledge", "Elec Music Synthesis", "Music and Society",
 "AP Music Theory in Digital Age", "Culinary", "Prin of Eng_Mat Sci", "AP Language and English Composition",
-"Intro to Engineering Design II", "Intro to Engineering Design I", "Interm Electrical Eng", "Discrete II",
+"Intro to Engineering Design II", "Intro to Engineering Design I", "Interm Electrical Eng", "Discrete I",
 "Discrete II", "AP Chemistry", "Adv Chemistry", "Intermediate Chemistry", "Java Programming", "Constitutional Law",
 "Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II",
 "Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2",
@@ -130,10 +130,10 @@ def add_class():
 			i += 1
 		for c in courses:
 			results = None
-			try:
-				results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
-				print results
-			except IndexError:
+			if time == {}:
+				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found")
+			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
+			if results is None:
 				r = classes.insert(c)
 				if not r in user['classes']:
 					user['classes'].append(r)
@@ -293,6 +293,8 @@ def account_delete():
 @app.route('/classes.json')
 def class_json():
 	# return jsonify(classes=cache.get('classes'))
+	if not cache.get('classes'):
+		cache.set('classes',old_courses)
 	return str(cache.get('classes'))
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
