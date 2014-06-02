@@ -96,7 +96,7 @@ var substringMatcher = function(strs) {
   };
 };
  
-var states = {{course_list}};
+var states = {{course_list | safe}};
  
 $('#course-typeahead .typeahead').typeahead({
   hint: true,
