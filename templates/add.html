@@ -174,7 +174,7 @@ function addClass() {
 				<div class="col-lg-1">&nbsp;</div> \
 			</div> \
 			<br/><br/>'.replace(new RegExp('[q]', 'g'), number));
-			$('#classname' + number)onload({.typeahead({
+			$(document).ready(function() {$('#class_name' + number).typeahead({
 			  hint: true,
 			  highlight: true,
 			  minLength: 1
