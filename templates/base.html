@@ -56,7 +56,9 @@
     var myTimeout;
     $('#classmatch2').mouseenter(function() {
         myTimeout = setTimeout(function() {
-            {% if page=='index' %}$(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+            {% if page=='index' %}
+            $(".landing-page").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");
+            $("body").css("background-color", "white");
             {% else %}$("body").css("background", "url('/static/img/james.jpg') no-repeat center center fixed");{% endif %}
             $("#page-content").remove();
         }, 5000);
