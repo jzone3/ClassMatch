@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, session
 import jinja2
 import os
+from werkzeug.contrib.cache import SimpleCache
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 
 app = Flask(__name__)
 app.secret_key = "01b9db9bcfbc3c0ab01cb7231e0e2f2a42c9fc20d39d58791655a7f0c3e584a1"
+cache = SimpleCache()
 
 client = MongoClient("mongodb://admin:monkeY5nexus@kahana.mongohq.com:10051/classmatch")
 db = client.get_default_database()
