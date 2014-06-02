@@ -141,7 +141,9 @@ def add_class():
 @app.route('/signin', methods=['GET','POST'])
 def sign_in():
 	if request.method == 'POST':
-		username = request.form.get('username')
+		username = request.form.get('username').lower()
+		if '@bergen.org' in username:
+			username = username.split("@bergen.org")[0]
 		password = request.form.get('password')
 		if not(username):
 			return render_template('signin.html', username_error="No username found.")
@@ -169,6 +171,8 @@ def sign_up():
 			exploded.pop(0)
 			last_name = " ".join(exploded)
 		username = request.form.get('username').lower()
+		if '@bergen.org' in username:
+			username = username.split("@bergen.org")[0]
 		password = request.form.get('password')
 		password_confirm = request.form.get('password_confirm')
 		variables = {"first_name" : first_name, "last_name" : last_name, "username" : username}
