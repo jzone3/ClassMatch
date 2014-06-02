@@ -1,13 +1,15 @@
 from flask import Flask, render_template, request, redirect, session, jsonify
 import jinja2
 import os
-from werkzeug.contrib.cache import SimpleCache
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 # from secret import *
 
 app = Flask(__name__)
+
+cache = {}
+app.secret_key = SECRET_KEY
 cache = SimpleCache()
 app.secret_key = os.environ['SECRET_KEY']
 
@@ -15,9 +17,23 @@ client = MongoClient(os.environ['MONGO_THING'])
 db = client.get_default_database()
 users = db.users
 classes = db.classes
+<<<<<<< HEAD
 old_courses = ["Data Structures", "AP Psychology ", "Adv Analysis II", "Adv Analysis I", "Math Analysis II", "Math Analysis I", "Gateway Seminar", "AP Calculus AB", "Calculus I", "PE", "Adv Biology", "Biology Honors", "IB Espanol IV SL", "IB Espanol IV HL", "IB Espanol V SL", "IB Espanol V HL", "Espanol III", "Espanol II", "Espanol I/II", "World Lit I", "World Lit II", "IB World Lit I HL", "IB World Lit II HL", "IB Literature_Language I HL", "IB Literature_Language II HL", "American Lit I", "American Lit II", "Francais II", "Francais III", "IB Francais IV SL", "IB Francais IV HL", "World History", "US History I", "US History II", "IB Hist of Amer I HL", "IB Hist of Amer II HL", "Theatre History II", "AP Art History", "AP Comp Sci A", "Hotel Mgmt_Cul Theory", "Theory of Knowledge", "Elec Music Synthesis", "Music and Society", "AP Music Theory in Digital Age", "Culinary", "Prin of Eng_Mat Sci", "AP Language and English Composition", "Intro to Engineering Design II", "Intro to Engineering Design I", "Interm Electrical Eng", "Discrete II", "Discrete II", "AP Chemistry", "Adv Chemistry", "Intermediate Chemistry", "Java Programming", "Constitutional Law", "Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II", "Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2", "Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts", "Physical Education", "IB Physics", "Intro to Physics", "Intermediate Physics", "Advanced Physics", "AP Physics C", "Cell Physiology"]
+=======
+
+old_courses = ["Data Structures", "AP Psychology", "Adv Analysis II", "Adv Analysis I", "Math Analysis II", "Math Analysis I", "Gateway Seminar",
+"AP Calculus AB", "AP Analyt Calc (BC+)", "AP Calculus BC", "Calculus I", "PE", "Adv Biology", "Biology Honors", "IB Espanol IV SL", "IB Espanol IV HL", "IB Espanol V SL", "IB Espanol V HL", "Espanol III", "Espanol II", "Espanol I/II", "World Lit I", "World Lit II", "IB World Lit I HL", "IB World Lit II HL", "IB Literature_Language I HL", "IB Literature_Language II HL", "American Lit I", "American Lit II", "Francais II", "Francais III", "IB Francais IV SL", "IB Francais IV HL",
+"World History", "US History I", "US History II", "IB Hist of Amer I HL", "IB Hist of Amer II HL", "Theatre History II", "AP Art History",
+"AP Comp Sci A", "Hotel Mgmt_Cul Theory", "Theory of Knowledge", "Elec Music Synthesis", "Music and Society",
+"AP Music Theory in Digital Age", "Culinary", "Prin of Eng_Mat Sci", "AP Language and English Composition",
+"Intro to Engineering Design II", "Intro to Engineering Design I", "Interm Electrical Eng", "Discrete I",
+"Discrete II", "AP Chemistry", "Adv Chemistry", "Intermediate Chemistry", "Java Programming", "Constitutional Law",
+"Mandarin I", "Mandarin II", "Mandarin III", "Mandarin 3", "IED 2", "IB Economics HL", "AP Micro Economics", "Acting II",
+"Police and Corrections", "Manufac Process CIM", "Robotics", "Advanced Math Topics", "Adv Business Topics 1", "Adv Business Topics 2",
+"Dance I", "Dance II", "Design and Production Tech", "Biotech Lab", "Driver's Education", "Publishing", "Entrep_Adv Cul Arts"]
+>>>>>>> 64b1f8afbf2f85fecbe09debeddfb2f7e632b1fa
 if not(cache.get('classes')):
-	cache.set('classes',old_courses)
+	cache['classes'] = old_courses
 
 def session_login(username, first_name):
 	session['username'] = username
@@ -130,7 +146,7 @@ def add_class():
 					user['classes'].append(r)
 				cached_classes = cache.get('classes')
 				if not c['class_name'] in cached_classes:
-					cache.set('classes', cached_classes.append(r))
+					cache['classes'] = cached_classes.append(r)
 				continue
 			if not name in results['students_enrolled_names']:
 				results['students_enrolled_names'].append(name)
