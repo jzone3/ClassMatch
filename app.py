@@ -131,6 +131,8 @@ def add_class():
 			results = None
 			try:
 				results = classes.find({"class_name_lower" : c['class_name_lower'], "time" : time})[0]
+				print time
+				print results
 			except IndexError:
 				r = classes.insert(c)
 				if not r in user['classes']:
