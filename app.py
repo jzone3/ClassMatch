@@ -104,7 +104,7 @@ def add_class():
 		else:
 			name = user.get("first_name") + " " + user.get("last_name")
 		while not request.form.get('class_name' + str(i)) is None:
-			class_name = request.form.get('class_name' + str(i))
+			class_name = request.form.get('class_name' + str(i)).strip()
 			time = {}
 			for day in days_of_the_week:
 				start = request.form.get(day + "_mods_start" + str(i))
@@ -287,7 +287,7 @@ def account():
 		if not(valid_pw(username,old_password,user.get('password'))):
 			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Incorrect password")
 		user['password'] = make_pw_hash(username,new_password)
-		users.update({'_id':user.get('id')},user)
+		users.update({'_id':user.get('_id')},user)
 		return redirect('/')
 	if not(logged_in()):
 		return redirect('/signin')
@@ -311,7 +311,7 @@ def account_delete():
 					if names == full_name:
 						course['students_enrolled_ids'].remove(names)
 				classes.update({'_id':c},course)
-			users.remove({'_id':user.get('id')})
+			users.remove({'_id':user.get('_id')})
 			session_logout()
 			return redirect('/')
 @app.route('/classes.json')
