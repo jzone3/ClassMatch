@@ -137,7 +137,7 @@ def add_class():
 				if not r in user['classes']:
 					user['classes'].append(r)
 				cached_classes = cache.get('classes')
-				if not r in cached_classes:
+				if not c['class_name'] in cached_classes:
 					cache.set('classes', cached_classes.append(r))
 				continue
 			if not name in results['students_enrolled_names']:
@@ -238,7 +238,10 @@ def get_user_info(id):
 	if not(logged_in()):
 		return redirect('/signin')
 	user = users.find({'_id':ObjectId(id)})[0]
-	name = user['first_name'] + ' '+  user['last_name']
+	last_name = user.get('last_name')
+	name = user['first_name']
+	if last_name:
+		name += ' ' + last_name
 	email = user['username'] +'@bergen.org'
 	courses=[]
 	for c in user['classes']:
@@ -283,6 +286,7 @@ def account_delete():
 		username = session['username']
 		user = get_user(username)
 		if valid_pw(username,password,user.get('password')):
+			users.remove({'_id':user.get('id')})
 			session_logout()
 			return redirect('/')
 
