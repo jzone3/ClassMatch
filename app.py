@@ -307,7 +307,10 @@ def account_delete():
 					if ids == user['_id']:
 						course['students_enrolled_ids'].remove(ids)
 				for names in course['students_enrolled_ids']:
-					full_name = user['first_name'] + ' ' + user['last_name']
+					if user.get('last_name') is None:
+						full_name = user['first_name']
+					else:
+						full_name = user['first_name'] + ' ' + user['last_name']
 					if names == full_name:
 						course['students_enrolled_ids'].remove(names)
 				classes.update({'_id':c},course)
