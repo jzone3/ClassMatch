@@ -35,7 +35,10 @@ def logged_in():
 	return True
 
 def get_user(username):
-	return users.find_one({'username' : username})
+	user = users.find_one({'username' : username})
+	if user is None:
+		session_logout()
+	return user
 
 def get_courses():
 	username = session['username']
