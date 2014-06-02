@@ -287,6 +287,16 @@ def account_delete():
 		username = session['username']
 		user = get_user(username)
 		if valid_pw(username,password,user.get('password')):
+			for c in user['classes']:
+				course = classes.find_one({"_id" : c})
+				for ids in course['students_enrolled_ids']:
+					if ids == user['id']:
+						course['students_enrolled_ids'].remove(ids)
+				for names in course['students_enrolled_ids']:
+					full_name = user['first_name'] + ' ' + user['last_name']
+					if names == full_name:
+						course['students_enrolled_ids'].remove(names)
+				classes.update({'_id':c},course)
 			users.remove({'_id':user.get('id')})
 			session_logout()
 			return redirect('/')
