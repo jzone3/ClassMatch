@@ -303,13 +303,19 @@ def account_delete():
 		if valid_pw(username,password,user.get('password')):
 			for c in user['classes']:
 				course = classes.find_one({"_id" : c})
-				for ids in course['students_enrolled_ids']:
-					if ids == user['_id']:
-						course['students_enrolled_ids'].remove(ids)
-				for names in course['students_enrolled_ids']:
-					full_name = user['first_name'] + ' ' + user['last_name']
-					if names == full_name:
-						course['students_enrolled_ids'].remove(names)
+				index = course['students_enrolled_ids'].index(user.get("_id"))
+				course['students_enrolled_ids'].pop(index)
+				if len(course['students_enrolled_ids']) == 0:
+					classes.remove({"_id":class_id})
+				course['students_enrolled_names'].pop(index)
+				classes.update({"_id" : c}, course)
+				# for ids in course['students_enrolled_ids']:
+				# 	if ids == user['_id']:
+				# 		course['students_enrolled_ids'].remove(ids)
+				# for names in course['students_enrolled_ids']:
+				# 	full_name = user['first_name'] + ' ' + user['last_name']
+				# 	if names == full_name:
+				# 		course['students_enrolled_ids'].remove(names)
 				classes.update({'_id':c},course)
 			users.remove({'_id':user.get('_id')})
 			session_logout()
