@@ -19,7 +19,7 @@
 					<div class="form-group">
 						<div class="col-lg-4 right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
 						<div class="col-lg-4">
-							<input type="text" class="form-control" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
+							<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="form-control" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
 						</div>
 						<div class="col-lg-4"></div>
 					</div>
@@ -31,32 +31,32 @@
 					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
 						<span class="day">Monday</span>
 						<br/><br/>
-						<input type="text" class="day-left form-control" name="monday_mods_start1">&mdash;
-						<input type="text" class="day-right form-control" name="monday_mods_end1">
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the starting mod (you can leave it blank)" class="day-left form-control" id="monday_mods_start1" name="monday_mods_start1" placeholder="1">&mdash;
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the ending mod (you can leave it blank)" class="day-right form-control" id="monday_mods_end1" name="monday_mods_end1" placeholder="3">
 					</div>
 					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
 						<span class="day">Tuesday</span>
 						<br/><br/>
-						<input type="text" class="day-left form-control" name="tuesday_mods_start1">&mdash;
-						<input type="text" class="day-right form-control" name="tuesday_mods_end1">
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the starting mod (you can leave it blank)" class="day-left form-control" id="tuesday_mods_start1" name="tuesday_mods_start1" placeholder="1">&mdash;
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the ending mod (you can leave it blank)" class="day-right form-control" id="tuesday_mods_end1" name="tuesday_mods_end1" placeholder="3">
 					</div>
 					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
 						<span class="day">Wednesday</span>
 						<br/><br/>
-						<input type="text" class="day-left form-control" name="wednesday_mods_start1">&mdash;
-						<input type="text" class="day-right form-control" name="wednesday_mods_end1">
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the starting mod (you can leave it blank)" class="day-left form-control" id="wednesday_mods_start1" name="wednesday_mods_start1">&mdash;
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the ending mod (you can leave it blank)" class="day-right form-control" id="wednesday_mods_end1" name="wednesday_mods_end1">
 					</div>
 					<div class="col-lg-2 day-of-the-week day-of-the-week-right">
 						<span class="day">Thursday</span>
 						<br/><br/>
-						<input type="text" class="day-left form-control" name="thursday_mods_start1">&mdash;
-						<input type="text" class="day-right form-control" name="thursday_mods_end1">
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the starting mod (you can leave it blank)" class="day-left form-control" id="thursday_mods_start1" name="thursday_mods_start1">&mdash;
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the ending mod (you can leave it blank)" class="day-right form-control" id="thursday_mods_end1" name="thursday_mods_end1">
 					</div>
 					<div class="col-lg-2 day-of-the-week">
 						<span class="day">Friday</span>
 						<br/><br/>
-						<input type="text" class="day-left form-control" name="friday_mods_start1">&mdash;
-						<input type="text" class="day-right form-control" name="friday_mods_end1">
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the starting mod (you can leave it blank)" class="day-left form-control" id="friday_mods_start1" name="friday_mods_start1" placeholder="1">&mdash;
+						<input type="text" data-toggle="tooltip" data-placement="bottom" data-original-title="Enter the ending mod (you can leave it blank)" class="day-right form-control" id="friday_mods_end1" name="friday_mods_end1" placeholder="3">
 					</div>
 					<div class="col-lg-1">&nbsp;</div>
 				</div>
@@ -71,6 +71,19 @@
 {% endblock %}
 
 {% block script %}
+$("#class_name").tooltip();
+$("#monday_mods_start1").tooltip();
+$("#monday_mods_end1").tooltip();
+$("#tuesday_mods_start1").tooltip();
+$("#tuesday_mods_end1").tooltip();
+$("#wednesday_mods_start1").tooltip();
+$("#wednesday_mods_end1").tooltip();
+$("#thursday_mods_start1").tooltip();
+$("#thursday_mods_end1").tooltip();
+$("#friday_mods_start1").tooltip();
+$("#friday_mods_end1").tooltip();
+
+
 var number = 1;
 function addClass() {
 	number += 1;
@@ -91,14 +104,14 @@ function addClass() {
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Monday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="monday_mods_startq">&mdash; \
-					<input type="text" class="day-right form-control" name="monday_mods_endq"> \
+					<input type="text" class="day-left form-control" name="monday_mods_startq" placeholder="1">&mdash; \
+					<input type="text" class="day-right form-control" name="monday_mods_endq" placeholder="3"> \
 				</div> \
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Tuesday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="tuesday_mods_startq">&mdash; \
-					<input type="text" class="day-right form-control" name="tuesday_mods_endq"> \
+					<input type="text" class="day-left form-control" name="tuesday_mods_startq" placeholder="1">&mdash; \
+					<input type="text" class="day-right form-control" name="tuesday_mods_endq" placeholder="3"> \
 				</div> \
 				<div class="col-lg-2 day-of-the-week day-of-the-week-right"> \
 					<span class="day">Wednesday</span> \
@@ -115,8 +128,8 @@ function addClass() {
 				<div class="col-lg-2 day-of-the-week"> \
 					<span class="day">Friday</span> \
 					<br/><br/> \
-					<input type="text" class="day-left form-control" name="friday_mods_startq">&mdash; \
-					<input type="text" class="day-right form-control" name="friday_mods_endq"> \
+					<input type="text" class="day-left form-control" name="friday_mods_startq" placeholder="1">&mdash; \
+					<input type="text" class="day-right form-control" name="friday_mods_endq" placeholder="3"> \
 				</div> \
 				<div class="col-lg-1">&nbsp;</div> \
 			</div> \
