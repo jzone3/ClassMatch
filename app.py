@@ -5,7 +5,7 @@ from werkzeug.contrib.cache import SimpleCache
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
-from secret import *
+# from secret import *
 
 app = Flask(__name__)
 cache = SimpleCache()
