@@ -208,3 +208,8 @@ hr {
 .sticky-footer a  {
     color: rgb(44, 62, 80);
 }
+
+.about-page {
+	padding-top: 25px;
+	padding-bottom: 10px;
+}

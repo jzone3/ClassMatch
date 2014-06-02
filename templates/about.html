@@ -4,6 +4,19 @@
 <div class="container">
 	<h1>About</h1>
 	<hr class="hr-big">
-	<h3 class="center">We created ClassMatch to make the process of finding your classmates for next year more efficient and easy! ClassMatch is a website that enables you to quickly and easily find your classmates for the upcoming year!</h3>
+	<div class="about-page center class jumbotron">
+	<p>We created ClassMatch to make the process of finding your <span id="word-classmates">classmates</span> for next year more efficient and easy! ClassMatch is a website that enables you to quickly and easily find your classmates for the upcoming year!</p>
+	</div>
+
+	<script>
+    var myTimeoutAbout;
+    $('#word-classmates').mouseenter(function() {
+        myTimeoutAbout = setTimeout(function() {
+            $(".about-page").append('<br><a href="https://www.youtube.com/watch?v=93ASUImTedo"><img style="width:100%;" src="/static/img/matt.JPG"></a>')
+        }, 5000);
+    }).mouseleave(function() {
+        clearTimeout(myTimeoutAbout);
+    });
+    </script>
 </div>
 {% endblock %}
