@@ -113,7 +113,7 @@ def add_class():
 				end = request.form.get(day + "_mods_end" + str(i))
 				if not cache.get('classes'):
 					cache['classes'] = old_courses
-				course_list = str(cache.get('classes'))
+				course_list = str(cache.get('classes')).replace("u'", "'")
 				try:
 					start = int(start)
 					end = int(end)
@@ -135,7 +135,7 @@ def add_class():
 			if time == {}:
 				if not cache.get('classes'):
 					cache['classes'] = old_courses
-				course_list = str(cache.get('classes'))
+				course_list = str(cache.get('classes')).replace("u'", "'")
 				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
 			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
 			if results is None:
@@ -164,7 +164,7 @@ def add_class():
 			user_classes.append(classes.find_one({"_id" : course}))
 		if not cache.get('classes'):
 			cache['classes'] = old_courses
-		course_list = str(cache.get('classes'))
+		course_list = str(cache.get('classes')).replace("u'", "'")
 		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), courses=cache.get("classes"), course_list=course_list)
 	return redirect('/signin')
 
@@ -296,9 +296,11 @@ def account():
 @app.route('/account/delete', methods=['POST'])
 def account_delete():
 	if request.method == 'POST':
+		if not logged_in():
+			return redirect('/signin')
 		password = request.form.get('password')
 		if password is None:
-			return redirect('/account')
+			return render_template('account.html', signed_in=True, name=session['name'].title(), error="Incorrect password")
 		username = session['username']
 		user = get_user(username)
 		if user is None:
@@ -323,6 +325,9 @@ def account_delete():
 			users.remove({'_id':user.get('_id')})
 			session_logout()
 			return redirect('/')
+		else:
+			return render_template('account.html', signed_in=True, name=session['name'].title(), error="Incorrect password")
+
 @app.route('/classes.json')
 def class_json():
 	# return jsonify(classes=cache.get('classes'))

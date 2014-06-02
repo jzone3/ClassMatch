@@ -46,5 +46,7 @@ def make_pw_hash(name,pw, salt=None):
 	return "%s|%s" %(h,salt)
 
 def valid_pw(name,pw,h):
+	if pw is None or pw == "":
+		return False
 	salt = h.split("|")[1]
 	return h == make_pw_hash(name,pw,salt)
