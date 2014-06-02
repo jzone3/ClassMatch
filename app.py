@@ -4,14 +4,14 @@ import os
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
-# from secret import *
+from secret import *
 
 app = Flask(__name__)
 
 cache = {}
-app.secret_key = os.environ['SECRET_KEY']
+app.secret_key = SECRET_KEY #os.environ['SECRET_KEY']
 
-client = MongoClient(os.environ['MONGO_THING'])
+client = MongoClient(MONGO_THING)#os.environ['MONGO_THING'])
 db = client.get_default_database()
 users = db.users
 classes = db.classes
@@ -139,12 +139,13 @@ def add_class():
 				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
 			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
 			if results is None:
+				print "insertion"
 				r = classes.insert(c)
 				if not r in user['classes']:
 					user['classes'].append(r)
-				cached_classes = cache.get('classes')
-				if not c['class_name'] in cached_classes:
-					cache['classes'] = cached_classes.append(r)
+				if not c['class_name'] in cache['classes']:
+					cache['classes'] = cache['classes'].append(c['class_name'])
+				print cache['classes']
 				continue
 			if not name in results['students_enrolled_names']:
 				results['students_enrolled_names'].append(name)
@@ -326,6 +327,13 @@ def class_json():
 	if not cache.get('classes'):
 		cache['classes'] = old_courses
 	return str(cache.get('classes'))
+
+@app.errorhandler(404)
+def broken(error):
+	return render_template('404.html'), 404
+@app.errorhandler(500)
+def broken(error):
+	return render_template('500.html'), 500
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
