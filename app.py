@@ -5,13 +5,13 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-from secret import *
+#from secret import *
 
 app = Flask(__name__)
 
-app.secret_key = SECRET_KEY#os.environ['SECRET_KEY']
+app.secret_key = os.environ['SECRET_KEY']
 
-client = MongoClient(MONGO_THING)#os.environ['MONGO_THING'])
+client = MongoClient(os.environ['MONGO_THING'])
 db = client.get_default_database()
 users = db.users
 classes = db.classes
