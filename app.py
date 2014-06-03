@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-# from secret import *
+#from secret import *
 
 app = Flask(__name__)
 
@@ -55,17 +55,6 @@ def get_courses():
 
 def get_cached_courses():
 	return str(cache.find_one({'name':'classes'})['classes']).replace("u'", "'")
-	# if not old_courses_updated:
-	# 	old_courses_updated = True
-	# 	all_courses = classes.find({})
-	# 	oc = set(old_courses)
-	# 	for c in all_courses:
-	# 		if not c.get('class_name') in oc:
-	# 			oc.add(c.get('class_name'))
-	# 	old_courses = list(oc)
-	# if not cache.get('classes'):
-	# 	cache['classes'] = old_courses
-	# return str(cache.get('classes')).replace("u'", "'")
 
 def is_admin():
 	return session.get('username') == 'jarzon' or session.get('username') == 'parmod'
@@ -174,9 +163,9 @@ def add_class():
 					user['classes'].append(r)
 				cache_data = cache.find_one({'name':'classes'})
 				course_list = cache_data['classes']
-				if not c['class_name'] in course_list:
-					print "inserting course"
-					course_list.append(c['class_name'])
+				lower_course_list = map(lambda x:x.lower(),course_list)
+				if not c['class_name'].strip() in lower_course_list:
+					course_list.append(c['class_name'].strip())
 					cache_data['classes'] = course_list
 					cache.update({'name':'classes'},cache_data)
 				continue
