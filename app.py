@@ -9,7 +9,6 @@ import re
 
 app = Flask(__name__)
 
-cache = {}
 app.secret_key = os.environ['SECRET_KEY']
 
 client = MongoClient(os.environ['MONGO_THING'])
