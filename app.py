@@ -409,7 +409,7 @@ def merge_classes():
 		for r in results:
 			results_retrieved.append(r)
 		groups = group_classes(results_retrieved)
-		## merge groups
+		### merge groups
 
 def group_classes(data):
 	results_retrieved = list(data)
