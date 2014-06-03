@@ -397,6 +397,42 @@ def delete_class():
 	else:
 		return redirect('/')
 
+def merge_classes():
+	return False
+	all_courses_names = cache.find_one({'name':'classes'})['classes']
+	for course in all_courses_names:
+		results = classes.find({"class_name_lower" : course.lower()})
+		results_retrieved = []
+		for r in results:
+			results_retrieved.append(r)
+		groups = group_classes(results_retrieved)
+		## merge groups
+
+def group_classes(data):
+	results_retrieved = list(data)
+	groups = []
+	while len(results_retrieved) > 0:
+		first_element = results_retrieved[0]
+		current_group = [first_element]
+		indices_to_remove = [0]
+		current_index = 0
+		for b in results_retrieved:
+			current_index += 1
+			if first_element.get("_id") == b.get("_id"):
+				continue
+			if first_element.get("time") == b.get("time"):
+				current_group.append(b)
+				indices_to_remove.append(current_index - 1)
+		groups.append(current_group)
+		delta = 0
+		indices_to_remove.sort()
+		print indices_to_remove, len(results_retrieved)
+		for index in indices_to_remove:
+			print index - delta
+			results_retrieved.pop(index - delta)
+			delta += 1
+	return groups
+
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
