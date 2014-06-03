@@ -150,7 +150,20 @@ def add_class():
 			if time == {}:
 				course_list = get_cached_courses()
 				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
-			results = classes.find_one({"class_name_lower" : c['class_name_lower'], "time" : c['time']})
+			time_to_search = {}
+			if time.get('monday'):
+				time_to_search['monday'] = time.get('monday')
+			if time.get('tuesday'):
+				time_to_search['tuesday'] = time.get('tuesday')
+			if time.get('wednesday'):
+				time_to_search['wednesday'] = time.get('wednesday')
+			if time.get('thursday'):
+				time_to_search['thursday'] = time.get('thursday')
+			if time.get('friday'):
+				time_to_search['friday'] = time.get('friday')
+			to_search = {"class_name_lower" : c['class_name_lower']}
+			to_search.update(time_to_search)
+			results = classes.find_one(to_search)
 			if results is None:
 				print "insertion"
 				r = classes.insert(c)
