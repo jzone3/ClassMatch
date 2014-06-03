@@ -9,11 +9,11 @@ import re
 
 app = Flask(__name__)
 
-# app.secret_key = os.environ['SECRET_KEY']
-app.secret_key = SECRET_KEY
+app.secret_key = os.environ['SECRET_KEY']
+# app.secret_key = SECRET_KEY
 
-# client = MongoClient(os.environ['MONGO_THING'])
-client = MongoClient(MONGO_THING)
+client = MongoClient(os.environ['MONGO_THING'])
+# client = MongoClient(MONGO_THING)
 
 db = client.get_default_database()
 users = db.users
