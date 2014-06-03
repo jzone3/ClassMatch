@@ -5,13 +5,16 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-#from secret import *
+from secret import *
 
 app = Flask(__name__)
 
-app.secret_key = os.environ['SECRET_KEY']
+# app.secret_key = os.environ['SECRET_KEY']
+app.secret_key = SECRET_KEY
 
-client = MongoClient(os.environ['MONGO_THING'])
+# client = MongoClient(os.environ['MONGO_THING'])
+client = MongoClient(MONGO_THING)
+
 db = client.get_default_database()
 users = db.users
 classes = db.classes
@@ -379,9 +382,9 @@ def admin_page():
 		return render_template('admin.html')
 	return redirect('/')
 
-@app.route('/delete_class', methods=['POST'])
-def delete_class():
-	if is_admin():
+@app.route('/delete_class_admin', methods=['GET','POST'])
+def delete_class_admin():
+	if request.method == 'POST' and is_admin():
 		class_id = request.form.get('delete_class_id')
 		to_delete = get_class(ObjectId(class_id))
 		if to_delete is None:
