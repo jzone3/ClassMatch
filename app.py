@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-# from secret import *
+from secret import *
 
 app = Flask(__name__)
 
@@ -152,15 +152,15 @@ def add_class():
 				return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), error="No mods found", course_list=course_list)
 			time_to_search = {}
 			if time.get('monday'):
-				time_to_search['time.monday'] = time.get('monday')
+				time_to_search['time.monday'] = {"$in" : time.get('monday')}
 			if time.get('tuesday'):
-				time_to_search['time.tuesday'] = time.get('tuesday')
+				time_to_search['time.tuesday'] = {"$in" : time.get('tuesday')}
 			if time.get('wednesday'):
-				time_to_search['time.wednesday'] = time.get('wednesday')
+				time_to_search['time.wednesday'] = {"$in" : time.get('wednesday')}
 			if time.get('thursday'):
-				time_to_search['time.thursday'] = time.get('thursday')
+				time_to_search['time.thursday'] = {"$in" : time.get('thursday')}
 			if time.get('friday'):
-				time_to_search['time.friday'] = time.get('friday')
+				time_to_search['time.friday'] = {"$in" : time.get('friday')}
 			to_search = {"class_name_lower" : c['class_name_lower']}
 			to_search.update(time_to_search)
 			results = classes.find_one(to_search)
