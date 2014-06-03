@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="container">
+	<h1>Admin</h1>
+	<hr class="hr-big">
+	<div class="about-page center class jumbotron">
+	   <form method="POST" action="/delete_class">
+       Delete class (id): <input type="text" name="delete_class_id">
+       <button type="submit" class="btn btn-lg btn-primary">Delete Class</button>
+       </form>
+       <form method="POST" action="/merge_class">
+       Merge Class (id): <input type="text" name="delete_class_id1" placeholder="class1"> <input type="text" name="delete_class_id2" placeholder="class2">
+       <button type="submit" class="btn btn-lg btn-primary">Merge Classes</button>
+       </form>
+       <form method="POST" action="/delete_user">
+       Delete User (id): <input type="text" name="delete_user">
+       <button type="submit" class="btn btn-lg btn-primary">Delete User</button>
+       </form>
+    </div>
+</div>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- ClassMatch -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-7180252422585192"
+     data-ad-slot="2246752343"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endblock %}

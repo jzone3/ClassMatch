@@ -67,6 +67,9 @@ def get_cached_courses():
 	# 	cache['classes'] = old_courses
 	# return str(cache.get('classes')).replace("u'", "'")
 
+def is_admin():
+	return session.get('username') == 'jarzon' or session.get('username') == 'parmod'
+
 @app.route('/')
 def index():
 	if logged_in():
@@ -377,6 +380,13 @@ def broken(error):
 @app.route('/500')
 def fivehundred():
 	return render_template('500.html'), 500
+
+@app.route('/admin'):
+def admin_page():
+	if logged_in() and :
+		return render_template('admin.html')
+	return redirect('/')
+
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))
 	app.run(host='0.0.0.0', port=port,debug=True)
