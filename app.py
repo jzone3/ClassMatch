@@ -41,6 +41,9 @@ def get_user(username):
 		session_logout()
 	return user
 
+def get_class(class_id):
+	return classes.find_one({'_id' : class_id})
+
 def get_courses():
 	username = session['username']
 	user = get_user(username)
@@ -57,7 +60,7 @@ def get_cached_courses():
 	return str(cache.find_one({'name':'classes'})['classes']).replace("u'", "'")
 
 def is_admin():
-	return session.get('username') == 'jarzon' or session.get('username') == 'parmod'
+	return logged_in() and (session.get('username') == 'jarzon' or session.get('username') == 'parmod')
 
 @app.route('/')
 def index():
@@ -370,11 +373,29 @@ def broken(error):
 def fivehundred():
 	return render_template('500.html'), 500
 
-@app.route('/admin'):
+@app.route('/admin')
 def admin_page():
-	if logged_in() and :
+	if is_admin():
 		return render_template('admin.html')
 	return redirect('/')
+
+@app.route('/delete_class', methods=['POST'])
+def delete_class():
+	if is_admin():
+		class_id = request.form.get('delete_class_id')
+		to_delete = get_class(ObjectId(class_id))
+		if to_delete is None:
+			return render_template('admin.html', error="No class found.")
+		stu_ids = to_delete.get('students_enrolled_ids')
+		for student in stu_ids:
+			user = get_user(student)
+			user['classes'].pop(to_delete.get("_id"))
+			users.update({"_id" : student}, user)
+		name = to_delete.get('class_name')
+		classes.remove({"_id" : ObjectId(class_id)})
+		return render_template('admin.html', error="Deleted " + name)
+	else:
+		return redirect('/')
 
 if __name__ == '__main__':
 	port = int(os.environ.get('PORT', 8000))

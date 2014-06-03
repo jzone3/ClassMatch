@@ -4,6 +4,12 @@
 <div class="container">
 	<h1>Admin</h1>
 	<hr class="hr-big">
+    {% if error %}
+    <div class="error">
+        <h3>{{error}}</h3>
+    </div>
+    <br>
+    {% endif %}
 	<div class="about-page center class jumbotron">
 	   <form method="POST" action="/delete_class">
        Delete class (id): <input type="text" name="delete_class_id">
