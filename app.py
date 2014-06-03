@@ -225,9 +225,10 @@ def sign_up():
 		last_name = request.form.get('last_name')
 		if not last_name and first_name.count(" ") >= 1:
 			exploded = first_name.split(" ")
-			first_name = exploded[0]
-			exploded.pop(0)
-			last_name = " ".join(exploded)
+			if len(exploded[1]) > 0:
+				first_name = exploded[0]
+				exploded.pop(0)
+				last_name = " ".join(exploded)
 		username = request.form.get('username').lower()
 		if '@bergen.org' in username:
 			username = username.split("@bergen.org")[0]
