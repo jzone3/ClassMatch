@@ -170,7 +170,7 @@ def add_class():
 				cache_data = cache.find_one({'name':'classes'})
 				course_list = cache_data['classes']
 				lower_course_list = map(lambda x:x.lower(),course_list)
-				if not c['class_name'].strip() in lower_course_list:
+				if not c['class_name'].strip().lower() in lower_course_list:
 					course_list.append(c['class_name'].strip())
 					cache_data['classes'] = course_list
 					cache.update({'name':'classes'},cache_data)
