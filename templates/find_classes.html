@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="container">
+	<form class="center" method="POST" action="/find">
+		<div id="course-typeahead">
+			<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="typeahead form-control" autocomplete="off" id="class_name" name="class_name" autofocus="autofocus" placeholder="Data Structures">
+		</div>
+		<br>
+		<button class="btn btn-primary" type="submit">Find Class Times!</button>
+	</form>
+	{% for c in found_classes %}
+	<div class="class jumbotron">
+		<h2>{{c['class_name']}}</h2>
+		<hr class="hr-big" style="width: 100%;">
+		<div class="row center">
+			<div class="col-md-1">&nbsp;</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Monday</span>
+				<br/><br/>
+				{% if c['time']['monday'] %}
+				{{c['time']['monday'][0]}} - {{c['time']['monday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Tuesday</span>
+				<br/><br/>
+				{% if c['time']['tuesday'] %}
+				{{c['time']['tuesday'][0]}} - {{c['time']['tuesday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Wednesday</span>
+				<br/><br/>
+				{% if c['time']['wednesday'] %}
+				{{c['time']['wednesday'][0]}} - {{c['time']['wednesday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week day-of-the-week-right">
+				<span class="day">Thursday</span>
+				<br/><br/>
+				{% if c['time']['thursday'] %}
+				{{c['time']['thursday'][0]}} - {{c['time']['thursday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-2 day-of-the-week">
+				<span class="day">Friday</span>
+				<br/><br/>
+				{% if c['time']['friday'] %}
+				{{c['time']['friday'][0]}} - {{c['time']['friday'][1]}}
+				{% endif %}
+			</div>
+			<div class="col-md-1">&nbsp;</div>
+		</div>
+		<br>
+	</div>
+	{% endfor %}
+	</div>
+</div>
+<script type="text/javascript"> 
+var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+ 
+    // an array that will be populated with substring matches
+    matches = [];
+ 
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+ 
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        // the typeahead jQuery plugin expects suggestions to a
+        // JavaScript object, refer to typeahead docs for more info
+        matches.push({ value: str });
+      }
+    });
+ 
+    cb(matches);
+  };
+};
+var states = {{course_list | safe}};
+$('#course-typeahead .typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},
+{
+  name: 'states',
+  displayKey: 'value',
+  source: substringMatcher(states)
+});
+</script>
+{% endblock %}

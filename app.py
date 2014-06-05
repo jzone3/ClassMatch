@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-#from secret import *
+from secret import *
 
 app = Flask(__name__)
 
@@ -341,13 +341,6 @@ def account_delete():
 					classes.remove({"_id":class_id})
 				course['students_enrolled_names'].pop(index)
 				classes.update({"_id" : c}, course)
-				# for ids in course['students_enrolled_ids']:
-				# 	if ids == user['_id']:
-				# 		course['students_enrolled_ids'].remove(ids)
-				# for names in course['students_enrolled_ids']:
-				# 	full_name = user['first_name'] + ' ' + user['last_name']
-				# 	if names == full_name:
-				# 		course['students_enrolled_ids'].remove(names)
 				classes.update({'_id':c},course)
 			users.remove({'_id':user.get('_id')})
 			session_logout()
@@ -359,6 +352,17 @@ def account_delete():
 def class_json():
 	# return jsonify(classes=cache.get('classes'))
 	return get_cached_courses()
+@app.route('/find', methods=['GET','POST'])
+def find_classes():
+	if request.method == 'POST':
+		class_name = request.form.get('class_name')
+		matches = classes.find({'class_name':class_name})
+		course_list = get_cached_courses()
+		return render_template('find_classes.html', signed_in=True,page="add", name=session['name'].title(), course_list=course_list, found_classes=matches)
+	if logged_in():
+		course_list = get_cached_courses()
+		return render_template('find_classes.html', signed_in=True,page="add", name=session['name'].title(), course_list=course_list)
+	return redirect('/signin')
 
 @app.errorhandler(404)
 def broken(error):
