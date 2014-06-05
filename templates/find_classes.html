@@ -52,7 +52,17 @@
 			</div>
 			<div class="col-md-1">&nbsp;</div>
 		</div>
-		<br>
+		<br><br>
+		<div class="students">
+		<strong>Classmates: </strong>
+		{% for x in range(0,c['students_enrolled_names']|length) %}
+		{% if x != (c['students_enrolled_names']|length)-1 %}
+		<a href="/user/{{c['students_enrolled_ids'][x]}}">{{c['students_enrolled_names'][x].title()}}</a>,
+		{% else %}
+		<a href="/user/{{c['students_enrolled_ids'][x]}}">{{c['students_enrolled_names'][x].title()}}</a>
+		{% endif %}
+		{% endfor %}
+		</div>
 	</div>
 	{% endfor %}
 	</div>
