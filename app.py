@@ -5,15 +5,15 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-#from secret import *
+from secret import *
 
 app = Flask(__name__)
 
-app.secret_key = os.environ['SECRET_KEY']
-#app.secret_key = SECRET_KEY
+# app.secret_key = os.environ['SECRET_KEY']
+app.secret_key = SECRET_KEY
 
-client = MongoClient(os.environ['MONGO_THING'])
-#client = MongoClient(MONGO_THING)
+# client = MongoClient(os.environ['MONGO_THING'])
+client = MongoClient(MONGO_THING)
 
 db = client.get_default_database()
 users = db.users
@@ -65,6 +65,30 @@ def get_cached_courses():
 def is_admin():
 	return logged_in() and (session.get('username') == 'jarzon' or session.get('username') == 'parmod')
 
+def split_into_mods(day):
+	mods = dict((key, None) for key in range(1,28))
+	for c in day:
+		start = c['time'][0]
+		end = c['time'][1]
+		for mod in range(start, end + 1):
+			mods[mod] = c['class_name']
+	return mods
+
+def split_courses_into_days(courses):
+	all_courses_list = courses.values()
+	days = {"monday" : [], "tuesday" : [], "wednesday" : [], "thursday" : [], "friday" : []}
+	for c in all_courses_list:
+		for day in c['time'].keys():
+			c_copy = dict(c)
+			c_copy['time'] = c['time'][day]
+			days[day].append(c_copy)
+	# return [split_into_mods(x) for x in days.values()]
+	return [split_into_mods(days["monday"]),
+			split_into_mods(days["tuesday"]),
+			split_into_mods(days["wednesday"]),
+			split_into_mods(days["thursday"]),
+			split_into_mods(days["friday"])]
+
 @app.route('/')
 def index():
 	if logged_in():
@@ -73,6 +97,16 @@ def index():
 			return redirect('/add')
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
+
+@app.route('/pretty')
+def pretty_schedule():
+	if logged_in():
+		courses = get_courses()
+		if courses == {}:
+			return redirect('/add')
+		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+		return render_template('pretty.html', signed_in=True, name=session['name'].title(), monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday)
+	return redirect('/')
 
 @app.route('/about')
 def about():

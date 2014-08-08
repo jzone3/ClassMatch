@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}My Schedule{% endblock %}
+{% block content %}
+<div class="container">
+	<h1>My Schedule</h1>
+	<br>
+	<table class="schedule table">
+		<tr class="head">
+			<td><br><br><br><br><br></td>
+			<td>Monday<br><br><br><br></td>
+			<td>Tuesday<br><br><br><br></td>
+			<td>Wednesday<br><br><br><br></td>
+			<td>Thursday<br><br><br><br></td>
+			<td>Friday<br><br><br><br></td>
+		</tr>
+		{% set monday_last = -1 %}
+		{% set tuesday_last = -1 %}
+		{% set wednesday_last = -1 %}
+		{% set thursday_last = -1 %}
+		{% set friday_last = -1 %}
+		{% for mod in range(1,28) %}
+		<tr>
+			<td>{{mod}}</td>
+			<td>{% if monday[mod] != None and monday[mod] != monday_last %}
+			{{monday[mod]}}
+			{% elif monday[mod] == monday_last and monday_last != None %}
+			----
+			{% else %}
+			<br>
+			{% endif %}
+			{% set monday_last = monday[mod] %}</td>
+			<td>{% if tuesday[mod] != None and tuesday[mod] != tuesday_last %}
+			{{tuesday[mod]}}
+			{% elif tuesday[mod] == tuesday_last and tuesday_last != None %}
+			----
+			{% else %}
+			<br>
+			{% endif %}
+			{% set tuesday_last = tuesday[mod] %}</td>
+			<td>{% if wednesday[mod] != None and wednesday[mod] != wednesday_last %}
+			{{wednesday[mod]}}
+			{% elif wednesday[mod] == wednesday_last and wednesday_last != None %}
+			----
+			{% else %}
+			<br>
+			{% endif %}
+			{% set wednesday_last = wednesday[mod] %}</td>
+			<td>{% if thursday[mod] != None and thursday[mod] != thursday_last %}
+			{{thursday[mod]}}
+			{% elif thursday[mod] == thursday_last and thursday_last != None %}
+			----
+			{% else %}
+			<br>
+			{% endif %}
+			{% set thursday_last = thursday[mod] %}</td>
+			<td>{% if friday[mod] != None and friday[mod] != friday_last %}
+			{{friday[mod]}}
+			{% elif friday[mod] == friday_last and friday_last != None %}
+			----
+			{% else %}
+			<br>
+			{% endif %}
+			{% set friday_last = friday[mod] %}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}

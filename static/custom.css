@@ -216,3 +216,18 @@ hr {
 .find-class{
 
 }
+
+.schedule {
+	width: 100%;
+	text-align: center;
+}
+
+.schedule .head {
+	font-weight: bold;
+	margin-bottom: 20px;
+	/*#2c3e50*/
+}
+
+table, th, td {
+	border: 1px solid #2c3e50 !important;
+}
