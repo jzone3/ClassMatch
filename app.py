@@ -23,7 +23,7 @@ cache = db.cache
 
 
 COURSE_REGEX = "^[\w\-\. ]+$"
-
+MOD_TIMES = ['8:13-8:28', '8:31-8:46', '8:49-9:04', '9:07-9:22', '9:25-9:40', '9:43-9:58', '10:01-10:16', '10:19-10:34', '10:37-10:52', '10:55-11:10', '11:13-11:28', '11:31-11:46', '11:49-12:04', '12:07-12:22', '12:25-12:40', '12:43-12:58', '1:01-1:16', '1:19-1:34', '1:37-1:52', '1:55-2:10', '2:13-2:28', '2:31-2:46', '2:49-3:04', '3:07-3:22', '3:25-3:38', '3:41-3:54', '3:57-4:10']
 
 def session_login(username, first_name):
 	session['username'] = username
@@ -120,7 +120,7 @@ def pretty_schedule():
 		if courses == {}:
 			return redirect('/add')
 		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-		return render_template('pretty.html', signed_in=True, name=session['name'].title(), monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday)
+		return render_template('pretty.html', signed_in=True, name=session['name'].title(), monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
 	return redirect('/')
 
 @app.route('/about')

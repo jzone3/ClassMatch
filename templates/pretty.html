@@ -20,7 +20,7 @@
 		{% set friday_last = -1 %}
 		{% for mod in range(1,28) %}
 		<tr class="classes-row">
-			<td>{{mod}}</td>
+			<td><span style="display:block;height:100%;width:100%;" data-toggle="tooltip" data-original-title="{{mod_times[mod - 1]}}" id="{{mod}}">{{mod}}</span></td>
 			<td {% if monday[mod] != None and monday[mod] != monday_last %} class="occupied-cell-top" {% elif monday[mod] != None and monday[mod] == monday_last %} class="occupied-cell-center" {% elif monday[mod] == None and monday[mod] != monday_last %} class="free-cell-top" {% endif %}{% if monday[mod] != None and monday[mod]['color'] != None %} style="background-color: rgba({{ monday[mod]['color'] }}, 1);"{% endif %}>
 				{% if monday[mod] != None and monday[mod] != monday_last %}
 					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{monday[mod]['students_enrolled_names']}}" id="monday{{mod}}">{{monday[mod]['name']}}</span>
@@ -54,6 +54,7 @@
 
 {% block script %}
 for (var i = 1; i <= 27; i++) {
+	$("#" + i).tooltip();
 	$("#monday" + i).tooltip();
 	$("#tuesday" + i).tooltip();
 	$("#wednesday" + i).tooltip();
