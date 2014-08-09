@@ -5,16 +5,16 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-# from secret import *
+from secret import *
 import random
 
 app = Flask(__name__)
 
-app.secret_key = os.environ['SECRET_KEY']
-# app.secret_key = SECRET_KEY
+#app.secret_key = os.environ['SECRET_KEY']
+app.secret_key = SECRET_KEY
 
-client = MongoClient(os.environ['MONGO_THING'])
-# client = MongoClient(MONGO_THING)
+#client = MongoClient(os.environ['MONGO_THING'])
+client = MongoClient(MONGO_THING)
 
 db = client.get_default_database()
 users = db.users
@@ -23,7 +23,10 @@ cache = db.cache
 
 
 COURSE_REGEX = "^[\w\-\. ]+$"
-MOD_TIMES = ['8:13-8:28', '8:31-8:46', '8:49-9:04', '9:07-9:22', '9:25-9:40', '9:43-9:58', '10:01-10:16', '10:19-10:34', '10:37-10:52', '10:55-11:10', '11:13-11:28', '11:31-11:46', '11:49-12:04', '12:07-12:22', '12:25-12:40', '12:43-12:58', '1:01-1:16', '1:19-1:34', '1:37-1:52', '1:55-2:10', '2:13-2:28', '2:31-2:46', '2:49-3:04', '3:07-3:22', '3:25-3:38', '3:41-3:54', '3:57-4:10']
+MOD_TIMES = ['8:13-8:28', '8:31-8:46', '8:49-9:04', '9:07-9:22', '9:25-9:40', '9:43-9:58', '10:01-10:16',
+ 			'10:19-10:34', '10:37-10:52', '10:55-11:10', '11:13-11:28', '11:31-11:46', '11:49-12:04', '12:07-12:22',
+  			'12:25-12:40', '12:43-12:58', '1:01-1:16', '1:19-1:34', '1:37-1:52', '1:55-2:10', '2:13-2:28', '2:31-2:46',
+   			'2:49-3:04', '3:07-3:22', '3:25-3:38', '3:41-3:54', '3:57-4:10']
 
 def session_login(username, first_name):
 	session['username'] = username
