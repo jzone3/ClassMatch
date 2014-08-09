@@ -114,7 +114,7 @@ def index():
 		return render_template('my_classes.html', signed_in=True, name=session['name'].title(),classes=courses)
 	return render_template("index.html", page="index")
 
-@app.route('/pretty')
+@app.route('/pretty/')
 def pretty_schedule():
 	if logged_in():
 		return redirect('/schedule/' + session['username'])
@@ -125,13 +125,13 @@ def pretty_schedule():
 		# return render_template('pretty.html', signed_in=True, name=session['name'].title(), monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
 	return redirect('/signin')
 
-@app.route('/schedule')
+@app.route('/schedule/')
 def formatted_schedule_no_username():
 	if logged_in():
 		return redirect('/schedule/' + session['username'])
 	return redirect('/signin')
 
-@app.route('/schedule/<username>')
+@app.route('/schedule/<username>/')
 def formatted_schedule(username):
 	if logged_in():
 		user = users.find_one({'username' : username})
@@ -151,13 +151,13 @@ def formatted_schedule(username):
 		return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
 	return redirect('/signin')
 
-@app.route('/about')
+@app.route('/about/')
 def about():
 	if logged_in():
 		return render_template('about.html', signed_in=True, name=session['name'].title(), page='about')
 	return render_template('about.html', page='about')
 
-@app.route('/delete_class/<class_id>')
+@app.route('/delete_class/<class_id>/')
 def delete_class(class_id):
 	if logged_in():
 		class_id = ObjectId(class_id)
@@ -178,7 +178,7 @@ def delete_class(class_id):
 		return redirect('/classes')
 	return redirect('/signin')
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add/', methods=['GET', 'POST'])
 def add_class():
 	if request.method == 'POST':
 		if not logged_in():
@@ -271,7 +271,7 @@ def add_class():
 		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), course_list=course_list)
 	return redirect('/signin')
 
-@app.route('/signin', methods=['GET','POST'])
+@app.route('/signin/', methods=['GET','POST'])
 def sign_in():
 	if request.method == 'POST':
 		username = request.form.get('username').lower()
@@ -293,7 +293,7 @@ def sign_in():
 		return redirect('/')
 	return render_template("signin.html", username="")
 
-@app.route('/signup', methods=['GET','POST'])
+@app.route('/signup/', methods=['GET','POST'])
 def sign_up():
 	if request.method == 'POST':
 		first_name = request.form.get('first_name')
@@ -349,7 +349,7 @@ def sign_up():
 	if logged_in():
 		return redirect('/')
 	return render_template("signup.html", variables=None)
-@app.route('/user/<id>')
+@app.route('/user/<id>/')
 def get_user_info(id):
 	if not(logged_in()):
 		return redirect('/signin')
@@ -363,7 +363,7 @@ def get_user_info(id):
 	for c in user['classes']:
 		courses.append(classes.find_one({'_id':c})['class_name'])
 	return render_template('user_info.html', signed_in=True, name=session['name'].title(),classes=courses, user_name=name.title(), email=email)
-@app.route('/classes')
+@app.route('/classes/')
 def my_classes():
 	if logged_in():
 		courses = get_courses()
@@ -371,11 +371,11 @@ def my_classes():
 			return redirect('/add')
 		return render_template('my_classes.html',signed_in=True, name=session['name'].title(), classes=courses)
 	return redirect('/signin')
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
 	session_logout()
 	return redirect('/')
-@app.route('/account', methods=['GET','POST'])
+@app.route('/account/', methods=['GET','POST'])
 def account():
 	if request.method == 'POST':
 		old_password = request.form.get('old_password')
@@ -397,7 +397,7 @@ def account():
 	if not(logged_in()):
 		return redirect('/signin')
 	return render_template('account.html',signed_in=True, name=session['name'].title())
-@app.route('/account/delete', methods=['POST'])
+@app.route('/account/delete/', methods=['POST'])
 def account_delete():
 	if request.method == 'POST':
 		if not logged_in():
@@ -425,11 +425,11 @@ def account_delete():
 		else:
 			return render_template('account.html', signed_in=True, name=session['name'].title(), error="Incorrect password")
 
-@app.route('/classes.json')
+@app.route('/classes.json/')
 def class_json():
 	# return jsonify(classes=cache.get('classes'))
 	return get_cached_courses()
-@app.route('/find', methods=['GET','POST'])
+@app.route('/find/', methods=['GET','POST'])
 def find_classes():
 	if request.method == 'POST':
 		class_name = request.form.get('class_name')
@@ -445,7 +445,7 @@ def find_classes():
 def broken(error):
 	return render_template('404.html'), 404
 
-@app.route('/404')
+@app.route('/404/')
 def forohfor():
 	return render_template('404.html'), 404
 
@@ -453,17 +453,17 @@ def forohfor():
 def broken(error):
 	return render_template('500.html'), 500
 
-@app.route('/500')
+@app.route('/500/')
 def fivehundred():
 	return render_template('500.html'), 500
 
-@app.route('/admin')
+@app.route('/admin/')
 def admin_page():
 	if is_admin():
 		return render_template('admin.html')
 	return redirect('/')
 
-@app.route('/delete_class_admin', methods=['GET','POST'])
+@app.route('/delete_class_admin/', methods=['GET','POST'])
 def delete_class_admin():
 	if request.method == 'POST' and is_admin():
 		class_id = request.form.get('delete_class_id')
