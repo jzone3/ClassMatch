@@ -218,14 +218,25 @@ hr {
 }
 
 .schedule {
+	margin-left: auto;
+	margin-right: auto;
 	width: 100%;
 	text-align: center;
 }
 
 .schedule .head {
 	font-weight: bold;
-	margin-bottom: 20px;
+	font-size: 20px;
 	/*#2c3e50*/
+}
+
+.schedule .head td {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.schedule .classes-row {
+	font-size: 16px;
 }
 
 table, th, td {

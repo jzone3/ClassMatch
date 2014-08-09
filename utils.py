@@ -50,3 +50,7 @@ def valid_pw(name,pw,h):
 		return False
 	salt = h.split("|")[1]
 	return h == make_pw_hash(name,pw,salt)
+
+if __name__ == "__main__":
+    import pdb; pdb.set_trace()
+    main()
