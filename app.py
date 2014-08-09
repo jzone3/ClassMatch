@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-from secret import *
+# from secret import *
 import random
 
 app = Flask(__name__)
