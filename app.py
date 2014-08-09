@@ -148,7 +148,8 @@ def formatted_schedule(username):
 		if courses == {}:
 			return render_template('404.html'), 404
 		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-	return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
+		return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
+	return redirect('/')
 
 @app.route('/about')
 def about():
