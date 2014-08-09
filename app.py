@@ -123,13 +123,13 @@ def pretty_schedule():
 		# 	return redirect('/add')
 		# monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
 		# return render_template('pretty.html', signed_in=True, name=session['name'].title(), monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
-	return redirect('/')
+	return redirect('/signin')
 
 @app.route('/schedule')
 def formatted_schedule_no_username():
 	if logged_in():
 		return redirect('/schedule/' + session['username'])
-	return redirect('/')
+	return redirect('/signin')
 
 @app.route('/schedule/<username>')
 def formatted_schedule(username):
@@ -149,7 +149,7 @@ def formatted_schedule(username):
 			return render_template('404.html'), 404
 		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
 		return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
-	return redirect('/')
+	return redirect('/signin')
 
 @app.route('/about')
 def about():
@@ -176,7 +176,7 @@ def delete_class(class_id):
 		user['classes'].pop(user['classes'].index(class_id))
 		users.update({"_id" : user.get("_id")}, user)
 		return redirect('/classes')
-	return redirect('/login')
+	return redirect('/signin')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_class():
