@@ -230,4 +230,27 @@ hr {
 
 table, th, td {
 	border: 1px solid #2c3e50 !important;
+	color: black !important;
+}
+
+.classes-row {
+	font-weight: bolder;
+}
+
+.occupied-cell-top {
+	border-top: 3px solid black !important;
+	border-right: 3px solid black !important;
+	border-left: 3px solid black !important;
+	border-bottom: none !important;
+}
+
+.occupied-cell-center {
+	border-right: 3px solid black !important;
+	border-left: 3px solid black !important;
+	border-top: none !important;
+	border-bottom: none !important;
+}
+
+.free-cell-top {
+	border-top: 3px solid black !important;
 }

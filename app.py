@@ -6,6 +6,7 @@ from pymongo import *
 from utils import *
 import re
 from secret import *
+import random
 
 app = Flask(__name__)
 
@@ -65,29 +66,43 @@ def get_cached_courses():
 def is_admin():
 	return logged_in() and (session.get('username') == 'jarzon' or session.get('username') == 'parmod')
 
-def split_into_mods(day):
+def split_into_mods(day, color=True):
 	mods = dict((key, None) for key in range(1,28))
 	for c in day:
 		start = c['time'][0]
 		end = c['time'][1]
 		for mod in range(start, end + 1):
-			mods[mod] = c['class_name']
+			mods[mod] = {}
+			mods[mod]['name'] = c['class_name']
+			if color:
+				mods[mod]['color'] = c['color']
+				print c['color']
 	return mods
 
 def split_courses_into_days(courses):
 	all_courses_list = courses.values()
 	days = {"monday" : [], "tuesday" : [], "wednesday" : [], "thursday" : [], "friday" : []}
+	# colors = ['26, 188, 156', '46, 204, 113', '52, 152, 219', '155, 89, 182', '52, 73, 94', '241, 196, 15', '230, 126, 34', '231, 76, 60', '127, 140, 141', '192, 57, 43', '211, 84, 0']
+	# colors = ['26, 188, 156', '41, 128, 185', '142, 68, 173', '192, 57, 43', '52, 73, 94']
+	colors = ['243, 236, 12', '252, 39, 18', '198, 50, 253', '254, 209, 100', '134, 205, 77', '128, 128, 128', '100, 255, 240', '253, 164, 160', '255, 255, 255']
+	colored_schedule = True
 	for c in all_courses_list:
+		current_color = ""
+		if len(colors) <= 0:
+			colored_schedule = False
+		else:
+			current_color = colors.pop(random.randint(0, len(colors) - 1))
 		for day in c['time'].keys():
 			c_copy = dict(c)
 			c_copy['time'] = c['time'][day]
 			days[day].append(c_copy)
+			c_copy['color'] = current_color
 	# return [split_into_mods(x) for x in days.values()]
-	return [split_into_mods(days["monday"]),
-			split_into_mods(days["tuesday"]),
-			split_into_mods(days["wednesday"]),
-			split_into_mods(days["thursday"]),
-			split_into_mods(days["friday"])]
+	return [split_into_mods(days["monday"], colored_schedule),
+			split_into_mods(days["tuesday"], colored_schedule),
+			split_into_mods(days["wednesday"], colored_schedule),
+			split_into_mods(days["thursday"], colored_schedule),
+			split_into_mods(days["friday"], colored_schedule)]
 
 @app.route('/')
 def index():
