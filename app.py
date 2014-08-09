@@ -76,7 +76,6 @@ def split_into_mods(day, color=True):
 			mods[mod]['name'] = c['class_name']
 			if color:
 				mods[mod]['color'] = c['color']
-				print c['color']
 	return mods
 
 def split_courses_into_days(courses):
