@@ -245,7 +245,7 @@ table, th, td {
 }
 
 .classes-row {
-	font-weight: bolder;
+	font-weight: bold;
 }
 
 .occupied-cell-top {
@@ -265,3 +265,7 @@ table, th, td {
 .free-cell-top {
 	border-top: 3px solid black !important;
 }
+
+/*.tooltip-schedule {
+	font-weight: normal;
+}*/

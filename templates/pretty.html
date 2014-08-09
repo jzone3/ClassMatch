@@ -21,38 +21,43 @@
 		{% for mod in range(1,28) %}
 		<tr class="classes-row">
 			<td>{{mod}}</td>
-			<td {% if monday[mod] != None and monday[mod] != monday_last %} class="occupied-cell-top" {% elif monday[mod] != None and monday[mod] == monday_last %} class="occupied-cell-center" {% elif monday[mod] == None and monday[mod] != monday_last %} class="free-cell-top" {% endif %}{% if monday[mod] != None and monday[mod]['color'] != None %} style="background-color: rgba({{ monday[mod]['color'] }}, 1);"{% endif %}>{% if monday[mod] != None and monday[mod] != monday_last %}
-			{{monday[mod]['name']}}
-			{% else %}
-			<br>
-			{% endif %}
+			<td {% if monday[mod] != None and monday[mod] != monday_last %} class="occupied-cell-top" {% elif monday[mod] != None and monday[mod] == monday_last %} class="occupied-cell-center" {% elif monday[mod] == None and monday[mod] != monday_last %} class="free-cell-top" {% endif %}{% if monday[mod] != None and monday[mod]['color'] != None %} style="background-color: rgba({{ monday[mod]['color'] }}, 1);"{% endif %}>
+				{% if monday[mod] != None and monday[mod] != monday_last %}
+					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{monday[mod]['students_enrolled_names']}}" id="monday{{mod}}">{{monday[mod]['name']}}</span>
+				{% endif %}
 			{% set monday_last = monday[mod] %}</td>
-			<td {% if tuesday[mod] != None and tuesday[mod] != tuesday_last %} class="occupied-cell-top" {% elif tuesday[mod] != None and tuesday[mod] == tuesday_last %} class="occupied-cell-center" {% elif tuesday[mod] == None and tuesday[mod] != tuesday_last %} class="free-cell-top" {% endif %}{% if tuesday[mod] != None and tuesday[mod]['color'] != None %} style="background-color: rgba({{ tuesday[mod]['color'] }}, 1);"{% endif %}>{% if tuesday[mod] != None and tuesday[mod] != tuesday_last %}
-			{{tuesday[mod]['name']}}
-			{% else %}
-			<br>
-			{% endif %}
+			<td {% if tuesday[mod] != None and tuesday[mod] != tuesday_last %} class="occupied-cell-top" {% elif tuesday[mod] != None and tuesday[mod] == tuesday_last %} class="occupied-cell-center" {% elif tuesday[mod] == None and tuesday[mod] != tuesday_last %} class="free-cell-top" {% endif %}{% if tuesday[mod] != None and tuesday[mod]['color'] != None %} style="background-color: rgba({{ tuesday[mod]['color'] }}, 1);"{% endif %}>
+				{% if tuesday[mod] != None and tuesday[mod] != tuesday_last %}
+					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{tuesday[mod]['students_enrolled_names']}}" id="tuesday{{mod}}">{{tuesday[mod]['name']}}</span>
+				{% endif %}
 			{% set tuesday_last = tuesday[mod] %}</td>
-			<td {% if wednesday[mod] != None and wednesday[mod] != wednesday_last %} class="occupied-cell-top" {% elif wednesday[mod] != None and wednesday[mod] == wednesday_last %} class="occupied-cell-center" {% elif wednesday[mod] == None and wednesday[mod] != wednesday_last %} class="free-cell-top" {% endif %}{% if wednesday[mod] != None and wednesday[mod]['color'] != None %} style="background-color: rgba({{ wednesday[mod]['color'] }}, 1);"{% endif %}>{% if wednesday[mod] != None and wednesday[mod] != wednesday_last %}
-			{{wednesday[mod]['name']}}
-			{% else %}
-			<br>
-			{% endif %}
+			<td {% if wednesday[mod] != None and wednesday[mod] != wednesday_last %} class="occupied-cell-top" {% elif wednesday[mod] != None and wednesday[mod] == wednesday_last %} class="occupied-cell-center" {% elif wednesday[mod] == None and wednesday[mod] != wednesday_last %} class="free-cell-top" {% endif %}{% if wednesday[mod] != None and wednesday[mod]['color'] != None %} style="background-color: rgba({{ wednesday[mod]['color'] }}, 1);"{% endif %}>
+				{% if wednesday[mod] != None and wednesday[mod] != wednesday_last %}
+					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{wednesday[mod]['students_enrolled_names']}}" id="wednesday{{mod}}">{{wednesday[mod]['name']}}</span>
+				{% endif %}
 			{% set wednesday_last = wednesday[mod] %}</td>
-			<td {% if thursday[mod] != None and thursday[mod] != thursday_last %} class="occupied-cell-top" {% elif thursday[mod] != None and thursday[mod] == thursday_last %} class="occupied-cell-center" {% elif thursday[mod] == None and thursday[mod] != thursday_last %} class="free-cell-top" {% endif %}{% if thursday[mod] != None and thursday[mod]['color'] != None %} style="background-color: rgba({{ thursday[mod]['color'] }}, 1);"{% endif %}>{% if thursday[mod] != None and thursday[mod] != thursday_last %}
-			{{thursday[mod]['name']}}
-			{% else %}
-			<br>
-			{% endif %}
+			<td {% if thursday[mod] != None and thursday[mod] != thursday_last %} class="occupied-cell-top" {% elif thursday[mod] != None and thursday[mod] == thursday_last %} class="occupied-cell-center" {% elif thursday[mod] == None and thursday[mod] != thursday_last %} class="free-cell-top" {% endif %}{% if thursday[mod] != None and thursday[mod]['color'] != None %} style="background-color: rgba({{ thursday[mod]['color'] }}, 1);"{% endif %}>
+				{% if thursday[mod] != None and thursday[mod] != thursday_last %}
+					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{thursday[mod]['students_enrolled_names']}}" id="thursday{{mod}}">{{thursday[mod]['name']}}</span>
+				{% endif %}
 			{% set thursday_last = thursday[mod] %}</td>
-			<td {% if friday[mod] != None and friday[mod] != friday_last %} class="occupied-cell-top" {% elif friday[mod] != None and friday[mod] == friday_last %} class="occupied-cell-center" {% elif friday[mod] == None and friday[mod] != friday_last %} class="free-cell-top" {% endif %}{% if friday[mod] != None and friday[mod]['color'] != None %} style="background-color: rgba({{ friday[mod]['color'] }}, 1);"{% endif %}>{% if friday[mod] != None and friday[mod] != friday_last %}
-			{{friday[mod]['name']}}
-			{% else %}
-			<br>
-			{% endif %}
+			<td {% if friday[mod] != None and friday[mod] != friday_last %} class="occupied-cell-top" {% elif friday[mod] != None and friday[mod] == friday_last %} class="occupied-cell-center" {% elif friday[mod] == None and friday[mod] != friday_last %} class="free-cell-top" {% endif %}{% if friday[mod] != None and friday[mod]['color'] != None %} style="background-color: rgba({{ friday[mod]['color'] }}, 1);"{% endif %}>
+				{% if friday[mod] != None and friday[mod] != friday_last %}
+					<span class="tooltip-schedule" data-toggle="tooltip" data-original-title="{{friday[mod]['students_enrolled_names']}}" id="friday{{mod}}">{{friday[mod]['name']}}</span>
+				{% endif %}
 			{% set friday_last = friday[mod] %}</td>
 		</tr>
 		{% endfor %}
 	</table>
 </div>
+{% endblock %}
+
+{% block script %}
+for (var i = 1; i <= 27; i++) {
+	$("#monday" + i).tooltip();
+	$("#tuesday" + i).tooltip();
+	$("#wednesday" + i).tooltip();
+	$("#thursday" + i).tooltip();
+	$("#friday" + i).tooltip();	
+}
 {% endblock %}

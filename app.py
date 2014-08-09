@@ -74,6 +74,8 @@ def split_into_mods(day, color=True):
 		for mod in range(start, end + 1):
 			mods[mod] = {}
 			mods[mod]['name'] = c['class_name']
+			mods[mod]['students_enrolled_ids'] = c['students_enrolled_ids']
+			mods[mod]['students_enrolled_names'] = ', '.join(c['students_enrolled_names'])
 			if color:
 				mods[mod]['color'] = c['color']
 	return mods
@@ -96,7 +98,6 @@ def split_courses_into_days(courses):
 			c_copy['time'] = c['time'][day]
 			days[day].append(c_copy)
 			c_copy['color'] = current_color
-	# return [split_into_mods(x) for x in days.values()]
 	return [split_into_mods(days["monday"], colored_schedule),
 			split_into_mods(days["tuesday"], colored_schedule),
 			split_into_mods(days["wednesday"], colored_schedule),
