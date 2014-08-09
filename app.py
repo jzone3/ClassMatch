@@ -133,20 +133,22 @@ def formatted_schedule_no_username():
 
 @app.route('/schedule/<username>')
 def formatted_schedule(username):
-	signed_in = False
-	schedule_owner = ""
 	if logged_in():
-		signed_in = True
-	else:
 		user = users.find_one({'username' : username})
 		if user is None:
 			return render_template('404.html'), 404
-		schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"
-	courses = get_courses(username)
-	if courses == {}:
-		return render_template('404.html'), 404
-	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-	return render_template('pretty.html', signed_in=signed_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
+
+		schedule_owner = ""
+		if username == session['username']:
+			schedule_owner = "My"
+		else:
+			schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"		
+		
+		courses = get_courses(username)
+		if courses == {}:
+			return render_template('404.html'), 404
+		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+	return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
 
 @app.route('/about')
 def about():
