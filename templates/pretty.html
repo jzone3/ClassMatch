@@ -2,7 +2,7 @@
 {% block title %}My Schedule{% endblock %}
 {% block content %}
 <div class="container">
-	<h1>My Schedule</h1>
+	<h1>{% if signed_in %}My{% else %}{{schedule_owner}}{% endif %} Schedule</h1>
 	<br>
 	<table class="schedule table">
 		<tr class="head">
