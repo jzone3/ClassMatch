@@ -1,10 +1,16 @@
-from flask import Flask, render_template, request, redirect, session, jsonify
+from flask import Flask, render_template, request, redirect, session, jsonify, Response
+from datetime import timedelta
 import jinja2
 import os
 from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
+<<<<<<< HEAD
+=======
+import pdfcrowd
+#from secret import *
+>>>>>>> aaf2a3dbb417e8b18f864f23c661dd81a15367e0
 import random
 
 app = Flask(__name__)
@@ -15,6 +21,8 @@ app = Flask(__name__)
 
 app.secret_key = os.environ['SECRET_KEY']
 client = MongoClient(os.environ['MONGO_THING'])
+
+app.permanent_session_lifetime = timedelta(days=20)
 
 db = client.get_default_database()
 users = db.users
