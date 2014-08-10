@@ -5,16 +5,16 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-#from secret import *
 import random
 
 app = Flask(__name__)
 
-app.secret_key = os.environ['SECRET_KEY']
-#app.secret_key = SECRET_KEY
+# from secret import *
+# app.secret_key = SECRET_KEY
+# client = MongoClient(MONGO_THING)
 
+app.secret_key = os.environ['SECRET_KEY']
 client = MongoClient(os.environ['MONGO_THING'])
-#client = MongoClient(MONGO_THING)
 
 db = client.get_default_database()
 users = db.users
@@ -136,23 +136,23 @@ def formatted_schedule_no_username():
 
 @app.route('/schedule/<username>/')
 def formatted_schedule(username):
-	if logged_in():
-		user = users.find_one({'username' : username})
-		if user is None:
-			return render_template('404.html'), 404
+	is_logged_in = logged_in()
 
-		schedule_owner = ""
-		if username == session['username']:
-			schedule_owner = "My"
-		else:
-			schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"		
-		
-		courses = get_courses(username)
-		if courses == {}:
-			return render_template('404.html'), 404
-		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-		return render_template('pretty.html', signed_in=True, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
-	return redirect('/signin')
+	user = users.find_one({'username' : username})
+	if user is None:
+		return render_template('404.html'), 404
+
+	schedule_owner = ""
+	if is_logged_in and username == session['username']:
+		schedule_owner = "My"
+	else:
+		schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"
+	
+	courses = get_courses(username)
+	if courses == {}:
+		return render_template('404.html'), 404
+	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+	return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES)
 
 @app.route('/about/')
 def about():
@@ -181,7 +181,7 @@ def delete_class(class_id):
 		return redirect('/classes')
 	return redirect('/signin')
 
-@app.route('/add/', methods=['GET', 'POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_class():
 	if request.method == 'POST':
 		if not logged_in():
@@ -274,7 +274,7 @@ def add_class():
 		return render_template('add.html', page="add", signed_in=True, name=session['name'].title(), course_list=course_list)
 	return redirect('/signin')
 
-@app.route('/signin/', methods=['GET','POST'])
+@app.route('/signin', methods=['GET','POST'])
 def sign_in():
 	if request.method == 'POST':
 		username = request.form.get('username').lower()
@@ -296,7 +296,7 @@ def sign_in():
 		return redirect('/')
 	return render_template("signin.html", username="")
 
-@app.route('/signup/', methods=['GET','POST'])
+@app.route('/signup', methods=['GET','POST'])
 def sign_up():
 	if request.method == 'POST':
 		first_name = request.form.get('first_name')
@@ -378,7 +378,7 @@ def my_classes():
 def logout():
 	session_logout()
 	return redirect('/')
-@app.route('/account/', methods=['GET','POST'])
+@app.route('/account', methods=['GET','POST'])
 def account():
 	if request.method == 'POST':
 		old_password = request.form.get('old_password')
@@ -400,7 +400,7 @@ def account():
 	if not(logged_in()):
 		return redirect('/signin')
 	return render_template('account.html',signed_in=True, name=session['name'].title())
-@app.route('/account/delete/', methods=['POST'])
+@app.route('/account/delete', methods=['POST'])
 def account_delete():
 	if request.method == 'POST':
 		if not logged_in():
@@ -432,7 +432,7 @@ def account_delete():
 def class_json():
 	# return jsonify(classes=cache.get('classes'))
 	return get_cached_courses()
-@app.route('/find/', methods=['GET','POST'])
+@app.route('/find', methods=['GET','POST'])
 def find_classes():
 	if request.method == 'POST':
 		class_name = request.form.get('class_name')
@@ -466,7 +466,7 @@ def admin_page():
 		return render_template('admin.html')
 	return redirect('/')
 
-@app.route('/delete_class_admin/', methods=['GET','POST'])
+@app.route('/delete_class_admin', methods=['GET','POST'])
 def delete_class_admin():
 	if request.method == 'POST' and is_admin():
 		class_id = request.form.get('delete_class_id')
