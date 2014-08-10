@@ -6,17 +6,17 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-import pdfcrowd
+# import pdfcrowd
 import random
 
 app = Flask(__name__)
 
-from secret import *
-app.secret_key = SECRET_KEY
-client = MongoClient(MONGO_THING)
+# from secret import *
+# app.secret_key = SECRET_KEY
+# client = MongoClient(MONGO_THING)
 
-# app.secret_key = os.environ['SECRET_KEY']
-# client = MongoClient(os.environ['MONGO_THING'])
+app.secret_key = os.environ['SECRET_KEY']
+client = MongoClient(os.environ['MONGO_THING'])
 
 app.permanent_session_lifetime = timedelta(days=20)
 
