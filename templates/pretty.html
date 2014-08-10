@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}My Schedule{% endblock %}
 {% block content %}
+<script src="/static/js/jspdf.js"></script>
+<script src="/static/js/jspdf.plugin.from_html.js"></script>
+<script src="/static/js/jspdf.plugin.split_text_to_size.js"></script>
+<script src="/static/js/jspdf.plugin.standard_fonts_metrics.js"></script>
 <div class="container">
 	<h1>{{schedule_owner}} Schedule</h1>
 	<br>
@@ -49,7 +53,11 @@
 		</tr>
 		{% endfor %}
 	</table>
+<!-- 	<div class="center">
+		<button class="btn btn-lg btn-primary" onclick="getpdf()">Download PDF</button>
+	</div> -->
 </div>
+<br><br><br><br>
 {% endblock %}
 
 {% block script %}
