@@ -6,17 +6,18 @@ from bson.objectid import ObjectId
 from pymongo import *
 from utils import *
 import re
-# import pdfcrowd
 import random
+from xhtml2pdf import pisa
+from cStringIO import StringIO
 
 app = Flask(__name__)
 
-# from secret import *
-# app.secret_key = SECRET_KEY
-# client = MongoClient(MONGO_THING)
+from secret import *
+app.secret_key = SECRET_KEY
+client = MongoClient(MONGO_THING)
 
-app.secret_key = os.environ['SECRET_KEY']
-client = MongoClient(os.environ['MONGO_THING'])
+# app.secret_key = os.environ['SECRET_KEY']
+# client = MongoClient(os.environ['MONGO_THING'])
 
 app.permanent_session_lifetime = timedelta(days=20)
 
@@ -111,6 +112,10 @@ def split_courses_into_days(courses):
 			split_into_mods(days["wednesday"], colored_schedule),
 			split_into_mods(days["thursday"], colored_schedule),
 			split_into_mods(days["friday"], colored_schedule)]
+def create_pdf(pdf_data):
+    pdf = StringIO()
+    pisa.CreatePDF(StringIO(pdf_data.encode('utf-8')), pdf)
+    return pdf
 
 @app.route('/')
 def index():
@@ -447,7 +452,26 @@ def find_classes():
 		course_list = get_cached_courses()
 		return render_template('find_classes.html', signed_in=True,page="add", name=session['name'].title(), course_list=course_list)
 	return redirect('/signin')
+@app.route('/pdf/<username>/')
+def formatted_schedule(username):
+	is_logged_in = logged_in()
 
+	user = users.find_one({'username' : username})
+	if user is None:
+		return render_template('404.html'), 404
+
+	schedule_owner = ""
+	if is_logged_in and username == session['username']:
+		schedule_owner = "My"
+	else:
+		schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"
+	
+	courses = get_courses(username)
+	if courses == {}:
+		return render_template('404.html'), 404
+	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+	pdf = create_pdf(render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
+	return Response(pdf, mimetype='application/pdf')
 @app.errorhandler(404)
 def broken(error):
 	return render_template('404.html'), 404
