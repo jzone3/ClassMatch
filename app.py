@@ -12,12 +12,12 @@ from cStringIO import StringIO
 
 app = Flask(__name__)
 
-from secret import *
-app.secret_key = SECRET_KEY
-client = MongoClient(MONGO_THING)
+# from secret import *
+# app.secret_key = SECRET_KEY
+# client = MongoClient(MONGO_THING)
 
-# app.secret_key = os.environ['SECRET_KEY']
-# client = MongoClient(os.environ['MONGO_THING'])
+app.secret_key = os.environ['SECRET_KEY']
+client = MongoClient(os.environ['MONGO_THING'])
 
 app.permanent_session_lifetime = timedelta(days=20)
 
