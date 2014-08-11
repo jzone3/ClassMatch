@@ -4,4 +4,3 @@ gunicorn==0.17.2
 pymongo==2.6.3
 python-binary-memcached==0.24.2
 pdfcrowd==2.5
-xhtml2pdf==0.0.6
