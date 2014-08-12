@@ -469,7 +469,10 @@ def pdf(username):
 		return render_template('404.html'), 404
 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
 	pdf_client = pdfcrowd.Client("parasm", "3c21b3f750b04d5a83859e82367669a2")
-	pdf = pdf_client.convertHtml(render_template('pretty2.html', monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
+	try:
+		pdf = pdf_client.convertHtml(render_template('pretty2.html', monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
+	except Exception, e:
+		return render_template("pdferror.html",signed_in=True)
 	return Response(pdf, mimetype='application/pdf')
 @app.errorhandler(404)
 def broken(error):
