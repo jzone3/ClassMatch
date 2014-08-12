@@ -7,8 +7,7 @@ from pymongo import *
 from utils import *
 import re
 import random
-# from xhtml2pdf import pisa
-# from cStringIO import StringIO
+import pdfcrowd
 
 app = Flask(__name__)
 
@@ -452,26 +451,26 @@ def find_classes():
 		course_list = get_cached_courses()
 		return render_template('find_classes.html', signed_in=True,page="add", name=session['name'].title(), course_list=course_list)
 	return redirect('/signin')
-# @app.route('/pdf/<username>/')
-# def formatted_schedule(username):
-# 	is_logged_in = logged_in()
+@app.route('/pdf/<username>/')
+def pdf(username):
+	is_logged_in = logged_in()
+	user = users.find_one({'username' : username})
+	if user is None:
+		return render_template('404.html'), 404
 
-# 	user = users.find_one({'username' : username})
-# 	if user is None:
-# 		return render_template('404.html'), 404
-
-# 	schedule_owner = ""
-# 	if is_logged_in and username == session['username']:
-# 		schedule_owner = "My"
-# 	else:
-# 		schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"
+	schedule_owner = ""
+	if is_logged_in and username == session['username']:
+		schedule_owner = "My"
+	else:
+		schedule_owner = user['first_name'] + " " + user['last_name'] + "'s"
 	
-# 	courses = get_courses(username)
-# 	if courses == {}:
-# 		return render_template('404.html'), 404
-# 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-# 	pdf = create_pdf(render_template('pretty2.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
-# 	return Response(pdf, mimetype='application/pdf')
+	courses = get_courses(username)
+	if courses == {}:
+		return render_template('404.html'), 404
+	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+	pdf_client = pdfcrowd.Client("parasm", "3c21b3f750b04d5a83859e82367669a2")
+	pdf = pdf_client.convertHtml(render_template('pretty2.html', monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
+	return Response(pdf, mimetype='application/pdf')
 @app.errorhandler(404)
 def broken(error):
 	return render_template('404.html'), 404
