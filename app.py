@@ -470,7 +470,7 @@ def find_classes():
 # 	if courses == {}:
 # 		return render_template('404.html'), 404
 # 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-# 	pdf = create_pdf(render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
+# 	pdf = create_pdf(render_template('pretty2.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES))
 # 	return Response(pdf, mimetype='application/pdf')
 @app.errorhandler(404)
 def broken(error):
