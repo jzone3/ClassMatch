@@ -35,6 +35,7 @@ MOD_TIMES = ['8:13-8:28', '8:31-8:46', '8:49-9:04', '9:07-9:22', '9:25-9:40', '9
 def session_login(username, first_name):
 	session['username'] = username
 	session['name'] = first_name
+	session.permanent = True
 
 def session_logout():
 	session.pop('username', None)
