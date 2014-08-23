@@ -95,11 +95,17 @@ def split_courses_into_days(courses):
 	# colors = ['26, 188, 156', '46, 204, 113', '52, 152, 219', '155, 89, 182', '52, 73, 94', '241, 196, 15', '230, 126, 34', '231, 76, 60', '127, 140, 141', '192, 57, 43', '211, 84, 0']
 	# colors = ['26, 188, 156', '41, 128, 185', '142, 68, 173', '192, 57, 43', '52, 73, 94']
 	colors = ['243, 236, 12', '252, 39, 18', '198, 50, 253', '254, 209, 100', '134, 205, 77', '128, 128, 128', '100, 255, 240', '253, 164, 160', '255, 255, 255']
+	colors_backup = ['255, 255, 255']
 	colored_schedule = True
 	for c in all_courses_list:
+		if c is None:
+			continue
 		current_color = ""
 		if len(colors) <= 0:
-			colored_schedule = False
+			if len(colors_backup) <= 0:
+				colored_schedule = False
+			else:
+				current_color = colors_backup.pop(random.randint(0, len(colors_backup) - 1))
 		else:
 			current_color = colors.pop(random.randint(0, len(colors) - 1))
 		for day in c['time'].keys():
@@ -149,7 +155,7 @@ def formatted_schedule(username):
 
 	user = users.find_one({'username' : username})
 	if user is None:
-		return render_template('404.html'), 404
+		return render_template('404.html', signed_in=is_logged_in), 404
 
 	schedule_owner = ""
 	if is_logged_in and username == session['username']:
@@ -159,7 +165,7 @@ def formatted_schedule(username):
 	
 	courses = get_courses(username)
 	if courses == {}:
-		return render_template('404.html'), 404
+		return render_template('404.html', signed_in=is_logged_in), 404
 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
 	return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES,user=username)
 
@@ -457,7 +463,7 @@ def pdf(username):
 	is_logged_in = logged_in()
 	user = users.find_one({'username' : username})
 	if user is None:
-		return render_template('404.html'), 404
+		return render_template('404.html', signed_in=is_logged_in), 404
 
 	schedule_owner = ""
 	if is_logged_in and username == session['username']:
@@ -467,7 +473,7 @@ def pdf(username):
 	
 	courses = get_courses(username)
 	if courses == {}:
-		return render_template('404.html'), 404
+		return render_template('404.html', signed_in=is_logged_in), 404
 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
 	pdf_client = pdfcrowd.Client("parasm", "3c21b3f750b04d5a83859e82367669a2")
 	try:
@@ -475,13 +481,14 @@ def pdf(username):
 	except Exception, e:
 		return render_template("pdferror.html",signed_in=True)
 	return Response(pdf, mimetype='application/pdf')
+
 @app.errorhandler(404)
 def broken(error):
-	return render_template('404.html'), 404
+	return render_template('404.html', signed_in=logged_in()), 404
 
 @app.route('/404/')
 def forohfor():
-	return render_template('404.html'), 404
+	return render_template('404.html', signed_in=logged_in()), 404
 
 @app.errorhandler(500)
 def broken(error):
