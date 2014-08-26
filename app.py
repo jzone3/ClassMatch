@@ -11,12 +11,12 @@ import pdfcrowd
 
 app = Flask(__name__)
 
-# from secret import *
-# app.secret_key = SECRET_KEY
-# client = MongoClient(MONGO_THING)
+from secret import *
+app.secret_key = SECRET_KEY
+client = MongoClient(MONGO_THING)
 
-app.secret_key = os.environ['SECRET_KEY']
-client = MongoClient(os.environ['MONGO_THING'])
+# app.secret_key = os.environ['SECRET_KEY']
+# client = MongoClient(os.environ['MONGO_THING'])
 
 app.permanent_session_lifetime = timedelta(days=20)
 
@@ -371,16 +371,18 @@ def sign_up():
 def get_user_info(id):
 	if not(logged_in()):
 		return redirect('/signin')
+	is_logged_in = logged_in()
 	user = users.find({'_id':ObjectId(id)})[0]
 	last_name = user.get('last_name')
 	name = user['first_name']
 	if last_name:
 		name += ' ' + last_name
-	email = user['username'] +'@bergen.org'
-	courses=[]
-	for c in user['classes']:
-		courses.append(classes.find_one({'_id':c})['class_name'])
-	return render_template('user_info.html', signed_in=True, name=session['name'].title(),classes=courses, user_name=name.title(), email=email)
+	username = user['username']
+	courses = get_courses(username)
+	if courses == {}:
+		return render_template('404.html', signed_in=is_logged_in), 404
+	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
+	return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=name, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES,user=username)
 @app.route('/classes/')
 def my_classes():
 	if logged_in():
