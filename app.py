@@ -11,12 +11,12 @@ import pdfcrowd
 
 app = Flask(__name__)
 
-# from secret import *
-# app.secret_key = SECRET_KEY
-# client = MongoClient(MONGO_THING)
+from secret import *
+app.secret_key = SECRET_KEY
+client = MongoClient(MONGO_THING)
 
-app.secret_key = os.environ['SECRET_KEY']
-client = MongoClient(os.environ['MONGO_THING'])
+# app.secret_key = os.environ['SECRET_KEY']
+# client = MongoClient(os.environ['MONGO_THING'])
 
 app.permanent_session_lifetime = timedelta(days=20)
 
@@ -48,6 +48,9 @@ def logged_in():
 	return True
 
 def get_user(username):
+	return users.find_one({'username' : username})
+
+def get_current_user(username):
 	user = users.find_one({'username' : username})
 	if user is None:
 		session_logout()
@@ -59,7 +62,7 @@ def get_class(class_id):
 def get_courses(username=None):
 	if username is None:
 		username = session['username']
-	user = get_user(username)
+	user = get_current_user(username)
 	courses = {}
 	if not user['classes']:
 		return {}
@@ -179,7 +182,7 @@ def about():
 def delete_class(class_id):
 	if logged_in():
 		class_id = ObjectId(class_id)
-		user = get_user(session.get('username'))
+		user = get_current_user(session.get('username'))
 		if user is None:
 			return redirect('/signin')
 		course = classes.find_one({"_id" : class_id})
@@ -204,7 +207,7 @@ def add_class():
 		days_of_the_week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 		i = 1
 		courses = []
-		user = get_user(session['username'])
+		user = get_current_user(session['username'])
 		if user is None:
 			return redirect('/signin')
 		if user.get("last_name") is None:
@@ -279,7 +282,7 @@ def add_class():
 		x = users.update({"_id" : user.get("_id")}, user)
 		return redirect('/')
 	if logged_in():
-		user = get_user(session['username'])
+		user = get_current_user(session['username'])
 		if user is None:
 			return redirect('/signin')
 		user_classes = []
@@ -406,7 +409,7 @@ def account():
 		if new_password != confirm_password:
 			return render_template('account.html',signed_in=True, name=session['name'].title(), error="Passwords must match")
 		username = session['username']
-		user = get_user(username)
+		user = get_current_user(username)
 		if user is None:
 			return redirect('/signin')
 		if not(valid_pw(username,old_password,user.get('password'))):
@@ -426,7 +429,7 @@ def account_delete():
 		if password is None:
 			return render_template('account.html', signed_in=True, name=session['name'].title(), error="Incorrect password")
 		username = session['username']
-		user = get_user(username)
+		user = get_current_user(username)
 		if user is None:
 			return redirect('/signin')
 		if valid_pw(username,password,user.get('password')):
@@ -503,8 +506,8 @@ def fivehundred():
 @app.route('/admin/')
 def admin_page():
 	if is_admin():
-		return render_template('admin.html')
-	return redirect('/')
+		return render_template('admin.html', signed_in=logged_in())
+	return render_template('404.html', signed_in=logged_in()), 404
 
 @app.route('/delete_class_admin', methods=['GET','POST'])
 def delete_class_admin():
@@ -515,14 +518,30 @@ def delete_class_admin():
 			return render_template('admin.html', error="No class found.")
 		stu_ids = to_delete.get('students_enrolled_ids')
 		for student in stu_ids:
-			user = get_user(student)
+			user = get_current_user(student)
 			user['classes'].pop(to_delete.get("_id"))
 			users.update({"_id" : student}, user)
 		name = to_delete.get('class_name')
 		classes.remove({"_id" : ObjectId(class_id)})
-		return render_template('admin.html', error="Deleted " + name)
+		return render_template('admin.html', error="Deleted " + name, signed_in=logged_in())
 	else:
-		return redirect('/')
+		return render_template('404.html', signed_in=logged_in()), 404
+
+@app.route('/reset_password', methods=['GET','POST'])
+def reset_password():
+	if request.method == 'POST' and is_admin():
+		username = request.form.get('username')
+		new_password = request.form.get('new_password')
+		user = get_user(username)
+		if user is None:
+			return render_template('admin.html', error="No user found.")
+		if new_password is None or len(new_password) == 0:
+			return render_template('admin.html', error="No new password found.")
+		user['password'] = make_pw_hash(username, new_password)
+		users.update({'_id':user.get('_id')},user)
+		return render_template('admin.html', error="Reset password for '" + username + "'.", signed_in=logged_in())
+	else:
+		return render_template('404.html', signed_in=logged_in()), 404
 
 def merge_classes():
 	return False

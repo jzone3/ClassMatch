@@ -269,3 +269,7 @@ table, th, td {
 /*.tooltip-schedule {
 	font-weight: normal;
 }*/
+
+.admin-forms input {
+	color: #2c3e50;
+}

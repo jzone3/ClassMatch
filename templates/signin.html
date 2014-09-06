@@ -26,7 +26,7 @@
 			<div class="form-group {% if password_error %}has-error{% endif %}">
 				<div class="col-lg-4 right signup-label"><label class="control-label" for="password">Password</label></div>
 				<div class="col-lg-4">
-					<input type="password" class="form-control" id="password" name="password" placeholder="{{password_error}}">
+					<input type="password" class="form-control" id="password" name="password" placeholder="{{password_error}}" data-original-title="If you forgot your password, please contact Jared (jarzon@bergen.org) or Paras (parmod@bergen.org) and they will be happy to help!">
 				</div>
 			</div>
 		</div>
@@ -34,4 +34,8 @@
 		<button class="btn btn-lg btn-primary" type="submit">Sign In!</button>
 	</form>
 </div>
+{% endblock %}
+
+{% block script %}
+$("#password").tooltip();
 {% endblock %}

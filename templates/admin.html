@@ -1,36 +1,42 @@
 {% extends "base.html" %}
-{% block title %}About{% endblock %}
+{% block title %}Admin{% endblock %}
 {% block content %}
 <div class="container">
 	<h1>Admin</h1>
 	<hr class="hr-big">
-    {% if error %}
-    <div class="error">
-        <h3>{{error}}</h3>
-    </div>
-    <br>
-    {% endif %}
-	<div class="about-page center class jumbotron">
-	   <form method="POST" action="/delete_class_admin">
-       Delete class (id): <input type="text" name="delete_class_id">
-       <button type="submit" class="btn btn-lg btn-primary">Delete Class</button>
-       </form>
-       <form method="POST" action="/merge_class">
-       Merge Class (id): <input type="text" name="delete_class_id1" placeholder="class1"> <input type="text" name="delete_class_id2" placeholder="class2">
-       <button type="submit" class="btn btn-lg btn-primary">Merge Classes</button>
-       </form>
-       <form method="POST" action="/delete_user">
-       Delete User (id): <input type="text" name="delete_user">
-       <button type="submit" class="btn btn-lg btn-primary">Delete User</button>
-       </form>
-    </div>
+		{% if error %}
+		<div class="error">
+				<h3>{{error}}</h3>
+		</div>
+		<br>
+		{% endif %}
+	<div class="admin-forms about-page class jumbotron">
+		<form method="POST" action="/reset_password">
+			Reset password: 
+			<input type="text" name="username" placeholder="username">
+			<input type="text" name="new_password" placeholder="new password">
+			<button type="submit" class="btn btn-sm btn-danger">Reset Password</button>
+		</form>
+		<form method="POST" action="/delete_class_admin">
+			Delete class (id): <input type="text" name="delete_class_id">
+			<button type="submit" class="btn btn-sm btn-danger">Delete Class</button>
+		</form>
+		<form method="POST" action="/merge_class">
+			Merge Class (id): <input type="text" name="delete_class_id1" placeholder="class1"> <input type="text" name="delete_class_id2" placeholder="class2">
+			<button type="submit" class="btn btn-sm btn-danger">Merge Classes</button>
+		</form>
+		<form method="POST" action="/delete_user">
+			Delete User (id): <input type="text" name="delete_user">
+			<button type="submit" class="btn btn-sm btn-danger">Delete User</button>
+		</form>
+	</div>
 </div>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- ClassMatch -->
 <ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-7180252422585192"
-     data-ad-slot="2246752343"></ins>
+		style="display:inline-block;width:728px;height:90px"
+		data-ad-client="ca-pub-7180252422585192"
+		data-ad-slot="2246752343"></ins>
 <script>
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
