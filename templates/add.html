@@ -17,7 +17,7 @@
 			<div id="add-classes">
 				<div class="row">
 					<div class="form-group">
-						<div class="col-lg-4 right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
+						<div class="col-lg-4 class-name-label right signup-label"><label class="control-label" for="class_name1">Class name</label></div>
 						<div class="col-lg-4">
 							<div id="course-typeahead">
 								<input data-toggle="tooltip" data-placement="right" data-original-title="Enter or choose your course from the dropdown" type="text" class="typeahead form-control" autocomplete="off" id="class_name" name="class_name1" autofocus="autofocus" placeholder="Data Structures">
@@ -26,7 +26,7 @@
 						<div class="col-lg-4"></div>
 					</div>
 				</div>
-				<br><br>
+				<br class="mobile-dissapear"><br class="mobile-dissapear">
 				<!-- Add way to add teacher when we get teachers -->
 				<div class="row">
 					<div class="col-lg-1">&nbsp;</div>
@@ -62,7 +62,7 @@
 					</div>
 					<div class="col-lg-1">&nbsp;</div>
 				</div>
-				<br/><br/>
+				<br class="mobile-dissapear"><br>
 			</div>
 			<a class="btn btn-success" onclick="addClass();">+ Add another class</a>
 			<br><br>
@@ -128,7 +128,7 @@ function addClass() {
 	$('#add-classes').append('\
 				<hr><div class="row"> \
 				<div class="form-group"> \
-					<div class="col-lg-4 right signup-label"><label class="control-label" for="class_nameq">Class name</label></div> \
+					<div class="col-lg-4 class-name-label right signup-label"><label class="control-label" for="class_nameq">Class name</label></div> \
 					<div class="col-lg-4"> \
 						<div> \
 							<input type="text" class="typeahead form-control" autocomplete="off" id="class_nameq" name="class_nameq" placeholder="Data Structures"> \
@@ -137,7 +137,7 @@ function addClass() {
 					<div class="col-lg-4"></div> \
 				</div> \
 			</div> \
-			<br><br> \
+			<br class="mobile-dissapear"><br class="mobile-dissapear"> \
 			<!-- Add way to add teacher when we get teachers --> \
 			<div class="row"> \
 				<div class="col-lg-1">&nbsp;</div> \
@@ -173,7 +173,7 @@ function addClass() {
 				</div> \
 				<div class="col-lg-1">&nbsp;</div> \
 			</div> \
-			<br/><br/>'.replace(new RegExp('[q]', 'g'), number));
+			<br class="mobile-dissapear"><br/>'.replace(new RegExp('[q]', 'g'), number));
 			$(document).ready(function() {$('#class_name' + number).typeahead({
 			  hint: true,
 			  highlight: true,

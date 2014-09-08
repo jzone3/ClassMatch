@@ -6,9 +6,9 @@
 	<br>
 	{% for c in classes %}
 	<div class="class jumbotron">
-		<h2>{{classes[c]['class_name']}}</h2>
+		<h2 class="class-name">{{classes[c]['class_name']}}</h2>
 		<hr class="hr-big" style="width: 100%;">
-		<div class="row center">
+		<div class="row center mods-desktop">
 			<div class="col-md-1">&nbsp;</div>
 			<div class="col-md-2 day-of-the-week day-of-the-week-right">
 				<span class="day">Monday</span>
@@ -46,6 +46,32 @@
 				{% endif %}
 			</div>
 			<div class="col-md-1">&nbsp;</div>
+		</div>
+		<div class="mods-mobile">
+			{% if classes[c]['time']['monday'] %}
+			<span class="day">Monday:</span>
+			{{classes[c]['time']['monday'][0]}} - {{classes[c]['time']['monday'][1]}}
+			<br>
+			{% endif %}
+			{% if classes[c]['time']['tuesday'] %}
+			<span class="day">Tuesday:</span>
+			{{classes[c]['time']['tuesday'][0]}} - {{classes[c]['time']['tuesday'][1]}}
+			<br>
+			{% endif %}
+			{% if classes[c]['time']['wednesday'] %}
+			<span class="day">Wednesday:</span>
+			{{classes[c]['time']['wednesday'][0]}} - {{classes[c]['time']['wednesday'][1]}}
+			<br>
+			{% endif %}
+			{% if classes[c]['time']['thursday'] %}
+			<span class="day">Thursday:</span>
+			{{classes[c]['time']['thursday'][0]}} - {{classes[c]['time']['thursday'][1]}}
+			<br>
+			{% endif %}
+			{% if classes[c]['time']['friday'] %}
+			<span class="day">Friday:</span>
+			{{classes[c]['time']['friday'][0]}} - {{classes[c]['time']['friday'][1]}}
+			{% endif %}
 		</div>
 		<br><br>
 		<div class="students">

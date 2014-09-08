@@ -154,6 +154,83 @@ h1 {
 	margin-right: auto;
 }
 
+.mods-mobile {
+	display: none;
+	font-size: 17px;
+}
+
+.credit {
+	display: none;
+}
+
+@media screen and (max-width: 750px) {
+	.class {
+		width: 95%;
+	}
+	.mobile-dissapear {
+		display: none;
+	}
+
+	.schedule-col {
+		display: none;
+	}
+	h1 {
+		font-size: 50px;
+	}
+	.show-col {
+		display: block;
+	}
+	.show-col .next-prev-btn {
+		display: block;
+	}
+	.signup-label {
+		text-align: center;
+	}
+	.day-of-the-week {
+		margin-bottom: 30px;
+	}
+	.class-name-label {
+		text-align: center;
+	}
+	.day-of-the-week {
+		margin-bottom: 30px;
+	}
+	.mods-desktop {
+		display: none;
+	}
+	.mods-mobile {
+		display: block;
+	}
+	.students {
+		font-size: 16px !important;
+	}
+	h2.class-name {
+		font-size: 25px;
+	}
+	.pass {
+		text-align: left;
+	}
+	.schedule-col {
+		min-width: 240px;
+	}
+	.credit {
+		display: block;
+	}
+}
+
+.next-prev-btn {
+	display: none;
+}
+
+.prev-btn {
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
+
 .class a {
 	color: #ecf0f1;
 }
@@ -173,13 +250,13 @@ h1 {
 
 hr {
 	display: block; height: 1px;
-    border: 0; border-top: 1px solid white;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding: 0;
+	border: 0; border-top: 1px solid white;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding: 0;
 }
 
 .hr-big {
@@ -198,23 +275,20 @@ hr {
 	height: 1.5em;
 	font-size: 15px;
 	text-align: center;
-    color: rgb(44, 62, 80);
+	color: rgb(44, 62, 80);
 }
 
 .sticky-footer{
-    margin-top: 12px;
+	margin-top: 12px;
 }
 
 .sticky-footer a  {
-    color: rgb(44, 62, 80);
+	color: rgb(44, 62, 80);
 }
 
 .about-page {
 	padding-top: 25px;
 	padding-bottom: 10px;
-}
-.find-class{
-
 }
 
 .schedule {

@@ -1,11 +1,12 @@
 <html>
 	<head>
 		<title>{% block title %}{% endblock %}{% if page != 'index' %} - {% endif %}ClassMatch</title>
-		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    {% if page != 'index' %}<meta name="viewport" content="width=device-width, initial-scale=1.0">{% endif %}
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/custom.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     {% if page=='add' %}<script src="/static/js/typeahead.js"></script>{% endif %}
-		<link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="/static/custom.css">
 		{% block extra %}{% endblock %}
 	</head>
 	<body>
@@ -20,7 +21,7 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
+        <div class="navbar-collapse navbar-responsive-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
           {% if signed_in %}
           <li><a {% if page=='index'%}class="navbar-link"{% endif %} href="/schedule">My Schedule</a></li>
@@ -43,7 +44,7 @@
         </div>
       </div>
     </div>
-    <br/><br/><br/><br/><br/>
+    <br/><br/><br/><br class="mobile-dissapear"/><br class="mobile-dissapear"/>
 		<span id="page-content">
     {% block content %}
 		{% endblock %}
