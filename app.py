@@ -146,12 +146,19 @@ def index():
 		if courses == {}:
 			return render_template('404.html', signed_in=is_logged_in), 404
 		monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-		return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES,user=username)
+		if request.args.get("full") == "True":
+			full_page = "full_page"
+		else:
+			full_page = "schedule"
+		return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES, user=username, page=full_page)
 	return render_template("index.html", page="index")
 
 @app.route('/pretty/')
 def pretty_schedule():
 	if logged_in():
+		full_schedule = request.args.get("full")
+		if full_schedule == "True":
+			return redirect('/schedule/' + session['username'] + "?full=True")
 		return redirect('/schedule/' + session['username'])
 		# courses = get_courses()
 		# if courses == {}:
@@ -163,7 +170,9 @@ def pretty_schedule():
 @app.route('/schedule/')
 def formatted_schedule_no_username():
 	if logged_in():
-		return redirect('/schedule/' + session['username'])
+		full_schedule = request.args.get("full")
+		if full_schedule == "True":
+			return redirect('/schedule/' + session['username'] + "?full=True")
 	return redirect('/signin')
 
 @app.route('/schedule/<username>/')
@@ -184,7 +193,11 @@ def formatted_schedule(username):
 	if courses == {}:
 		return render_template('404.html', signed_in=is_logged_in), 404
 	monday, tuesday, wednesday, thursday, friday = split_courses_into_days(courses)
-	return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES,user=username)
+	if request.args.get("full") == "True":
+		full_page = "full_page"
+	else:
+		full_page = "schedule"
+	return render_template('pretty.html', signed_in=is_logged_in, schedule_owner=schedule_owner, monday=monday, tuesday=tuesday, wednesday=wednesday, thursday=thursday, friday=friday, mod_times=MOD_TIMES, user=username, page=full_page)
 
 @app.route('/about/')
 def about():

@@ -159,8 +159,12 @@ h1 {
 	font-size: 17px;
 }
 
-.credit {
+.credit, .full-schedule {
 	display: none;
+}
+
+.full-schedule {
+	text-align: center;
 }
 
 @media screen and (max-width: 750px) {
@@ -214,6 +218,9 @@ h1 {
 		min-width: 240px;
 	}
 	.credit {
+		display: block;
+	}
+	.full-schedule {
 		display: block;
 	}
 }
